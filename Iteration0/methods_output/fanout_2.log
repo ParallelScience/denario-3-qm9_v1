@@ -1,0 +1,143 @@
+
+###### PROMPT BEGINS ########
+Human: You are provided with:
+- a description of the data
+- an idea
+- research plan to carry out the idea.
+
+Your task is to provide suggestions on how to improve the plan.
+Take into account and potential feedback (if any).
+If the plan is already good enough, do not give suggestions to improve it. If this is not first iteration, you will also be provided with the previous research plan along with some feedback on it. If this is the case, take into account the feedback provided when designing the new research plan. It is good to have a detailed plan, but not to have an overly complicated plan. If you dont have suggestions, just say that you dont have further suggestions. The idea should remain the same. No need to add code to the research plan, as another agent will write code given the research plan.
+
+Data description:
+# QM9 Molecular Property Dataset — Data Description
+
+## 1. Files
+
+- `/home/node/work/data/qm9/qm9.csv` — the dataset. One CSV, 133,885 rows × 21 columns (one row per molecule), no missing values. Read with `pd.read_csv('/home/node/work/data/qm9/qm9.csv')`.
+
+## 2. What the data is
+
+QM9 (MoleculeNet release): quantum-mechanical properties of drug-like molecules drawn from the GDB-9 database. Molecules contain up to 9 heavy atoms, elements C, N, O, F only (plus implicit hydrogens). Properties were computed with DFT (B3LYP/6-31G(2df,p)) with atomization-energy bias correction. This is the *equilibrium-geometry* (relaxed) set: 133,885 molecules, identified as `gdb_1` … `gdb_133885`.
+
+Structure is represented **only by SMILES** (canonical, stereochemistry stripped). No 3D coordinates are provided.
+
+## 3. Columns, types, units
+
+| Column | dtype | Meaning | Units | Typical range |
+|---|---|---|---|---|
+| `mol_id` | str | GDB-9 identifier (e.g. `gdb_4211`) | — | — |
+| `smiles` | str | canonical SMILES, no stereo, C/N/O/F ≤ 9 heavy atoms | — | — |
+| `A` | float | rotational constant A | GHz | 0 – 6.2e5 (huge for near-linear tops) |
+| `B` | float | rotational constant B | GHz | 0.34 – 438 |
+| `C` | float | rotational constant C | GHz | 0.33 – 283 |
+| `mu` | float | dipole norm | Debye | 0 – 29.6 (mean 2.7) |
+| `alpha` | float | isotropic polarizability | Bohr³ (a₀³) | 6.3 – 197 |
+| `homo` | float | HOMO energy | Hartree | −0.429 – −0.102 |
+| `lumo` | float | LUMO energy | Hartree | −0.175 – 0.194 |
+| `gap` | float | HOMO–LUMO gap (= homo − lumo) | Hartree | 0.025 – 0.622 (mean 0.251) |
+| `r2` | float | mean square radius ⟨r²⟩ | Bohr² | 19 – 3375 |
+| `zpve` | float | zero-point vibrational energy | Hartree | 0.016 – 0.274 |
+| `u0` | float | internal energy at 0 K | Hartree | −714.6 – −40.5 |
+| `u298` | float | internal energy at 298.15 K | Hartree | ≈ u0 + 0.008 |
+| `h298` | float | enthalpy at 298.15 K | Hartree | ≈ u298 + 0.001 |
+| `g298` | float | free energy at 298.15 K | Hartree | ≈ u298 − 0.04 |
+| `cv` | float | heat capacity at 298.15 K | cal/(mol·K) | 6.0 – 47.0 |
+| `u0_atom`,`u298_atom`,`h298_atom`,`g298_atom` | float | **CAVEATED:** per-atom energies as shipped by MoleculeNet | inconsistent | see caveats |
+
+## 4. Caveats and known structure
+
+- **Size extensivity dominates raw correlations.** `u0, u298, h298, g298, zpve, alpha, r2, cv` are *extensive* — they scale roughly linearly with molecule size (heavy-atom / electron count). Raw pairwise correlations among them reach r > 0.99 almost entirely through molecule size. Any structure–property analysis must control for size (normalize per heavy atom, regress out atom counts, or predict intensive quantities like `gap`, `mu`, `homo`, `lumo`).
+- **The four `_atom` columns are suspect.** Their scaling is inconsistent with u0 divided by atom count (e.g. methane u0 = −40.479 Eh gives `u0_atom` = −396.0). Do not use them without re-deriving; prefer computing per-heavy-atom energies directly from `u0` and the SMILES-derived atom count.
+- **83 duplicated SMILES** (stereochemistry collapsed; different 3D isomers share a canonical SMILES). Expect small property scatter for duplicates.
+- **45 rows with `mu` = 0 exactly**: symmetric molecules, physically real.
+- **`A` spans 6 orders of magnitude** (near-linear tops → use log scale or drop for rotational analyses).
+- Thermodynamic quantities satisfy near-exact identities (`gap = homo − lumo`; `h298 ≈ u298 + RT`; etc.) — good consistency checks, not new information.
+- Hydrogens are implicit in SMILES; H counts must be derived (rdkit installed, see below).
+
+## 5. Environment
+
+- Python: `/opt/denario-venv/bin/python` (pandas, numpy, scipy, sklearn, torch available; **rdkit 2026.03.6 installed** for SMILES parsing, descriptors, fingerprints).
+- No 3D geometries; if geometry-dependent features are wanted they must be optimized with a force field (rdkit ETKDG + MMFF/UFF).
+
+## 6. Suggested analyses
+
+1. **Extensivity decomposition**: separate extensive vs intensive properties; recover per-bond / per-group additivity (group-contribution structure) of u0, zpve, alpha by linear regression on bond/functional-group counts from SMILES; quantify residuals.
+2. **Structure→property models** from SMILES (RDKit 2D descriptors or Morgan fingerprints) for intensive targets (`gap`, `mu`, `homo`, `lumo`) and size-normalized extensive targets; compare linear group-contribution vs GBM/NN; analyze error vs molecule size/composition.
+3. **Scaling relations**: α(⟨r²⟩, N), Cv(N, ring counts), rotational constants vs inertia proxies — test physical scaling exponents.
+4. **Property–property geometry** after size control: PCA of intensive residuals — what orthogonal "chemistry axes" remain (conjugation, electronegativity patterns, ring strain proxies)?
+5. **Gap engineering**: which substructures minimize/maximize HOMO–LUMO gap; identify conjugation/aromaticity effects via group coefficients.
+
+Idea:
+**Title**: Decoupling Non-Additive Energetics via Graph-Latent Residual Decomposition
+
+**Description**: We will isolate non-additive electronic contributions to internal energy (`u0`) by training a baseline additive model based on RDKit-derived bond-type and functional-group counts, avoiding problematic per-atom normalization. We will then employ a Graph Neural Network (GNN) to predict the residuals of this additive baseline, utilizing the network's latent space to capture long-range topological features—such as extended π-conjugation pathways and ring-oxygen configurations—that linear models inherently miss. By applying Integrated Gradients to the GNN, we will map these non-additive residuals to specific molecular subgraphs, identifying which motifs exert the greatest influence on energetic stability. Finally, we will correlate these graph-derived "non-additivity scores" with intensive properties like `gap` and `mu` to quantify how structural electronic effects deviate from classical group-contribution theory. This approach rigorously separates the extensive scaling of the QM9 dataset from the underlying non-linear electronic physics without requiring 3D coordinate generation.
+
+Research plan:
+1. **Data Preprocessing and Feature Engineering**:
+   - Load the QM9 dataset and use RDKit to parse SMILES strings.
+   - Calculate the number of heavy atoms and implicit hydrogens for each molecule to derive total atom counts.
+   - Generate a baseline additive feature set by counting occurrences of specific bond types (e.g., C-C, C=C, C-O, C=O, C-N, C#N) and functional groups (e.g., rings, specific heteroatom motifs) using RDKit’s substructure matching.
+   - Compute the target variable for the baseline: internal energy at 0 K (`u0`).
+
+2. **Baseline Additive Modeling**:
+   - Train a Ridge regression model to predict `u0` using the bond-type and functional-group counts as predictors.
+   - Calculate the residuals (actual `u0` minus predicted `u0`) for the entire dataset. These residuals represent the non-additive energetic contributions that the linear group-contribution model fails to capture.
+
+3. **Graph Neural Network (GNN) Architecture**:
+   - Construct a Graph Neural Network (e.g., a Message Passing Neural Network) where nodes represent atoms (encoded by atomic number and degree) and edges represent bond types.
+   - Configure the GNN to predict the residuals calculated in Step 2, rather than the raw `u0` values, to force the model to focus exclusively on non-additive electronic effects.
+
+4. **GNN Training and Validation**:
+   - Split the dataset into training, validation, and test sets.
+   - Train the GNN using a Mean Squared Error (MSE) loss function on the residuals.
+   - Monitor performance on the validation set to prevent overfitting, ensuring the model captures structural motifs (like conjugation or ring strain) that correlate with the residuals.
+
+5. **Attribution via Integrated Gradients**:
+   - Apply the Integrated Gradients (IG) technique to the trained GNN to attribute the predicted residual values back to individual atoms and bonds within each molecule.
+   - Aggregate these IG scores to identify specific subgraphs (e.g., extended π-conjugated systems or strained ring-oxygen configurations) that contribute most significantly to the non-additive energy residuals.
+
+6. **Correlation with Intensive Properties**:
+   - Extract the "non-additivity scores" (the GNN-predicted residuals) for each molecule.
+   - Perform a correlation analysis between these scores and intensive properties (`gap`, `mu`, `homo`, `lumo`) to determine if the non-additive energetic stability is physically linked to electronic properties.
+
+7. **Statistical Analysis of Structural Motifs**:
+   - Group molecules by their high-influence subgraphs identified in Step 5.
+   - Compare the mean `gap` and `mu` values across these groups to quantify how specific structural motifs deviate from classical group-contribution theory.
+
+8. **Final Evaluation**:
+   - Assess the model's ability to explain the variance in `u0` that remains after accounting for linear additivity.
+   - Summarize the findings by mapping the identified "non-additivity" motifs to their respective impacts on molecular electronic stability.
+
+Previous research plan:
+None
+
+Feedback on previous research plan:
+None
+
+
+Respond in this format:
+
+\\begin{SUGGESTIONS}
+<SUGGESTIONS>
+\\end{SUGGESTIONS}
+
+In <SUGGESTIONS> put the suggestions to improve the plan.
+
+###### PROMPT ENDS ########
+
+###### RESPONSE [model: gemini-3.1-flash-lite-preview] ########
+\begin{SUGGESTIONS}
+The research plan is well-structured and scientifically sound. To improve its robustness and clarity, I suggest the following refinements:
+
+1. **Refine the Baseline Model (Step 1 & 2):** Instead of manually selecting bond types and functional groups, consider using a more comprehensive set of descriptors for the baseline. Using RDKit's `Fragments` or `MACCS` keys alongside atom counts will provide a more rigorous "additive" baseline, ensuring the GNN is truly learning higher-order non-linear effects rather than just missing simple structural features.
+
+2. **GNN Input Normalization (Step 3):** Since the residuals are derived from `u0` (which is extensive), ensure that the GNN is not inadvertently learning size-dependent patterns that the linear model missed. You might consider normalizing the residuals by the number of heavy atoms before training the GNN, or explicitly including the heavy atom count as a global feature in the GNN input to ensure the model focuses on *intensive* non-additivity.
+
+3. **Integrated Gradients Baseline (Step 5):** When applying Integrated Gradients, the choice of the "baseline" input (the "zero" reference) is critical. For molecular graphs, a common practice is to use a "null" graph (e.g., a graph with no edges or atoms with zeroed-out features). Explicitly define this baseline to ensure the attribution scores are physically meaningful.
+
+4. **Validation of Non-Additivity (Step 6 & 7):** To strengthen the claim that the GNN is capturing "non-additive electronic physics," compare the GNN's performance on the residuals against a non-linear baseline (e.g., a Random Forest or XGBoost trained on the same RDKit descriptors). This will help quantify how much of the residual variance is captured specifically by the graph topology versus general non-linear feature interactions.
+
+5. **Handling Duplicates:** The data description notes 83 duplicated SMILES. Before training, ensure these are handled (e.g., by averaging their properties or removing them) to prevent the model from learning to memorize specific `u0` values for identical structures.
+\end{SUGGESTIONS}
+
