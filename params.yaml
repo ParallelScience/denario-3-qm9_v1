@@ -1,0 +1,161 @@
+max_iterations: 12
+EDA module:
+  max_n_steps: 8
+  max_n_attempts: 10
+  code_execution_timeout: 1800
+  enable_vlm_review: true
+  engineer:
+    model: gemini-3.1-pro-preview
+    temperature: 0.2
+  researcher:
+    model: gemini-3.1-pro-preview
+    temperature: 0.2
+  planner:
+    model: gemini-3.1-pro-preview
+    temperature: 0.2
+  plan_reviewer:
+    model: claude-sonnet-4-6
+    temperature: 0.2
+  orchestration:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+  evaluator:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+Idea module:
+  idea_sampler:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.7
+  idea_selector1:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+  idea_selector2:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+  idea_selector3:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+  idea_chooser:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+  idea_maker:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.7
+  idea_hater:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+Literature module:
+  literature:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+  summarizer:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+Methods module:
+  methods:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+  reviewer1:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+  reviewer2:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+  reviewer3:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+  improver:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+Analysis module:
+  max_n_steps: 10
+  max_n_attempts: 10
+  code_execution_timeout: 1800
+  enable_vlm_review: true
+  engineer:
+    model: gemini-3.1-pro-preview
+    temperature: 0.1
+  researcher:
+    model: gemini-3.1-pro-preview
+    temperature: 0.1
+  planner:
+    model: gemini-3.1-pro-preview
+    temperature: 0.1
+  plan_reviewer:
+    model: claude-sonnet-4-6
+    temperature: 0.1
+  orchestration:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+  evaluator:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+Evaluator module:
+  reporter:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+  idea_reviewer:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+  methods_reviewer:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+  input_reviewer:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+  new_iteration_reviewer:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+  results_reviewer:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+  plan_consistency_reviewer:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+  code_consistency_reviewer:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+Paper module:
+  keywords_writer:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+  section_writer:
+    model: gemini-2.5-pro
+    temperature: 0.1
+  refiner:
+    model: gemini-2.5-pro
+    temperature: 0.1
+  audio_summarizer:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.3
+Citations:
+  backend: valency
+  citation_inserter:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+Classifier module:
+  archive_classifier:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+  subcategory_classifier:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.1
+Reviewer module:
+  reviewer1:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+  reviewer2:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+  reviewer3:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+  meta_reviewer:
+    model: gemini-3.1-flash-lite-preview
+    temperature: 0.2
+hardware_constraints: "- Linux x86_64 Docker container\n- 32 CPUs (AMD Ryzen Threadripper\
+  \ PRO 9995WX), 64 GB RAM\n- NVIDIA RTX PRO 6000 Blackwell Edition, CUDA 13.0 \u2014\
+  \ SHARED with other jobs: budget ~60 GB VRAM and check torch.cuda.mem_get_info()\
+  \ first\n- For PyTorch GPU: use device='cuda'\n- Multiprocessing: limit to ~8-16\
+  \ workers to avoid oversubscription\n- NumPy/SciPy use OpenBLAS \u2014 set OMP_NUM_THREADS\
+  \ to avoid thread oversubscription with multiprocessing"
