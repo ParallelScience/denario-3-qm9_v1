@@ -1,0 +1,19 @@
+
+Generating idea with fast mode
+
+INFO: No human_feedback.md found in /home/node/work/projects/qm9_v1/Iteration0/idea_output
+INFO: EDA_report=False, ideas will be generated without EDA report
+Sampling idea space
+done 1869 668
+Selecting the best idea (Selector 1)Selecting the best idea (Selector 2)Selecting the best idea (Selector 3)
+
+
+Chosing the final idea
+Hater (iteration 0)
+Maker (iteration 1)
+Hater (iteration 1)
+Maker (iteration 2)
+Hater (iteration 2)
+Maker (iteration 3)
+done 26329 2851
+Idea generated in 0 min 17 sec. Cost: $0.014
