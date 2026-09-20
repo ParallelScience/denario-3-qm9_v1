@@ -1,22 +1,22 @@
 {
   "step_number": 3,
-  "sub_task": "Non-Linear Baseline Comparison",
+  "sub_task": "Non-linear Baseline (Random Forest) Training",
   "attempt": 1,
   "files": [
     {
-      "path": "data/baseline_metrics.txt",
-      "bytes": 254,
-      "modified": "2026-09-20T01:11:49.394744Z"
+      "path": "data/rf_baseline.pkl",
+      "bytes": 274091131,
+      "modified": "2026-09-20T19:41:28.836321Z"
+    },
+    {
+      "path": "data/rf_baseline_metrics.txt",
+      "bytes": 93,
+      "modified": "2026-09-20T19:41:29.158248Z"
     },
     {
       "path": "data/rf_baseline_predictions.csv",
-      "bytes": 3674713,
-      "modified": "2026-09-20T01:11:49.507607Z"
-    },
-    {
-      "path": "data/rf_baseline_predictions.png",
-      "bytes": 568841,
-      "modified": "2026-09-20T01:11:49.850610Z"
+      "bytes": 8248513,
+      "modified": "2026-09-20T19:41:29.145323Z"
     }
   ]
 }

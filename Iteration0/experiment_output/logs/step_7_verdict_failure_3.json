@@ -1,0 +1,7 @@
+{
+  "fulfilled": false,
+  "unmet_requirements": [
+    "The script produced no stdout, making the run unverifiable."
+  ],
+  "feedback": "Your script ran but produced no stdout. You must print progress updates and a summary of your results (e.g., the number of molecules processed, the top motifs identified, and a snippet of the statistical test results) to stdout so the run can be verified without inspecting files."
+}

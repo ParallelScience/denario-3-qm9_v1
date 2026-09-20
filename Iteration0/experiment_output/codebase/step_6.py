@@ -1,182 +1,90 @@
-import sys
-import subprocess
-import os
-
-# Install shap locally to avoid ModuleNotFoundError without polluting the global environment
-override_dir = os.path.abspath("./.pip_overrides")
-os.makedirs(override_dir, exist_ok=True)
-subprocess.check_call([
-    sys.executable, "-m", "pip", "install",
-    "--target", override_dir, "--quiet",
-    "shap"
-])
-sys.path.insert(0, override_dir)
-
-import pickle
 import numpy as np
 import pandas as pd
-import torch
-import torch.nn as nn
-import shap
-
-class MLP(nn.Module):
-    """
-    A Multi-Layer Perceptron for predicting molecular properties from 
-    concatenated Morgan fingerprints and 2D descriptors.
-    """
-    def __init__(self, input_dim):
-        super(MLP, self).__init__()
-        self.net = nn.Sequential(
-            nn.Linear(input_dim, 1024),
-            nn.BatchNorm1d(1024),
-            nn.ReLU(),
-            nn.Dropout(0.3),
-            nn.Linear(1024, 512),
-            nn.BatchNorm1d(512),
-            nn.ReLU(),
-            nn.Dropout(0.3),
-            nn.Linear(512, 256),
-            nn.BatchNorm1d(256),
-            nn.ReLU(),
-            nn.Dropout(0.3),
-            nn.Linear(256, 1)
-        )
-        
-    def forward(self, x):
-        return self.net(x).squeeze(-1)
-
-class WrappedModel(nn.Module):
-    """
-    Wraps the MLP to return a 2D tensor (batch_size, 1) instead of a 1D tensor.
-    This prevents shape mismatch issues in SHAP explainers.
-    """
-    def __init__(self, model):
-        super().__init__()
-        self.model = model
-        
-    def forward(self, x):
-        return self.model(x).view(-1, 1)
-
-def main():
-    print("Loading features and splits...")
-    features = np.load('data/engineered_features.npz')
-    print("loaded keys:", features.files)
-    
-    fps = features['fps']
-    descs = features['descs']
-    X = np.hstack([fps, descs])
-    X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
-    
-    splits = np.load('data/split_indices.npz')
-    print("loaded keys:", splits.files)
-    train_idx = splits['train_idx']
-    test_idx = splits['test_idx']
-    
-    print("Loading scaler...")
-    with open('data/feature_scaler.pkl', 'rb') as f:
-        scaler = pickle.load(f)
-        
-    X_train = scaler.transform(X[train_idx]).astype(np.float32)
-    X_test = scaler.transform(X[test_idx]).astype(np.float32)
-    
-    # Feature names
-    fp_names = [f"MorganFP_{i}" for i in range(2048)]
-    desc_names = features['desc_names'].tolist()
-    # Ensure desc_names are strings
-    if isinstance(desc_names[0], bytes):
-        desc_names = [d.decode('utf-8') for d in desc_names]
-    elif not isinstance(desc_names[0], str):
-        desc_names = [str(d) for d in desc_names]
-        
-    feature_names = np.array(fp_names + desc_names)
-    
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f"Using device: {device}")
-    
-    targets = ['res_u0', 'res_gap', 'res_mu']
-    
-    # We will use a background dataset of 1000 samples from the training set
-    np.random.seed(42)
-    bg_indices = np.random.choice(len(X_train), 1000, replace=False)
-    X_bg = X_train[bg_indices]
-    X_bg_tensor = torch.tensor(X_bg).to(device)
-    
-    # We will compute SHAP values for a subset of the test set to save time (e.g., 500 samples)
-    test_sample_indices = np.random.choice(len(X_test), 500, replace=False)
-    X_test_sample = X_test[test_sample_indices]
-    X_test_sample_tensor = torch.tensor(X_test_sample).to(device)
-    
-    all_shap_values = {}
-    summary_dfs = []
-    
-    for target in targets:
-        print(f"\n--- Computing SHAP values for {target} ---")
-        model_path = f'data/mlp_{target}.pt'
-        if not os.path.exists(model_path):
-            print(f"Model {model_path} not found. Skipping.")
-            continue
-            
-        model = MLP(input_dim=X.shape[1]).to(device)
-        # Load weights
-        model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
-        model.eval()
-        
-        wrapped_model = WrappedModel(model)
-        
-        # Initialize DeepExplainer
-        explainer = shap.DeepExplainer(wrapped_model, X_bg_tensor)
-        
-        print(f"Calculating SHAP values for {len(X_test_sample)} test samples...")
-        # DeepExplainer returns a list of arrays for each output. Since we have 1 output, it's a list of length 1.
-        shap_values = explainer.shap_values(X_test_sample_tensor)
-        
-        if isinstance(shap_values, list):
-            shap_values = shap_values[0]
-            
-        # Ensure shap_values is 2D: (num_samples, num_features)
-        if shap_values.ndim > 2:
-            shap_values = shap_values.reshape(shap_values.shape[0], -1)
-            
-        all_shap_values[target] = shap_values
-        
-        # Calculate mean absolute SHAP values
-        mean_abs_shap = np.abs(shap_values).mean(axis=0)
-        
-        # Ensure mean_abs_shap is strictly 1D
-        mean_abs_shap = np.ravel(mean_abs_shap)
-        
-        df = pd.DataFrame({
-            'Target': target,
-            'Feature': feature_names,
-            'MeanAbsSHAP': mean_abs_shap
-        })
-        
-        # Sort by importance
-        df = df.sort_values('MeanAbsSHAP', ascending=False)
-        summary_dfs.append(df)
-        
-        print(f"Top 10 features for {target}:")
-        print(df.head(10).to_string(index=False))
-        
-    if all_shap_values:
-        # Save SHAP values
-        shap_path = 'data/shap_values.npz'
-        np.savez_compressed(shap_path, **all_shap_values)
-        print(f"\nSaved SHAP values to {shap_path}")
-        print(f"saved {shap_path} keys:", list(np.load(shap_path).files))
-        
-        # Save summary table
-        summary_df = pd.concat(summary_dfs, ignore_index=True)
-        summary_path = 'data/shap_motif_summary.csv'
-        summary_df.to_csv(summary_path, index=False)
-        print(f"Saved SHAP summary to {summary_path}")
-        print(f"saved {summary_path} columns:", list(summary_df.columns))
-        
-        # Print overall top features across all targets
-        print("\nOverall Top 15 Features across all targets (by average MeanAbsSHAP):")
-        avg_shap = summary_df.groupby('Feature')['MeanAbsSHAP'].mean().reset_index()
-        avg_shap = avg_shap.sort_values('MeanAbsSHAP', ascending=False)
-        print(avg_shap.head(15).to_string(index=False))
+import matplotlib.pyplot as plt
+from scipy.stats import pearsonr, spearmanr
 
 if __name__ == '__main__':
-    main()
+    print("Loading latent embeddings and properties...")
+    df = pd.read_csv('data/gnn_test_latent_embeddings.csv')
+    latents_data = np.load('data/gnn_test_latents.npz')
+    latents = latents_data['latents']
+    
+    properties = ['gap', 'mu', 'homo', 'lumo', 'residual']
+    
+    # Ensure no NaNs in properties
+    valid_idx = df[properties].notna().all(axis=1)
+    if not valid_idx.all():
+        print(f"Dropping {(~valid_idx).sum()} rows with NaN properties.")
+        df = df[valid_idx].reset_index(drop=True)
+        latents = latents[valid_idx]
+        
+    print(f"Analyzing {len(df)} molecules...")
+    
+    # 1. Correlate 2D t-SNE projections with properties
+    tsne_cols = ['tsne_1', 'tsne_2']
+    tsne_corr = []
+    for prop in properties:
+        for tsne_col in tsne_cols:
+            r, p = pearsonr(df[tsne_col], df[prop])
+            rho, p_rho = spearmanr(df[tsne_col], df[prop])
+            tsne_corr.append({
+                'Property': prop,
+                'Dimension': tsne_col,
+                'Pearson_r': r,
+                'Spearman_rho': rho
+            })
+    
+    tsne_corr_df = pd.DataFrame(tsne_corr)
+    tsne_corr_df.to_csv('data/tsne_property_correlations.csv', index=False)
+    print("saved data/tsne_property_correlations.csv columns:", list(tsne_corr_df.columns))
+    print("\nt-SNE vs Properties Correlations:")
+    print(tsne_corr_df.to_string(index=False, float_format="%.4f"))
+    
+    # 2. Correlate 128D latents with properties
+    latent_corrs = {prop: [] for prop in properties}
+    for i in range(latents.shape[1]):
+        dim_vals = latents[:, i]
+        for prop in properties:
+            r, _ = pearsonr(dim_vals, df[prop])
+            latent_corrs[prop].append(r)
+            
+    latent_corr_df = pd.DataFrame(latent_corrs)
+    latent_corr_df.index = [f'latent_{i}' for i in range(latents.shape[1])]
+    latent_corr_df.to_csv('data/latent_128d_property_correlations.csv')
+    print("\nsaved data/latent_128d_property_correlations.csv columns:", list(latent_corr_df.columns))
+    
+    print("\nTop 3 correlated latent dimensions (absolute Pearson r) for each property:")
+    for prop in properties:
+        top_dims = latent_corr_df[prop].abs().nlargest(3)
+        print(f"  {prop}:")
+        for dim, _ in top_dims.items():
+            actual_r = latent_corr_df.loc[dim, prop]
+            print(f"    {dim}: {actual_r:.4f}")
+            
+    # 3. Generate scatter plots of t-SNE colored by properties
+    print("\nGenerating scatter plots...")
+    plt.rcParams['text.usetex'] = False
+    fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+    axes = axes.flatten()
+    
+    for i, prop in enumerate(properties):
+        ax = axes[i]
+        cmap = 'coolwarm' if prop == 'residual' else 'viridis'
+        
+        # Use percentiles for robust color limits to avoid outlier washout
+        vmin = df[prop].quantile(0.01)
+        vmax = df[prop].quantile(0.99)
+        
+        sc = ax.scatter(df['tsne_1'], df['tsne_2'], c=df[prop], cmap=cmap, 
+                        s=2, alpha=0.8, vmin=vmin, vmax=vmax)
+        ax.set_title(f't-SNE colored by {prop}')
+        ax.set_xlabel('t-SNE 1')
+        ax.set_ylabel('t-SNE 2')
+        plt.colorbar(sc, ax=ax, label=prop)
+        
+    # Hide the empty subplot
+    axes[-1].axis('off')
+    
+    plt.tight_layout()
+    plt.savefig('data/tsne_property_scatter.png', dpi=300)
+    print("saved data/tsne_property_scatter.png")

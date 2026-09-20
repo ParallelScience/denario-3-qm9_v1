@@ -1,12 +1,22 @@
 {
   "step_number": 1,
-  "sub_task": "Data Cleaning and Preprocessing",
-  "attempt": 1,
+  "sub_task": "Data Preprocessing and Feature Engineering",
+  "attempt": 2,
   "files": [
     {
+      "path": "data/additive_features.csv",
+      "bytes": 26615660,
+      "modified": "2026-09-20T19:39:55.936672Z"
+    },
+    {
       "path": "data/cleaned_qm9.csv",
-      "bytes": 35085527,
-      "modified": "2026-09-20T01:08:12.016215Z"
+      "bytes": 23517526,
+      "modified": "2026-09-20T19:39:55.392669Z"
+    },
+    {
+      "path": "data/split_indices.npz",
+      "bytes": 1071158,
+      "modified": "2026-09-20T19:39:55.938035Z"
     }
   ]
 }

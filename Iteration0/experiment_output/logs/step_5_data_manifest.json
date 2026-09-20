@@ -1,42 +1,17 @@
 {
   "step_number": 5,
-  "sub_task": "Topological Model Training (GBM / PyTorch)",
+  "sub_task": "Latent Space Extraction and Dimensionality Reduction (Compute)",
   "attempt": 1,
   "files": [
     {
-      "path": "data/feature_scaler.pkl",
-      "bytes": 54789,
-      "modified": "2026-09-20T01:15:34.271469Z"
+      "path": "data/gnn_test_latent_embeddings.csv",
+      "bytes": 2029637,
+      "modified": "2026-09-20T19:50:32.296344Z"
     },
     {
-      "path": "data/mlp_res_gap.pt",
-      "bytes": 11943826,
-      "modified": "2026-09-20T01:16:21.168412Z"
-    },
-    {
-      "path": "data/mlp_res_mu.pt",
-      "bytes": 11943797,
-      "modified": "2026-09-20T01:16:59.572671Z"
-    },
-    {
-      "path": "data/mlp_res_u0.pt",
-      "bytes": 11943797,
-      "modified": "2026-09-20T01:15:45.667173Z"
-    },
-    {
-      "path": "data/topological_model_metrics.txt",
-      "bytes": 175,
-      "modified": "2026-09-20T01:16:59.574208Z"
-    },
-    {
-      "path": "data/topological_model_predictions.csv",
-      "bytes": 1124239,
-      "modified": "2026-09-20T01:16:59.606671Z"
-    },
-    {
-      "path": "data/topological_model_predictions.png",
-      "bytes": 1010839,
-      "modified": "2026-09-20T01:16:59.943674Z"
+      "path": "data/gnn_test_latents.npz",
+      "bytes": 6420074,
+      "modified": "2026-09-20T19:50:32.227344Z"
     }
   ]
 }

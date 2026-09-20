@@ -1,63 +1,31 @@
-# returncode=0 timed_out=False elapsed=3.8289s
+# returncode=0 timed_out=False elapsed=3.3867s
 --- stdout ---
-Loaded features X shape: (133802, 9)
-Feature names: [np.str_('c_count'), np.str_('n_count'), np.str_('o_count'), np.str_('f_count'), np.str_('h_count'), np.str_('single_bonds'), np.str_('double_bonds'), np.str_('triple_bonds'), np.str_('aromatic_bonds')]
-Loaded residuals shape: (133802, 5)
-Train set size: 107041
-Test set size: 26761
+Loading data...
+Sample sizes - Train: 107041, Val: 13380, Test: 13381
 
---- Training Random Forest for res_u0 ---
-Results for res_u0:
-  Train MSE: 0.012596 | Train R2: 0.1008
-  Test MSE:  0.001988 | Test R2:  -0.8541
-  Feature Importances:
-       Feature  Importance
-  triple_bonds    0.172424
-aromatic_bonds    0.158394
-       c_count    0.143239
-       o_count    0.131251
-  single_bonds    0.127639
-       n_count    0.109111
-  double_bonds    0.088068
-       h_count    0.051987
-       f_count    0.017886
+Training Random Forest Regressor on standardized residuals...
 
---- Training Random Forest for res_gap ---
-Results for res_gap:
-  Train MSE: 0.000448 | Train R2: 0.3037
-  Test MSE:  0.000459 | Test R2:  0.2760
-  Feature Importances:
-       Feature  Importance
-  double_bonds    0.218061
-       n_count    0.216561
-  single_bonds    0.186780
-       o_count    0.097011
-       c_count    0.089725
-       h_count    0.073389
-  triple_bonds    0.058073
-aromatic_bonds    0.054774
-       f_count    0.005625
+Evaluating model...
+Random Forest Performance (Standardized Residuals):
+  Train - MSE: 0.0082, R2: 0.9918
+  Val - MSE: 0.0272, R2: 0.9716
+  Test - MSE: 0.0209, R2: 0.9779
 
---- Training Random Forest for res_mu ---
-Results for res_mu:
-  Train MSE: 1.422145 | Train R2: 0.1764
-  Test MSE:  1.455235 | Test R2:  0.1345
-  Feature Importances:
-       Feature  Importance
-       c_count    0.209312
-  single_bonds    0.162348
-  double_bonds    0.160025
-  triple_bonds    0.109834
-       h_count    0.100910
-       n_count    0.098563
-       o_count    0.096471
-aromatic_bonds    0.053421
-       f_count    0.009117
+Top 10 important features for predicting non-additive residuals:
+double_bonds       0.252446
+aromatic_bonds     0.133801
+single_bonds       0.086110
+fr_Ar_N            0.053283
+fr_C_O_noCOO       0.050913
+fr_C_O             0.047170
+fr_allylic_oxid    0.037396
+fr_Imine           0.025837
+fr_oxazole         0.025126
+fr_Ar_OH           0.020719
 
-Saved metrics to data/baseline_metrics.txt
-Saved predictions to data/rf_baseline_predictions.csv
-Saved data/rf_baseline_predictions.csv columns: ['smiles', 'res_u0_true', 'res_u0_pred', 'res_gap_true', 'res_gap_pred', 'res_mu_true', 'res_mu_pred']
-Saved plot to data/rf_baseline_predictions.png
+saved data/rf_baseline.pkl
+saved data/rf_baseline_predictions.csv columns: ['smiles', 'std_residual_true', 'std_residual_pred', 'split']
+saved data/rf_baseline_metrics.txt
 
 --- stderr ---
 

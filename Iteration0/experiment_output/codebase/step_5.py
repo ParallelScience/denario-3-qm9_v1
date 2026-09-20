@@ -1,226 +1,239 @@
 import os
-import pickle
+os.environ['OMP_NUM_THREADS'] = '1'
+
+import sys
+import subprocess
+import multiprocessing as mp
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.preprocessing import StandardScaler
 import torch
 import torch.nn as nn
-import torch.optim as optim
+import torch.nn.functional as F
 from torch.utils.data import TensorDataset, DataLoader
+from sklearn.manifold import TSNE
 
-class MLP(nn.Module):
-    """
-    A Multi-Layer Perceptron for predicting molecular properties from 
-    concatenated Morgan fingerprints and 2D descriptors.
-    """
-    def __init__(self, input_dim):
-        super(MLP, self).__init__()
-        self.net = nn.Sequential(
-            nn.Linear(input_dim, 1024),
-            nn.BatchNorm1d(1024),
+# Ensure RDKit is available
+try:
+    import rdkit
+    from rdkit import Chem
+except ModuleNotFoundError:
+    print("rdkit not found, installing locally to .pip_overrides...")
+    override_dir = os.path.abspath("./.pip_overrides")
+    os.makedirs(override_dir, exist_ok=True)
+    subprocess.check_call([
+        sys.executable, "-m", "pip", "install",
+        "--target", override_dir, "--quiet",
+        "rdkit"
+    ])
+    sys.path.insert(0, override_dir)
+    from rdkit import Chem
+
+# ---------------------------------------------------------
+# GNN Architecture Definition (matching Step 4)
+# ---------------------------------------------------------
+class DenseGINEConv(nn.Module):
+    def __init__(self, emb_dim):
+        super().__init__()
+        self.mlp = nn.Sequential(
+            nn.Linear(emb_dim, 2 * emb_dim),
+            nn.LayerNorm(2 * emb_dim),
             nn.ReLU(),
-            nn.Dropout(0.3),
-            nn.Linear(1024, 512),
-            nn.BatchNorm1d(512),
+            nn.Linear(2 * emb_dim, emb_dim),
+            nn.LayerNorm(emb_dim)
+        )
+        self.eps = nn.Parameter(torch.zeros(1))
+        self.edge_proj = nn.Linear(4, emb_dim, bias=False)
+
+    def forward(self, x, adj, mask):
+        B, N, _ = x.shape
+        x_j = x.unsqueeze(1).expand(-1, N, -1, -1)
+        edge_emb = self.edge_proj(adj)
+        m = F.relu(x_j + edge_emb)
+        edge_mask = (adj.sum(dim=-1) > 0).unsqueeze(-1)
+        m = m * edge_mask.float()
+        agg = m.sum(dim=2)
+        out = (1 + self.eps) * x + agg
+        out = self.mlp(out)
+        out = out * mask.unsqueeze(-1).float()
+        return out
+
+class DenseGlobalAttentionPooling(nn.Module):
+    def __init__(self, emb_dim):
+        super().__init__()
+        self.gate_nn = nn.Sequential(
+            nn.Linear(emb_dim, emb_dim),
+            nn.LayerNorm(emb_dim),
             nn.ReLU(),
-            nn.Dropout(0.3),
-            nn.Linear(512, 256),
-            nn.BatchNorm1d(256),
+            nn.Linear(emb_dim, 1)
+        )
+        self.feat_nn = nn.Linear(emb_dim, emb_dim)
+        
+    def forward(self, x, mask):
+        gate = self.gate_nn(x).squeeze(-1)
+        gate = gate.masked_fill(~mask, -1e9)
+        alpha = F.softmax(gate, dim=-1)
+        alpha = alpha * mask.float()
+        feat = self.feat_nn(x)
+        out = (alpha.unsqueeze(-1) * feat).sum(dim=1)
+        return out
+
+class GNNModel(nn.Module):
+    def __init__(self, node_dim=16, edge_dim=4, emb_dim=128, num_layers=4):
+        super().__init__()
+        self.node_emb = nn.Sequential(
+            nn.Linear(node_dim, emb_dim),
+            nn.LayerNorm(emb_dim),
+            nn.ReLU()
+        )
+        self.convs = nn.ModuleList([DenseGINEConv(emb_dim) for _ in range(num_layers)])
+        self.pool = DenseGlobalAttentionPooling(emb_dim)
+        self.out_nn = nn.Sequential(
+            nn.Linear(emb_dim, emb_dim // 2),
+            nn.LayerNorm(emb_dim // 2),
             nn.ReLU(),
-            nn.Dropout(0.3),
-            nn.Linear(256, 1)
+            nn.Linear(emb_dim // 2, 1)
         )
         
-    def forward(self, x):
-        return self.net(x).squeeze(-1)
+    def forward(self, x, adj, mask):
+        h = self.node_emb(x)
+        h = h * mask.unsqueeze(-1).float()
+        for conv in self.convs:
+            h = conv(h, adj, mask)
+        pooled = self.pool(h, mask)
+        out = self.out_nn(pooled)
+        return out.squeeze(-1)
+        
+    def extract_latent(self, x, adj, mask):
+        """Extracts the graph-level representation before the final MLP."""
+        h = self.node_emb(x)
+        h = h * mask.unsqueeze(-1).float()
+        for conv in self.convs:
+            h = conv(h, adj, mask)
+        pooled = self.pool(h, mask)
+        return pooled
 
-def train_model(model, train_loader, val_loader, device, epochs=150, patience=15):
-    """
-    Trains the MLP with early stopping based on validation loss.
-    """
-    criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=1e-3)
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5)
+# ---------------------------------------------------------
+# Data Processing Function
+# ---------------------------------------------------------
+def process_row(row):
+    smiles, target = row
+    mol = Chem.MolFromSmiles(smiles)
+    if mol is None:
+        return None
+    mol = Chem.RemoveHs(mol)
     
-    best_val_loss = float('inf')
-    best_model_state = None
-    patience_counter = 0
+    max_N = 9
+    x = np.zeros((max_N, 16), dtype=np.float32)
+    adj = np.zeros((max_N, max_N, 4), dtype=np.float32)
+    mask = np.zeros(max_N, dtype=bool)
     
-    for epoch in range(epochs):
-        model.train()
-        train_loss = 0.0
-        for X_batch, y_batch in train_loader:
-            X_batch, y_batch = X_batch.to(device), y_batch.to(device)
-            optimizer.zero_grad()
-            preds = model(X_batch)
-            loss = criterion(preds, y_batch)
-            loss.backward()
-            optimizer.step()
-            train_loss += loss.item() * X_batch.size(0)
-            
-        train_loss /= len(train_loader.dataset)
-        
-        model.eval()
-        val_loss = 0.0
-        with torch.no_grad():
-            for X_batch, y_batch in val_loader:
-                X_batch, y_batch = X_batch.to(device), y_batch.to(device)
-                preds = model(X_batch)
-                loss = criterion(preds, y_batch)
-                val_loss += loss.item() * X_batch.size(0)
-        val_loss /= len(val_loader.dataset)
-        
-        scheduler.step(val_loss)
-        
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
-            best_model_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
-            patience_counter = 0
-        else:
-            patience_counter += 1
-            
-        if (epoch + 1) % 20 == 0:
-            print(f"    Epoch {epoch+1:3d}/{epochs} - Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
-            
-        if patience_counter >= patience:
-            print(f"    Early stopping triggered at epoch {epoch+1} (Best Val Loss: {best_val_loss:.4f})")
+    atom_mapping = {6: 0, 7: 1, 8: 2, 9: 3}
+    
+    for i, atom in enumerate(mol.GetAtoms()):
+        if i >= max_N:
             break
+        mask[i] = True
+        atomic_num = atom.GetAtomicNum()
+        if atomic_num in atom_mapping:
+            x[i, atom_mapping[atomic_num]] = 1.0
+        deg = atom.GetDegree()
+        if deg <= 4:
+            x[i, 4 + deg] = 1.0
+        x[i, 9] = atom.GetFormalCharge()
+        x[i, 10] = 1.0 if atom.GetIsAromatic() else 0.0
+        h_count = atom.GetTotalNumHs()
+        if h_count <= 4:
+            x[i, 11 + h_count] = 1.0
             
-    if best_model_state is not None:
-        model.load_state_dict(best_model_state)
-    return model
-
-def main():
-    plt.rcParams['text.usetex'] = False
-    
-    # 1. Device configuration
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f"Using device: {device}")
-    if device.type == 'cuda':
-        free_mem, total_mem = torch.cuda.mem_get_info()
-        print(f"CUDA memory: {free_mem / 1e9:.2f} GB free / {total_mem / 1e9:.2f} GB total")
+    for bond in mol.GetBonds():
+        i = bond.GetBeginAtomIdx()
+        j = bond.GetEndAtomIdx()
+        if i >= max_N or j >= max_N:
+            continue
+        btype = bond.GetBondType()
+        if btype == Chem.BondType.SINGLE:
+            idx = 0
+        elif btype == Chem.BondType.DOUBLE:
+            idx = 1
+        elif btype == Chem.BondType.TRIPLE:
+            idx = 2
+        elif btype == Chem.BondType.AROMATIC:
+            idx = 3
+        else:
+            continue
+        adj[i, j, idx] = 1.0
+        adj[j, i, idx] = 1.0
         
-    # 2. Load data
-    print("\nLoading datasets...")
-    splits = np.load('data/split_indices.npz')
-    train_idx = splits['train_idx']
-    val_idx = splits['val_idx']
-    test_idx = splits['test_idx']
-    
-    features = np.load('data/engineered_features.npz')
-    fps = features['fps']
-    descs = features['descs']
-    
-    # Concatenate and handle any potential NaNs
-    X = np.hstack([fps, descs])
-    X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
-    
-    res_df = pd.read_csv('data/scaled_residuals.csv')
-    
-    # 3. Scale features
-    print("Scaling features (fitting on training set only)...")
-    scaler = StandardScaler()
-    X_train = scaler.fit_transform(X[train_idx]).astype(np.float32)
-    X_val = scaler.transform(X[val_idx]).astype(np.float32)
-    X_test = scaler.transform(X[test_idx]).astype(np.float32)
-    
-    scaler_path = 'data/feature_scaler.pkl'
-    with open(scaler_path, 'wb') as f:
-        pickle.dump(scaler, f)
-    print(f"Saved feature scaler to {scaler_path}")
-    
-    targets = ['res_u0', 'res_gap', 'res_mu']
-    metrics = {}
-    predictions_df = pd.DataFrame({'smiles': res_df['smiles'].iloc[test_idx].values})
-    
-    batch_size = 1024
-    
-    # 4. Train and evaluate models
-    for target in targets:
-        print(f"\n--- Training PyTorch MLP for {target} ---")
-        y = res_df[target].values.astype(np.float32)
-        
-        y_train = y[train_idx]
-        y_val = y[val_idx]
-        y_test = y[test_idx]
-        
-        train_dataset = TensorDataset(torch.tensor(X_train), torch.tensor(y_train))
-        val_dataset = TensorDataset(torch.tensor(X_val), torch.tensor(y_val))
-        test_dataset = TensorDataset(torch.tensor(X_test), torch.tensor(y_test))
-        
-        train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-        val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-        test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
-        
-        model = MLP(input_dim=X.shape[1]).to(device)
-        
-        model = train_model(model, train_loader, val_loader, device, epochs=150, patience=15)
-        
-        # Evaluate on test set
-        model.eval()
-        y_pred_test = []
-        with torch.no_grad():
-            for X_batch, _ in test_loader:
-                X_batch = X_batch.to(device)
-                preds = model(X_batch)
-                y_pred_test.append(preds.cpu().numpy())
-                
-        y_pred_test = np.concatenate(y_pred_test)
-        
-        mse = mean_squared_error(y_test, y_pred_test)
-        r2 = r2_score(y_test, y_pred_test)
-        
-        print(f"  Final Test MSE: {mse:.4f}")
-        print(f"  Final Test R2:  {r2:.4f}")
-        
-        metrics[target] = {'mse': mse, 'r2': r2}
-        predictions_df[f'{target}_true'] = y_test
-        predictions_df[f'{target}_pred'] = y_pred_test
-        
-        model_path = f'data/mlp_{target}.pt'
-        torch.save(model.state_dict(), model_path)
-        print(f"  Saved model checkpoint to {model_path}")
-        
-    # 5. Save metrics
-    metrics_path = 'data/topological_model_metrics.txt'
-    with open(metrics_path, 'w') as f:
-        for target, m in metrics.items():
-            f.write(f"Target: {target}\n")
-            f.write(f"  Test MSE: {m['mse']:.6f}\n")
-            f.write(f"  Test R2:  {m['r2']:.6f}\n\n")
-    print(f"\nSaved metrics to {metrics_path}")
-    
-    # 6. Save predictions
-    preds_path = 'data/topological_model_predictions.csv'
-    predictions_df.to_csv(preds_path, index=False)
-    print(f"Saved predictions to {preds_path}")
-    print(f"Saved {preds_path} columns:", list(predictions_df.columns))
-    
-    # 7. Plot True vs Predicted
-    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
-    for i, target in enumerate(targets):
-        y_true = predictions_df[f'{target}_true']
-        y_pred = predictions_df[f'{target}_pred']
-        
-        ax = axes[i]
-        ax.scatter(y_true, y_pred, alpha=0.1, s=5)
-        
-        min_val = min(y_true.min(), y_pred.min())
-        max_val = max(y_true.max(), y_pred.max())
-        ax.plot([min_val, max_val], [min_val, max_val], 'r--', alpha=0.7)
-        
-        ax.set_xlabel(f'True {target} (scaled)')
-        ax.set_ylabel(f'Predicted {target} (scaled)')
-        ax.set_title(f'{target} (Test R2: {metrics[target]["r2"]:.3f})')
-        ax.grid(True, linestyle='--', alpha=0.7)
-
-    plt.tight_layout()
-    plot_path = 'data/topological_model_predictions.png'
-    plt.savefig(plot_path, dpi=300)
-    plt.close()
-    print(f"Saved plot to {plot_path}")
+    return x, adj, mask, target
 
 if __name__ == '__main__':
-    main()
+    print("Loading test set data...")
+    test_df = pd.read_csv('data/gnn_test_predictions.csv')
+    smiles_list = test_df['smiles'].tolist()
+    targets = test_df['std_residual'].tolist()
+    
+    print(f"Processing {len(smiles_list)} SMILES to dense graphs...")
+    num_workers = min(16, mp.cpu_count())
+    with mp.Pool(num_workers) as pool:
+        results = pool.map(process_row, zip(smiles_list, targets))
+        
+    valid_indices = [i for i, r in enumerate(results) if r is not None]
+    test_df = test_df.iloc[valid_indices].reset_index(drop=True)
+    results = [results[i] for i in valid_indices]
+    
+    X_test = torch.tensor(np.stack([r[0] for r in results]), dtype=torch.float32)
+    Adj_test = torch.tensor(np.stack([r[1] for r in results]), dtype=torch.float32)
+    Mask_test = torch.tensor(np.stack([r[2] for r in results]), dtype=torch.bool)
+    
+    test_dataset = TensorDataset(X_test, Adj_test, Mask_test)
+    test_loader = DataLoader(test_dataset, batch_size=512, shuffle=False)
+    
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(f"Using device: {device}")
+    
+    print("Loading trained GNN model...")
+    model = GNNModel(emb_dim=128, num_layers=4).to(device)
+    model.load_state_dict(torch.load('data/gnn_model.pt', map_location=device, weights_only=True))
+    model.eval()
+    
+    print("Extracting latent representations...")
+    latents = []
+    with torch.no_grad():
+        for x, adj, mask in test_loader:
+            x, adj, mask = x.to(device), adj.to(device), mask.to(device)
+            latent = model.extract_latent(x, adj, mask)
+            latents.append(latent.cpu().numpy())
+            
+    latents = np.concatenate(latents, axis=0)
+    print(f"Extracted latent vectors shape: {latents.shape}")
+    
+    print("\nLatent Space Summary Statistics:")
+    print(f"  Mean: {np.mean(latents):.4f}")
+    print(f"  Std:  {np.std(latents):.4f}")
+    print(f"  Min:  {np.min(latents):.4f}")
+    print(f"  Max:  {np.max(latents):.4f}")
+    
+    print("\nPerforming t-SNE dimensionality reduction...")
+    # Using n_jobs=8 to speed up t-SNE computation
+    tsne = TSNE(n_components=2, random_state=42, n_jobs=8)
+    latents_2d = tsne.fit_transform(latents)
+    print(f"t-SNE embeddings shape: {latents_2d.shape}")
+    
+    print("\nt-SNE Embeddings Summary Statistics:")
+    print(f"  Dim 1 - Mean: {np.mean(latents_2d[:, 0]):.4f}, Std: {np.std(latents_2d[:, 0]):.4f}")
+    print(f"  Dim 2 - Mean: {np.mean(latents_2d[:, 1]):.4f}, Std: {np.std(latents_2d[:, 1]):.4f}")
+    
+    print("\nMerging intensive properties for downstream analysis...")
+    qm9_df = pd.read_csv('data/cleaned_qm9.csv')
+    test_df = test_df.merge(qm9_df[['smiles', 'gap', 'mu', 'homo', 'lumo']], on='smiles', how='left')
+    
+    test_df['tsne_1'] = latents_2d[:, 0]
+    test_df['tsne_2'] = latents_2d[:, 1]
+    
+    # Save raw latents
+    np.savez_compressed('data/gnn_test_latents.npz', latents=latents, smiles=test_df['smiles'].values)
+    print("\nsaved data/gnn_test_latents.npz keys:", list(np.load('data/gnn_test_latents.npz').files))
+    
+    # Save 2D embeddings and properties
+    test_df.to_csv('data/gnn_test_latent_embeddings.csv', index=False)
+    print("saved data/gnn_test_latent_embeddings.csv columns:", list(test_df.columns))

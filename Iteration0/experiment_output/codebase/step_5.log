@@ -1,40 +1,41 @@
-# returncode=0 timed_out=False elapsed=90.4066s
+# returncode=0 timed_out=False elapsed=49.2694s
 --- stdout ---
+rdkit not found, installing locally to .pip_overrides...
+Loading test set data...
+Processing 13381 SMILES to dense graphs...
 Using device: cuda
-CUDA memory: 87.99 GB free / 101.97 GB total
+Loading trained GNN model...
+Extracting latent representations...
+Extracted latent vectors shape: (13381, 128)
 
-Loading datasets...
-Scaling features (fitting on training set only)...
-Saved feature scaler to data/feature_scaler.pkl
+Latent Space Summary Statistics:
+  Mean: -0.2883
+  Std:  2.7265
+  Min:  -10.4061
+  Max:  8.2127
 
---- Training PyTorch MLP for res_u0 ---
-    Early stopping triggered at epoch 18 (Best Val Loss: 0.0247)
-  Final Test MSE: 0.0413
-  Final Test R2:  0.6493
-  Saved model checkpoint to data/mlp_res_u0.pt
+Performing t-SNE dimensionality reduction...
+t-SNE embeddings shape: (13381, 2)
 
---- Training PyTorch MLP for res_gap ---
-    Epoch  20/150 - Train Loss: 0.0384, Val Loss: 0.3146
-    Epoch  40/150 - Train Loss: 0.0223, Val Loss: 0.3066
-    Epoch  60/150 - Train Loss: 0.0165, Val Loss: 0.3064
-    Early stopping triggered at epoch 61 (Best Val Loss: 0.3036)
-  Final Test MSE: 0.4727
-  Final Test R2:  0.6205
-  Saved model checkpoint to data/mlp_res_gap.pt
+t-SNE Embeddings Summary Statistics:
+  Dim 1 - Mean: -1.0139, Std: 47.2278
+  Dim 2 - Mean: -0.5597, Std: 45.7591
 
---- Training PyTorch MLP for res_mu ---
-    Epoch  20/150 - Train Loss: 0.0733, Val Loss: 0.4561
-    Epoch  40/150 - Train Loss: 0.0386, Val Loss: 0.4298
-    Epoch  60/150 - Train Loss: 0.0285, Val Loss: 0.4328
-    Early stopping triggered at epoch 66 (Best Val Loss: 0.4288)
-  Final Test MSE: 0.4832
-  Final Test R2:  0.5239
-  Saved model checkpoint to data/mlp_res_mu.pt
+Merging intensive properties for downstream analysis...
 
-Saved metrics to data/topological_model_metrics.txt
-Saved predictions to data/topological_model_predictions.csv
-Saved data/topological_model_predictions.csv columns: ['smiles', 'res_u0_true', 'res_u0_pred', 'res_gap_true', 'res_gap_pred', 'res_mu_true', 'res_mu_pred']
-Saved plot to data/topological_model_predictions.png
+saved data/gnn_test_latents.npz keys: ['latents', 'smiles']
+saved data/gnn_test_latent_embeddings.csv columns: ['smiles', 'u0', 'u0_pred', 'residual', 'std_residual', 'split', 'gnn_pred', 'gap', 'mu', 'homo', 'lumo', 'tsne_1', 'tsne_2']
 
 --- stderr ---
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/PIL already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pillow-12.3.0.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit-stubs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pillow.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy-2.5.3.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit-2026.3.6.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/bin already exists. Specify --upgrade to force replacement.
 

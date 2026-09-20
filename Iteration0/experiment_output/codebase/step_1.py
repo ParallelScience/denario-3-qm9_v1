@@ -1,106 +1,85 @@
-import pandas as pd
-import numpy as np
-from rdkit import Chem
-import multiprocessing as mp
+import sys
+import subprocess
+import os
 
-def get_rdkit_features(smiles):
-    """
-    Parses a SMILES string and extracts molecular features:
-    heavy atom count, implicit hydrogen count, element counts (C, N, O, F),
-    and bond type counts (single, double, triple, aromatic).
-    Explicit hydrogens are added before counting bonds to ensure X-H bonds
-    are included in the single bond count.
-    """
-    mol = Chem.MolFromSmiles(smiles)
+try:
+    import rdkit
+except ModuleNotFoundError:
+    print("rdkit not found, installing locally to .pip_overrides...")
+    override_dir = os.path.abspath("./.pip_overrides")
+    os.makedirs(override_dir, exist_ok=True)
+    subprocess.check_call([
+        sys.executable, "-m", "pip", "install",
+        "--target", override_dir, "--quiet",
+        "rdkit"
+    ])
+    sys.path.insert(0, override_dir)
+
+import multiprocessing as mp
+import numpy as np
+import pandas as pd
+from rdkit import Chem
+from rdkit.Chem import Fragments
+from sklearn.model_selection import train_test_split
+
+frag_funcs = {name: func for name, func in Fragments.__dict__.items() if name.startswith("fr_")}
+
+def process_single_smiles(smi):
+    mol = Chem.MolFromSmiles(smi)
     if mol is None:
-        return (np.nan,) * 10
-    
+        return None
+    mol_h = Chem.AddHs(mol)
+    h_count = sum(1 for atom in mol_h.GetAtoms() if atom.GetSymbol() == 'H')
     heavy_atom_count = mol.GetNumHeavyAtoms()
-    # Implicit H count from the original molecule
-    h_count = sum(atom.GetTotalNumHs() for atom in mol.GetAtoms())
-    
-    c_count = 0
-    n_count = 0
-    o_count = 0
-    f_count = 0
-    for atom in mol.GetAtoms():
-        num = atom.GetAtomicNum()
-        if num == 6: c_count += 1
-        elif num == 7: n_count += 1
-        elif num == 8: o_count += 1
-        elif num == 9: f_count += 1
-        
-    # Add explicit Hs to count all bonds including X-H
-    mol_with_hs = Chem.AddHs(mol)
-    
     single_bonds = 0
     double_bonds = 0
     triple_bonds = 0
     aromatic_bonds = 0
-    for bond in mol_with_hs.GetBonds():
+    for bond in mol.GetBonds():
         btype = bond.GetBondType()
-        if btype == Chem.rdchem.BondType.SINGLE: single_bonds += 1
-        elif btype == Chem.rdchem.BondType.DOUBLE: double_bonds += 1
-        elif btype == Chem.rdchem.BondType.TRIPLE: triple_bonds += 1
-        elif btype == Chem.rdchem.BondType.AROMATIC: aromatic_bonds += 1
-        
-    return (heavy_atom_count, h_count, c_count, n_count, o_count, f_count, 
-            single_bonds, double_bonds, triple_bonds, aromatic_bonds)
+        if btype == Chem.BondType.SINGLE:
+            single_bonds += 1
+        elif btype == Chem.BondType.DOUBLE:
+            double_bonds += 1
+        elif btype == Chem.BondType.TRIPLE:
+            triple_bonds += 1
+        elif btype == Chem.BondType.AROMATIC:
+            aromatic_bonds += 1
+    res = {
+        'smiles': smi,
+        'heavy_atom_count': heavy_atom_count,
+        'h_count': h_count,
+        'single_bonds': single_bonds,
+        'double_bonds': double_bonds,
+        'triple_bonds': triple_bonds,
+        'aromatic_bonds': aromatic_bonds
+    }
+    for name, func in frag_funcs.items():
+        res[name] = func(mol)
+    return res
 
-if __name__ == '__main__':
-    input_path = '/home/node/work/data/qm9/qm9.csv'
-    print(f"Loading dataset from {input_path}...")
-    df = pd.read_csv(input_path)
-    print(f"Original dataset shape: {df.shape}")
-    
-    # Identify duplicates
-    dup_counts = df['smiles'].value_counts()
-    duplicated_smiles = dup_counts[dup_counts > 1]
-    print(f"Found {len(duplicated_smiles)} duplicated SMILES.")
-    
-    # Group by SMILES and average numeric columns
-    numeric_cols = df.select_dtypes(include=[np.number]).columns
-    agg_dict = {col: 'mean' for col in numeric_cols}
-    
-    # Keep the first mol_id for reference
+if __name__ == "__main__":
+    print("Loading QM9 dataset...")
+    df = pd.read_csv('/home/node/work/data/qm9/qm9.csv')
+    cols_to_drop = ['u0_atom', 'u298_atom', 'h298_atom', 'g298_atom']
+    df = df.drop(columns=[c for c in cols_to_drop if c in df.columns])
+    agg_funcs = {col: 'mean' for col in df.columns if pd.api.types.is_numeric_dtype(df[col])}
     if 'mol_id' in df.columns:
-        agg_dict['mol_id'] = 'first'
-        
-    print("Averaging target properties for duplicated SMILES...")
-    df_grouped = df.groupby('smiles', as_index=False).agg(agg_dict)
-    print(f"Dataset shape after deduplication: {df_grouped.shape}")
-    
-    print("Extracting RDKit features (heavy atom count, H count, element counts, bond types)...")
-    with mp.Pool(processes=8) as pool:
-        results = pool.map(get_rdkit_features, df_grouped['smiles'])
-        
-    feature_cols = [
-        'heavy_atom_count', 'h_count', 'c_count', 'n_count', 'o_count', 'f_count',
-        'single_bonds', 'double_bonds', 'triple_bonds', 'aromatic_bonds'
-    ]
-    features_df = pd.DataFrame(results, columns=feature_cols)
-    
-    df_cleaned = pd.concat([df_grouped, features_df], axis=1)
-    
-    # Drop any rows where RDKit failed to parse SMILES
-    initial_len = len(df_cleaned)
-    df_cleaned = df_cleaned.dropna(subset=['heavy_atom_count'])
-    if len(df_cleaned) < initial_len:
-        print(f"Dropped {initial_len - len(df_cleaned)} rows due to RDKit parsing failures.")
-        
-    # Ensure heavy_atom_count > 0 to avoid division by zero
-    df_cleaned = df_cleaned[df_cleaned['heavy_atom_count'] > 0]
-        
-    # Compute per-heavy-atom u0
-    print("Computing per-heavy-atom u0...")
-    df_cleaned['u0_per_heavy_atom'] = df_cleaned['u0'] / df_cleaned['heavy_atom_count']
-    
-    # Save the cleaned dataset
-    out_path = 'data/cleaned_qm9.csv'
-    df_cleaned.to_csv(out_path, index=False)
-    print(f"saved {out_path}")
-    print(f"saved {out_path} columns:", list(df_cleaned.columns))
-    
-    print("\nSummary statistics of derived features:")
-    stats_cols = feature_cols + ['u0_per_heavy_atom']
-    print(df_cleaned[stats_cols].describe().to_string())
+        agg_funcs['mol_id'] = 'first'
+    df_grouped = df.groupby('smiles', as_index=False).agg(agg_funcs)
+    smiles_list = df_grouped['smiles'].tolist()
+    num_workers = min(16, mp.cpu_count())
+    with mp.Pool(processes=num_workers) as pool:
+        features_list = pool.map(process_single_smiles, smiles_list)
+    valid_indices = [i for i, f in enumerate(features_list) if f is not None]
+    df_grouped = df_grouped.iloc[valid_indices].reset_index(drop=True)
+    features_list = [f for f in features_list if f is not None]
+    df_features = pd.DataFrame(features_list)
+    df_grouped['u0_per_heavy_atom'] = df_grouped['u0'] / df_features['heavy_atom_count'].replace(0, np.nan)
+    indices = np.arange(len(df_grouped))
+    train_idx, temp_idx = train_test_split(indices, test_size=0.2, random_state=42)
+    val_idx, test_idx = train_test_split(temp_idx, test_size=0.5, random_state=42)
+    df_grouped.to_csv('data/cleaned_qm9.csv', index=False)
+    df_features.to_csv('data/additive_features.csv', index=False)
+    np.savez('data/split_indices.npz', train=train_idx, val=val_idx, test=test_idx)
+    print(df_grouped[['u0', 'u0_per_heavy_atom']].describe().to_string())

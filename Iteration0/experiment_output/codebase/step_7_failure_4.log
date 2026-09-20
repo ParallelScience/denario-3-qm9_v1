@@ -1,0 +1,64 @@
+# returncode=1 timed_out=False elapsed=7.1478s
+--- stdout ---
+rdkit not found, installing locally to .pip_overrides...
+Loading test set data...
+Processing 13381 SMILES to dense graphs...
+Using device: cuda
+Loading trained GNN model...
+Computing Integrated Gradients...
+  Processed batch 10/53
+  Processed batch 20/53
+  Processed batch 30/53
+  Processed batch 40/53
+  Processed batch 50/53
+  Processed batch 53/53
+Normalizing attributions by molecule size...
+
+Top 5 Motifs by Frequency:
+peak_motif
+Aliphatic_C_deg3    3005
+Aliphatic_C_deg2    2171
+Aliphatic_O_deg2    1543
+Aliphatic_N_deg2    1537
+Aliphatic_C_deg4    1528
+
+Performing Statistical Validation...
+
+Statistical Test Results:
+Property            Motif           Test  Statistic  p_value  Mean_With  Mean_Without  Effect_Size  N_With  N_Without  p_value_adj  Significant
+     gap Aliphatic_C_deg3 Kruskal-Wallis   118.0170   0.0000     0.2600        0.2488       0.0112    3005      10376       0.0000         True
+     gap Aliphatic_C_deg2 Kruskal-Wallis   147.7904   0.0000     0.2404        0.2535      -0.0131    2171      11210       0.0000         True
+     gap Aliphatic_O_deg2 Kruskal-Wallis  1014.3902   0.0000     0.2869        0.2467       0.0401    1543      11838       0.0000         True
+     gap Aliphatic_N_deg2 Kruskal-Wallis     1.2994   0.2543     0.2493        0.2516      -0.0023    1537      11844       0.2543        False
+      mu Aliphatic_C_deg3          ANOVA    67.5631   0.0000     2.5145        2.7696      -0.2552    3005      10376       0.0000         True
+      mu Aliphatic_C_deg2          ANOVA     3.6157   0.0573     2.6562        2.7232      -0.0670    2171      11210       0.0654        False
+      mu Aliphatic_O_deg2 Kruskal-Wallis   171.8746   0.0000     2.2724        2.7696      -0.4972    1543      11838       0.0000         True
+      mu Aliphatic_N_deg2          ANOVA    91.7831   0.0000     3.0565        2.6676       0.3889    1537      11844       0.0000         True
+
+saved data/motif_statistics.csv columns: ['Property', 'Motif', 'Test', 'Statistic', 'p_value', 'Mean_With', 'Mean_Without', 'Effect_Size', 'N_With', 'N_Without', 'p_value_adj', 'Significant']
+
+Generating Visualizations...
+
+--- stderr ---
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/PIL already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pillow-12.3.0.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit-stubs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pillow.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy-2.5.3.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit-2026.3.6.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/bin already exists. Specify --upgrade to force replacement.
+Traceback (most recent call last):
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/codebase/step_7.py", line 273, in <module>
+    ax.boxplot([data_without, data_with], labels=['False', 'True'])
+  File "/opt/denario-venv/lib/python3.12/site-packages/matplotlib/_api/deprecation.py", line 477, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/denario-venv/lib/python3.12/site-packages/matplotlib/__init__.py", line 1531, in inner
+    return func(
+           ^^^^^
+TypeError: Axes.boxplot() got an unexpected keyword argument 'labels'
+

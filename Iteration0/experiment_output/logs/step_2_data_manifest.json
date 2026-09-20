@@ -1,22 +1,22 @@
 {
   "step_number": 2,
-  "sub_task": "Baseline Additive Modeling",
-  "attempt": 2,
+  "sub_task": "Additive Baseline Modeling",
+  "attempt": 1,
   "files": [
     {
-      "path": "data/additive_features.npz",
-      "bytes": 9634752,
-      "modified": "2026-09-20T01:10:36.558134Z"
+      "path": "data/ridge_baseline.pkl",
+      "bytes": 2526,
+      "modified": "2026-09-20T19:40:49.383626Z"
     },
     {
-      "path": "data/residuals.csv",
-      "bytes": 13427346,
-      "modified": "2026-09-20T01:10:36.543134Z"
+      "path": "data/ridge_metrics.txt",
+      "bytes": 96,
+      "modified": "2026-09-20T19:40:49.383521Z"
     },
     {
-      "path": "data/residuals_vs_size.png",
-      "bytes": 687571,
-      "modified": "2026-09-20T01:10:35.978130Z"
+      "path": "data/standardized_residuals.csv",
+      "bytes": 12429605,
+      "modified": "2026-09-20T19:40:49.828048Z"
     }
   ]
 }

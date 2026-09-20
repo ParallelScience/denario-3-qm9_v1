@@ -1,17 +1,17 @@
 {
   "step_number": 7,
-  "sub_task": "Motif Analysis and Correlation (Computation)",
-  "attempt": 1,
+  "sub_task": "Subgraph Attribution and Statistical Validation",
+  "attempt": 8,
   "files": [
     {
-      "path": "data/motif_correlations.csv",
-      "bytes": 1140,
-      "modified": "2026-09-20T01:23:42.644669Z"
+      "path": "data/motif_property_boxplots.png",
+      "bytes": 461586,
+      "modified": "2026-09-20T20:07:02.061159Z"
     },
     {
-      "path": "data/motif_statistics.csv",
-      "bytes": 4439,
-      "modified": "2026-09-20T01:23:43.180655Z"
+      "path": "data/motif_statistical_validation.csv",
+      "bytes": 1368,
+      "modified": "2026-09-20T20:07:01.464154Z"
     }
   ]
 }

@@ -1,25 +1,20 @@
-# returncode=0 timed_out=False elapsed=2.8167s
+# returncode=0 timed_out=False elapsed=9.4964s
 --- stdout ---
-Loading dataset from /home/node/work/data/qm9/qm9.csv...
-Original dataset shape: (133885, 21)
-Found 83 duplicated SMILES.
-Averaging target properties for duplicated SMILES...
-Dataset shape after deduplication: (133802, 21)
-Extracting RDKit features (heavy atom count, H count, element counts, bond types)...
-Computing per-heavy-atom u0...
-saved data/cleaned_qm9.csv
-saved data/cleaned_qm9.csv columns: ['smiles', 'A', 'B', 'C', 'mu', 'alpha', 'homo', 'lumo', 'gap', 'r2', 'zpve', 'u0', 'u298', 'h298', 'g298', 'cv', 'u0_atom', 'u298_atom', 'h298_atom', 'g298_atom', 'mol_id', 'heavy_atom_count', 'h_count', 'c_count', 'n_count', 'o_count', 'f_count', 'single_bonds', 'double_bonds', 'triple_bonds', 'aromatic_bonds', 'u0_per_heavy_atom']
-
-Summary statistics of derived features:
-       heavy_atom_count        h_count        c_count        n_count        o_count        f_count   single_bonds   double_bonds   triple_bonds  aromatic_bonds  u0_per_heavy_atom
-count     133802.000000  133802.000000  133802.000000  133802.000000  133802.000000  133802.000000  133802.000000  133802.000000  133802.000000   133802.000000      133802.000000
-mean           8.795892       9.190102       6.323732       1.042929       1.404658       0.024574      16.633578       0.707254       0.276633        0.976390         -46.796857
-std            0.508945       2.828505       1.249962       1.098342       0.884180       0.219817       4.853996       0.744489       0.524415        2.137934           3.773812
-min            1.000000       0.000000       0.000000       0.000000       0.000000       0.000000       0.000000       0.000000       0.000000        0.000000         -87.496975
-25%            9.000000       7.000000       6.000000       0.000000       1.000000       0.000000      14.000000       0.000000       0.000000        0.000000         -48.913249
-50%            9.000000       9.000000       6.000000       1.000000       1.000000       0.000000      17.000000       1.000000       0.000000        0.000000         -46.870211
-75%            9.000000      11.000000       7.000000       2.000000       2.000000       0.000000      20.000000       1.000000       0.000000        0.000000         -44.414991
-max            9.000000      20.000000       9.000000       7.000000       5.000000       6.000000      28.000000       4.000000       4.000000       10.000000         -38.221275
+rdkit not found, installing locally to .pip_overrides...
+Loading QM9 dataset...
+                  u0  u0_per_heavy_atom
+count  133802.000000      133802.000000
+mean     -411.538064         -46.796857
+std        40.056313           3.773812
+min      -714.568061         -87.496975
+25%      -437.913793         -48.913249
+50%      -417.864066         -46.870211
+75%      -387.049111         -44.414991
+max       -40.478930         -38.221275
 
 --- stderr ---
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy-2.5.3.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/bin already exists. Specify --upgrade to force replacement.
 

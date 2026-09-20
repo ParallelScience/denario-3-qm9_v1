@@ -1,0 +1,42 @@
+# returncode=1 timed_out=False elapsed=4.8513s
+--- stdout ---
+rdkit not found, installing locally to .pip_overrides...
+Loading test set data...
+Processing 13381 SMILES to dense graphs...
+Using device: cuda
+Loading trained GNN model...
+Computing Integrated Gradients...
+
+--- stderr ---
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/PIL already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pillow-12.3.0.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit-stubs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pillow.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy-2.5.3.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit-2026.3.6.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/bin already exists. Specify --upgrade to force replacement.
+Traceback (most recent call last):
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/codebase/step_7.py", line 234, in <module>
+    attr = ig.attribute(
+           ^^^^^^^^^^^^^
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/captum/log/dummy_log.py", line 54, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/captum/attr/_core/integrated_gradients.py", line 273, in attribute
+    attributions = _batch_attribution(
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/captum/attr/_utils/batching.py", line 86, in _batch_attribution
+    current_attr = attr_method._attribute(
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/captum/attr/_core/integrated_gradients.py", line 343, in _attribute
+    scaled_features_tpl = tuple(
+                          ^^^^^^
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/captum/attr/_core/integrated_gradients.py", line 345, in <genexpr>
+    [baseline + alpha * (input - baseline) for alpha in alphas], dim=0
+                         ~~~~~~^~~~~~~~~~
+NotImplementedError: Subtraction, the `-` operator, with two bool tensors is not supported. Use the `^` or `logical_xor()` operator instead.
+

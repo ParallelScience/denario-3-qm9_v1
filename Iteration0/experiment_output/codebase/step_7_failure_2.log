@@ -1,0 +1,21 @@
+# returncode=1 timed_out=False elapsed=4.7954s
+--- stdout ---
+
+--- stderr ---
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/PIL already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pillow-12.3.0.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit-stubs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pillow.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy-2.5.3.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit-2026.3.6.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/bin already exists. Specify --upgrade to force replacement.
+Traceback (most recent call last):
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/codebase/step_7.py", line 168, in <module>
+    attr, _ = ig.attribute(inputs=x, baselines=torch.zeros_like(x).to(device), additional_forward_args=(adj, mask), n_steps=20)
+    ^^^^^^^
+ValueError: too many values to unpack (expected 2)
+

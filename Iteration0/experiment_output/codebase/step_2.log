@@ -1,65 +1,43 @@
-# returncode=0 timed_out=False elapsed=2.8996s
+# returncode=0 timed_out=False elapsed=1.6701s
 --- stdout ---
-Loaded data shape: (133802, 32)
-Loaded columns: ['smiles', 'A', 'B', 'C', 'mu', 'alpha', 'homo', 'lumo', 'gap', 'r2', 'zpve', 'u0', 'u298', 'h298', 'g298', 'cv', 'u0_atom', 'u298_atom', 'h298_atom', 'g298_atom', 'mol_id', 'heavy_atom_count', 'h_count', 'c_count', 'n_count', 'o_count', 'f_count', 'single_bonds', 'double_bonds', 'triple_bonds', 'aromatic_bonds', 'u0_per_heavy_atom']
+Loading data...
+Sample sizes - Train: 107041, Val: 13380, Test: 13381
 
---- Ridge Regression Results ---
+Training Ridge regression baseline (Group Contribution Method)...
 
-Target: u0
-  R2 Score: 1.0000
-  RMSE: 0.1069
-  Coefficients:
-       Feature  Coefficient
-       c_count   -37.998762
-       n_count   -54.678284
-       o_count   -75.179018
-       f_count   -99.828704
-       h_count    -0.596158
-  single_bonds    -0.030737
-  double_bonds    -0.099072
-  triple_bonds    -0.113912
-aromatic_bonds    -0.057068
-  Intercept: -0.0173
+Baseline Performance (u0):
+  Train - MSE: 24.9718 Hartree^2, R2: 0.9845
+  Val - MSE: 23.9418 Hartree^2, R2: 0.9847
+  Test - MSE: 23.6894 Hartree^2, R2: 0.9850
 
-Target: gap
-  R2 Score: 0.7155
-  RMSE: 0.0253
-  Coefficients:
-       Feature  Coefficient
-       c_count    -0.071972
-       n_count    -0.052308
-       o_count    -0.034963
-       f_count    -0.010591
-       h_count    -0.011389
-  single_bonds     0.031362
-  double_bonds     0.020491
-  triple_bonds     0.085021
-aromatic_bonds     0.032889
-  Intercept: 0.3231
+Top 5 positive group contributions (Hartree/count):
+triple_bonds      111.228394
+double_bonds       68.361376
+aromatic_bonds     50.400398
+single_bonds       37.100448
+fr_benzene         27.114024
 
-Target: mu
-  R2 Score: 0.2665
-  RMSE: 1.3106
-  Coefficients:
-       Feature  Coefficient
-       c_count    -0.149857
-       n_count     0.466238
-       o_count     0.355029
-       f_count     0.097590
-       h_count    -0.065049
-  single_bonds     0.085504
-  double_bonds     0.499926
-  triple_bonds     0.857392
-aromatic_bonds     0.092114
-  Intercept: 1.1612
+Top 5 negative group contributions (Hartree/count):
+heavy_atom_count   -112.295981
+fr_tetrazole         -7.315146
+fr_oxazole           -5.000537
+fr_halogen           -4.001615
+fr_Ar_NH             -4.001233
+Intercept: 0.4464 Hartree
 
-Correlation between heavy_atom_count and res_u0: -0.0368
-Correlation between heavy_atom_count and abs(res_u0): 0.0030
-No significant scaling for u0 residuals. Normalization is computed but may not be strictly necessary.
-saved data/residuals_vs_size.png
-saved data/residuals.csv
-saved data/residuals.csv columns: ['smiles', 'res_u0', 'res_u0_norm', 'res_gap', 'res_mu']
-saved data/additive_features.npz keys: ['X', 'features']
+saved data/ridge_metrics.txt
+saved data/ridge_baseline.pkl
+saved data/standardized_residuals.csv columns: ['smiles', 'u0', 'u0_pred', 'residual', 'std_residual', 'split']
+
+Standardized Residuals Summary (Train):
+count    1.070410e+05
+mean    -1.778995e-17
+std      1.000005e+00
+min     -1.102735e+01
+25%     -2.598439e-01
+50%     -1.100296e-01
+75%      9.235454e-02
+max      6.658995e+00
 
 --- stderr ---
 

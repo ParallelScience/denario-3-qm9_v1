@@ -1,133 +1,109 @@
-import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+import pandas as pd
 from sklearn.linear_model import Ridge
-from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.metrics import mean_squared_error, r2_score
+import pickle
 
-def train_and_evaluate_ridge(X: np.ndarray, y: np.ndarray, feature_names: list, target_name: str) -> tuple:
-    """
-    Trains a Ridge regression model and evaluates its performance.
+if __name__ == "__main__":
+    # Load data
+    print("Loading data...")
+    df_qm9 = pd.read_csv('data/cleaned_qm9.csv')
+    df_features = pd.read_csv('data/additive_features.csv')
+    splits = np.load('data/split_indices.npz')
     
-    Args:
-        X: Feature matrix.
-        y: Target vector.
-        feature_names: List of feature names.
-        target_name: Name of the target variable.
-        
-    Returns:
-        A tuple containing the trained model, predictions, and residuals.
-    """
+    train_idx = splits['train']
+    val_idx = splits['val']
+    test_idx = splits['test']
+    
+    print(f"Sample sizes - Train: {len(train_idx)}, Val: {len(val_idx)}, Test: {len(test_idx)}")
+    
+    # Prepare X and y
+    feature_cols = [c for c in df_features.columns if c != 'smiles']
+    X = df_features[feature_cols].values
+    y = df_qm9['u0'].values
+    smiles = df_qm9['smiles'].values
+    
+    X_train, y_train = X[train_idx], y[train_idx]
+    X_val, y_val = X[val_idx], y[val_idx]
+    X_test, y_test = X[test_idx], y[test_idx]
+    
+    # Train Ridge regression
+    print("\nTraining Ridge regression baseline (Group Contribution Method)...")
     model = Ridge(alpha=1.0)
-    model.fit(X, y)
-    preds = model.predict(X)
-    res = y - preds
+    model.fit(X_train, y_train)
     
-    r2 = r2_score(y, preds)
-    rmse = np.sqrt(mean_squared_error(y, preds))
+    # Predict
+    y_train_pred = model.predict(X_train)
+    y_val_pred = model.predict(X_val)
+    y_test_pred = model.predict(X_test)
     
-    print(f"\nTarget: {target_name}")
-    print(f"  R2 Score: {r2:.4f}")
-    print(f"  RMSE: {rmse:.4f}")
-    print("  Coefficients:")
-    coef_df = pd.DataFrame({'Feature': feature_names, 'Coefficient': model.coef_})
-    print(coef_df.to_string(index=False))
-    print(f"  Intercept: {model.intercept_:.4f}")
+    # Calculate residuals
+    res_train = y_train - y_train_pred
+    res_val = y_val - y_val_pred
+    res_test = y_test - y_test_pred
     
-    return model, preds, res
-
-def main():
-    """
-    Main execution function for baseline additive modeling.
-    """
-    plt.rcParams['text.usetex'] = False
-    np.random.seed(42)
+    # Standardize residuals based on train set
+    res_mean = np.mean(res_train)
+    res_std = np.std(res_train)
     
-    # Load the cleaned dataset
-    df = pd.read_csv('data/cleaned_qm9.csv')
-    print(f"Loaded data shape: {df.shape}")
-    print(f"Loaded columns: {list(df.columns)}")
+    std_res_train = (res_train - res_mean) / res_std
+    std_res_val = (res_val - res_mean) / res_std
+    std_res_test = (res_test - res_mean) / res_std
     
-    # Define additive features
-    feature_cols = [
-        'c_count', 'n_count', 'o_count', 'f_count', 'h_count',
-        'single_bonds', 'double_bonds', 'triple_bonds', 'aromatic_bonds'
-    ]
-    X = df[feature_cols].values
-    
-    targets = ['u0', 'gap', 'mu']
-    residuals = {}
-    
-    print("\n--- Ridge Regression Results ---")
-    for target in targets:
-        y = df[target].values
-        _, _, res = train_and_evaluate_ridge(X, y, feature_cols, target)
-        residuals[target] = res
+    # Evaluate performance
+    print("\nBaseline Performance (u0):")
+    metrics = {}
+    for name, y_true, y_pred in [('Train', y_train, y_train_pred), 
+                                 ('Val', y_val, y_val_pred), 
+                                 ('Test', y_test, y_test_pred)]:
+        mse = mean_squared_error(y_true, y_pred)
+        r2 = r2_score(y_true, y_pred)
+        metrics[name] = {'MSE': mse, 'R2': r2}
+        print(f"  {name} - MSE: {mse:.4f} Hartree^2, R2: {r2:.4f}")
         
-    # Normalize u0 residuals by heavy atom count
-    residuals['u0_norm'] = residuals['u0'] / df['heavy_atom_count'].values
+    # Print top coefficients
+    coefs = pd.Series(model.coef_, index=feature_cols)
+    print("\nTop 5 positive group contributions (Hartree/count):")
+    print(coefs.nlargest(5).to_string())
+    print("\nTop 5 negative group contributions (Hartree/count):")
+    print(coefs.nsmallest(5).to_string())
+    print(f"Intercept: {model.intercept_:.4f} Hartree")
     
-    # Check correlation to verify size independence
-    corr_u0 = np.corrcoef(df['heavy_atom_count'], residuals['u0'])[0, 1]
-    corr_abs_u0 = np.corrcoef(df['heavy_atom_count'], np.abs(residuals['u0']))[0, 1]
-    print(f"\nCorrelation between heavy_atom_count and res_u0: {corr_u0:.4f}")
-    print(f"Correlation between heavy_atom_count and abs(res_u0): {corr_abs_u0:.4f}")
-    if abs(corr_u0) < 0.1 and abs(corr_abs_u0) < 0.1:
-        print("No significant scaling for u0 residuals. Normalization is computed but may not be strictly necessary.")
-    else:
-        print("Significant scaling detected for u0 residuals. Normalization is recommended.")
+    # Save metrics
+    with open('data/ridge_metrics.txt', 'w') as f:
+        for name, m in metrics.items():
+            f.write(f"{name} - MSE: {m['MSE']:.4f}, R2: {m['R2']:.4f}\n")
+    print("\nsaved data/ridge_metrics.txt")
     
-    # Plot residuals vs heavy atom count
-    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
-    axes = axes.flatten()
+    # Save model
+    with open('data/ridge_baseline.pkl', 'wb') as f:
+        pickle.dump({
+            'model': model, 
+            'res_mean': res_mean, 
+            'res_std': res_std, 
+            'feature_cols': feature_cols
+        }, f)
+    print("saved data/ridge_baseline.pkl")
     
-    plot_targets = [
-        ('u0', residuals['u0']), 
-        ('u0_norm', residuals['u0_norm']), 
-        ('gap', residuals['gap']), 
-        ('mu', residuals['mu'])
-    ]
-    
-    for i, (name, res_vals) in enumerate(plot_targets):
-        ax = axes[i]
-        ax.scatter(df['heavy_atom_count'], res_vals, alpha=0.1, s=5)
-        
-        # Set y-limits based on 1st and 99th percentiles to exclude extreme outliers
-        p01 = np.percentile(res_vals, 1)
-        p99 = np.percentile(res_vals, 99)
-        margin = (p99 - p01) * 0.5
-        if margin == 0:
-            margin = 1.0
-            
-        ax.set_ylim(p01 - margin, p99 + margin)
-        
-        ax.set_xlabel('Heavy Atom Count')
-        ax.set_ylabel(f'Residuals ({name})')
-        ax.set_title(f'Residuals of {name} vs Heavy Atom Count')
-        ax.grid(True, linestyle='--', alpha=0.7)
-        
-    plt.tight_layout()
-    plot_path = 'data/residuals_vs_size.png'
-    plt.savefig(plot_path, dpi=300)
-    plt.close()
-    print(f"saved {plot_path}")
-    
-    # Save residuals
-    res_df = pd.DataFrame({
-        'smiles': df['smiles'],
-        'res_u0': residuals['u0'],
-        'res_u0_norm': residuals['u0_norm'],
-        'res_gap': residuals['gap'],
-        'res_mu': residuals['mu']
+    # Create a dataframe for standardized residuals
+    df_res = pd.DataFrame({
+        'smiles': smiles,
+        'u0': y,
+        'u0_pred': model.predict(X),
+        'residual': y - model.predict(X)
     })
-    res_path = 'data/residuals.csv'
-    res_df.to_csv(res_path, index=False)
-    print(f"saved {res_path}")
-    print(f"saved {res_path} columns:", list(res_df.columns))
+    df_res['std_residual'] = (df_res['residual'] - res_mean) / res_std
     
-    # Save additive features
-    feat_path = 'data/additive_features.npz'
-    np.savez(feat_path, X=X, features=feature_cols)
-    print(f"saved {feat_path} keys:", list(np.load(feat_path).files))
-
-if __name__ == '__main__':
-    main()
+    # Add split info
+    split_col = np.array([''] * len(df_res), dtype=object)
+    split_col[train_idx] = 'train'
+    split_col[val_idx] = 'val'
+    split_col[test_idx] = 'test'
+    df_res['split'] = split_col
+    
+    df_res.to_csv('data/standardized_residuals.csv', index=False)
+    print("saved data/standardized_residuals.csv columns:", list(df_res.columns))
+    
+    # Print some summary statistics of the residuals
+    print("\nStandardized Residuals Summary (Train):")
+    print(pd.Series(std_res_train).describe().to_string())

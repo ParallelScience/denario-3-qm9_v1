@@ -1,0 +1,107 @@
+{
+  "claims": [
+    {
+      "statement": "The Ridge regression baseline, predicting `u0` directly from heavy atom and functional group counts, yielded a Test $R^2$ of 0.9850 and a Test MSE of 23.6894 (as recorded in `data/ridge_metrics.txt`).",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Artifact `data/ridge_metrics.txt` reads: 'Test - MSE: 23.6894, R2: 0.9850'."
+    },
+    {
+      "statement": "According to `data/rf_baseline_metrics.txt`, the Random Forest achieved a Test $R^2$ of 0.9779 and a Test MSE of 0.0209 on the standardized residuals.",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Artifact `data/rf_baseline_metrics.txt` reads: 'Test - MSE: 0.0209, R2: 0.9779'."
+    },
+    {
+      "statement": "In contrast, the GNN (`data/gnn_metrics.txt`) captured the topological variance substantially better, achieving a Test $R^2$ of 0.9985 and a Test MSE of 0.0014.",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Artifact `data/gnn_metrics.txt` reads: 'Test  - MSE: 0.0014, R2: 0.9985'."
+    },
+    {
+      "statement": "Analyzed over a test set of 13,381 molecules, the extracted latent representations (`data/gnn_test_latents.npz`) exhibit a mean of \u22120.2883 and a standard deviation of 2.7265.",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 5 execution log output: 'Mean: -0.2883', 'Std: 2.7265'."
+    },
+    {
+      "statement": "`latent_24` correlates with the residual at a Pearson $r = -0.8520$, and `latent_102` at $r = 0.8274$.",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 6 execution log output under 'Top 3 correlated latent dimensions... residual': 'latent_24: -0.8520', 'latent_102: 0.8274'."
+    },
+    {
+      "statement": "`latent_83` correlates with the HOMO-LUMO gap at $r = 0.5207$, and `latent_50` correlates with the HOMO energy at $r = 0.3756$.",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 6 execution log output under 'Top 3 correlated latent dimensions...': 'gap: latent_83: 0.5207', 'homo: latent_50: 0.3756'."
+    },
+    {
+      "statement": "The first principal dimension (`tsne_1`) correlates with the HOMO-LUMO gap (Pearson $r = -0.3635$, Spearman $\rho = -0.3414$) and HOMO ($r = 0.3068$).",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 6 execution log output table 't-SNE vs Properties Correlations': 'gap tsne_1 -0.3635 -0.3414', 'homo tsne_1 0.3068'."
+    },
+    {
+      "statement": "The second dimension (`tsne_2`) strongly orders the target non-additive residual (Spearman $\rho = 0.7871$, Pearson $r = 0.4611$).",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 6 execution log output table 't-SNE vs Properties Correlations': 'residual tsne_2 0.4611 0.7871'."
+    },
+    {
+      "statement": "Molecules containing aromatic motifs exhibit a significantly compressed HOMO-LUMO gap (mean 0.2071 Hartree) compared to those without (0.2608 Hartree).",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 7 execution log output table 'Statistical Validation Results': 'gap has_aromatic ... 0.2071 0.2608'."
+    },
+    {
+      "statement": "A Kruskal-Wallis test confirms this is highly significant ($p = 0.0000$, Cohen's $d = -1.3990$).",
+      "kind": "test_outcome",
+      "verdict": "supported",
+      "evidence": "Step 7 execution log output table 'Statistical Validation Results': 'gap has_aromatic Kruskal-Wallis ... 0.0000 ... -1.3990'."
+    },
+    {
+      "statement": "Furthermore, aromaticity significantly increases the dipole moment `mu` (3.2036 Debye vs. 2.6075 Debye, $p = 0.0000$, Cohen's $d = 0.3734$).",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 7 execution log output table 'Statistical Validation Results': 'mu has_aromatic ... 3.2036 2.6075 ... 0.0000 ... 0.3734'."
+    },
+    {
+      "statement": "The presence of nitrogen similarly compresses the gap (mean 0.2396 Hartree vs. 0.2704 Hartree, $p = 0.0000$, Cohen's $d = -0.6734$)",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 7 execution log output table 'Statistical Validation Results': 'gap has_nitrogen ... 0.2396 0.2704 ... 0.0000 ... -0.6734'."
+    },
+    {
+      "statement": "while massively shifting the dipole moment (mean 3.1419 Debye vs. 2.0190 Debye, $p = 0.0000$, Cohen's $d = 0.8312$).",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 7 execution log output table 'Statistical Validation Results': 'mu has_nitrogen ... 3.1419 2.0190 ... 0.0000 ... 0.8312'."
+    },
+    {
+      "statement": "Molecules with fluorine show a narrower gap (mean 0.2133 Hartree vs. 0.2519 Hartree, ANOVA $p = 0.0000$, Cohen's $d = -0.7677$)",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 7 execution log output table 'Statistical Validation Results': 'gap has_fluorine ANOVA ... 0.2133 0.2519 ... 0.0000 ... -0.7677'."
+    },
+    {
+      "statement": "and an increased dipole (mean 2.9627 Debye vs. 2.7084 Debye, ANOVA $p = 0.0162$, Cohen's $d = 0.1728$).",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 7 execution log output table 'Statistical Validation Results': 'mu has_fluorine ANOVA ... 2.9627 2.7084 ... 0.0162 ... 0.1728'."
+    },
+    {
+      "statement": "Oxygen incorporation yields statistically significant but physically smaller shifts, modifying the gap (mean 0.2504 Hartree vs. 0.2570 Hartree, $p = 0.0000$, Cohen's $d = -0.1347$)",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 7 execution log output table 'Statistical Validation Results': 'gap has_oxygen ... 0.2504 0.2570 ... 0.0000 ... -0.1347'."
+    },
+    {
+      "statement": "and dipole (mean 2.7610 Debye vs. 2.4275 Debye, $p = 0.0000$, Cohen's $d = 0.2009$).",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 7 execution log output table 'Statistical Validation Results': 'mu has_oxygen ... 2.7610 2.4275 ... 0.0000 ... 0.2009'."
+    }
+  ],
+  "summary": "The report's claims are fully supported by the provided execution logs and data artifacts from the respective analysis steps."
+}

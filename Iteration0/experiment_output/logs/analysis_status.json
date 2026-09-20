@@ -1,0 +1,12 @@
+{
+  "status": "complete",
+  "n_steps": 8,
+  "n_outcomes": 8,
+  "n_fulfilled": 8,
+  "all_fulfilled": true,
+  "halted_at_step": null,
+  "attempts": null,
+  "reason": null,
+  "final_step_agent": "researcher",
+  "updated_at": "2026-09-20T20:08:34+00:00"
+}

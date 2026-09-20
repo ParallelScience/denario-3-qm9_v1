@@ -1,0 +1,9 @@
+# returncode=1 timed_out=False elapsed=0.2116s
+--- stdout ---
+
+--- stderr ---
+Traceback (most recent call last):
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/codebase/step_1.py", line 4, in <module>
+    from rdkit import Chem
+ModuleNotFoundError: No module named 'rdkit'
+

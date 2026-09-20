@@ -1,0 +1,109 @@
+# returncode=1 timed_out=False elapsed=78.4736s
+--- stdout ---
+rdkit not found, installing locally to .pip_overrides...
+captum not found, installing locally to .pip_overrides...
+statsmodels not found, installing locally to .pip_overrides...
+Loading test set data...
+Processing 13381 SMILES to dense graphs...
+Using device: cuda
+Loading trained GNN model...
+Computing Integrated Gradients attributions...
+  Processed 20/105 batches...
+  Processed 40/105 batches...
+  Processed 60/105 batches...
+  Processed 80/105 batches...
+  Processed 100/105 batches...
+Normalizing attributions by molecule size...
+Identifying peak motifs...
+saved data/motif_attribution_summary.csv columns: ['Motif', 'Peak_Frequency']
+
+Top 10 Peak Motifs:
+    Motif  Peak_Frequency
+      CCC            2277
+   CN(C)C            1249
+      COC            1126
+      CNC            1004
+      CCO             984
+   CC(C)C             722
+   CC(C)O             630
+      coc             330
+      CCN             319
+CC(C)(C)N             302
+
+Performing statistical validation...
+saved data/motif_statistical_validation.csv columns: ['Motif', 'Property', 'N_has', 'N_not', 'Mean_has', 'Mean_not', 'Levene_p', 'Test_Used', 'Statistic', 'p_value', 'Cohens_d', 'p_value_adj']
+
+Statistical Validation Results:
+ Motif Property  N_has  N_not  Mean_has  Mean_not  Levene_p      Test_Used  Statistic  p_value  Cohens_d  p_value_adj
+   CCC      gap   7502   5879    0.2661    0.2326    0.0000 Kruskal-Wallis  1605.7473   0.0000    0.7563       0.0000
+   CCC       mu   7502   5879    2.4866    3.0003    0.0000 Kruskal-Wallis   372.1498   0.0000   -0.3470       0.0000
+CN(C)C      gap   1970  11411    0.2530    0.2511    0.0000 Kruskal-Wallis     3.8532   0.0497    0.0400       0.0552
+CN(C)C       mu   1970  11411    2.6919    2.7158    0.0000 Kruskal-Wallis     0.4280   0.5130   -0.0159       0.5130
+   COC      gap   5577   7804    0.2689    0.2388    0.0000 Kruskal-Wallis  1374.4886   0.0000    0.6702       0.0000
+   COC       mu   5577   7804    2.5032    2.8618    0.0000 Kruskal-Wallis   146.2952   0.0000   -0.2404       0.0000
+   CNC      gap   2168  11213    0.2470    0.2522    0.0000 Kruskal-Wallis    17.6207   0.0000   -0.1091       0.0000
+   CNC       mu   2168  11213    3.1847    2.6210    0.0003 Kruskal-Wallis   347.9488   0.0000    0.3789       0.0000
+   CCO      gap   4073   9308    0.2705    0.2430    0.0000 Kruskal-Wallis   982.4407   0.0000    0.6025       0.0000
+   CCO       mu   4073   9308    2.4653    2.8204    0.0000 Kruskal-Wallis   140.9466   0.0000   -0.2378       0.0000
+
+Generating boxplots...
+
+--- stderr ---
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/PIL already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pillow-12.3.0.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit-stubs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pillow.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy-2.5.3.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit-2026.3.6.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/rdkit already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/bin already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/PIL already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pillow-12.3.0.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/packaging already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pillow.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/python_dateutil-2.9.0.post0.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/six.py already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy-2.5.3.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/tqdm already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/packaging-26.3.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/tqdm-4.70.1.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/__pycache__ already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/six-1.17.0.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/dateutil already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/bin already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/scipy already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pandas-3.0.6.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/scipy-1.18.1.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pandas already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/typing_extensions-4.16.0.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/narwhals-2.26.0.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/packaging already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/python_dateutil-2.9.0.post0.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/six.py already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/numpy-2.5.3.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/packaging-26.3.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/typing_extensions.py already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/narwhals already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/scipy.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/__pycache__ already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/six-1.17.0.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/dateutil already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/bin already exists. Specify --upgrade to force replacement.
+Traceback (most recent call last):
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/codebase/step_7.py", line 408, in <module>
+    ax.boxplot(plot_data, labels=labels)
+  File "/opt/denario-venv/lib/python3.12/site-packages/matplotlib/_api/deprecation.py", line 477, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/denario-venv/lib/python3.12/site-packages/matplotlib/__init__.py", line 1531, in inner
+    return func(
+           ^^^^^
+TypeError: Axes.boxplot() got an unexpected keyword argument 'labels'
+

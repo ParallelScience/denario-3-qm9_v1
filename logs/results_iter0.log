@@ -6,264 +6,295 @@ INFO: EDA report not found at EDA/eda.md. Analysis will proceed without EDA insi
 [cmbagent_lg] Max n attempts:    10
 [cmbagent_lg] Max n steps:       10
 [cmbagent_lg] Restart at step:   -1
-[cmbagent_lg] Hardware:          Docker container: ~32 CPU cores, 64 GB RAM, GPU NVIDIA RTX PRO 6000 Blackwell 97 GB VRAM (SHARED with other jobs — check torch.cuda.mem_get_info() before allocating, budget ~60 GB max). Python at /opt/denario-venv/bin/python with pandas, numpy, scipy, sklearn, torch (CUDA 13.0), rdkit 2026.03.6. Multiprocessing: limit to ~8-16 workers. Dataset is a single CSV at /home/node/work/data/qm9/qm9.csv (133,885 rows). For GNN training on GPU, use batch sizes that fit within the VRAM budget; if CUDA is unavailable or busy, fall back to CPU with reduced epochs rather than failing.
+[cmbagent_lg] Hardware:          - Linux x86_64 Docker container
+- 32 CPUs (AMD Ryzen Threadripper PRO 9995WX), 64 GB RAM
+- NVIDIA RTX PRO 6000 Blackwell Edition, CUDA 13.0 — SHARED with other jobs: budget ~60 GB VRAM and check torch.cuda.mem_get_info() first
+- For PyTorch GPU: use device='cuda'
+- Multiprocessing: limit to ~8-16 workers to avoid oversubscription
+- NumPy/SciPy use OpenBLAS — set OMP_NUM_THREADS to avoid thread oversubscription with multiprocessing
 [cmbagent_lg] Involved agents:   ['engineer', 'researcher']
-[time] planner: 15.55s
-[time] format_plan: 3.83s
-[time] plan_reviewer: 21.49s
-[time] format_review: 1.42s
-[time] planner: 23.92s
-[time] format_plan: 4.52s
+[time] planner: 12.64s
+[time] format_plan: 3.07s
+[time] plan_reviewer: 29.90s
+[time] format_review: 1.93s
+[time] planner: 19.94s
+[time] format_plan: 4.11s
 **PLAN**
 
 - Step 1:
-	* sub-task: Data Cleaning and Preprocessing
+	* sub-task: Data Preprocessing and Feature Engineering
 	* agent in charge: engineer
 	* code_execution_timeout: 1800s
 	* instructions:
 		- Load the QM9 dataset from /home/node/work/data/qm9/qm9.csv.
-		- Parse the SMILES strings using RDKit.
-		- Identify the 83 duplicated SMILES (stereochemistry collapsed) and handle them by averaging their target property values (u0, gap, mu, homo, lumo) to ensure consistency.
-		- Calculate heavy atom counts and implicit hydrogen counts for each molecule using RDKit.
-		- Derive element count vectors, specific bond-type count vectors, and compute per-heavy-atom u0.
-		- Save the cleaned and augmented dataframe to data/cleaned_qm9.csv (or .pkl).
+		- Drop the four suspect _atom columns (u0_atom, u298_atom, h298_atom, g298_atom).
+		- Parse SMILES using RDKit, and derive per-heavy-atom energies from u0 and the SMILES-derived heavy atom count.
+		- Group the dataset by SMILES and average properties for any duplicates to ensure consistent labels.
+		- Calculate explicit size-normalization features (heavy atom counts, hydrogen counts) and RDKit-derived bond-type and functional-group counts.
+		- Perform an 80/10/10 train/validation/test split at the SMILES level using a fixed random seed to prevent data leakage.
+		- Persist the processed data, features, and splits to the data/ directory.
 
 - Step 2:
-	* sub-task: Baseline Additive Modeling
+	* sub-task: Additive Baseline Modeling
 	* agent in charge: engineer
 	* code_execution_timeout: 1800s
 	* instructions:
-		- Load the cleaned dataset from data/.
-		- Using the derived element and bond-type count vectors as additive features, train separate Ridge regression models to predict u0, gap, and mu.
-		- Calculate the residuals (actual minus predicted) for each of these three properties.
-		- Plot the residuals against heavy atom counts to verify size independence; if scaling remains for u0, normalize the residuals by the number of heavy atoms.
-		- Save the computed residuals, the additive features array, and the size-independence plots (e.g., data/residuals_vs_size.png) to the data/ directory.
+		- Load the processed data and splits from the data/ directory.
+		- Train a Ridge regression baseline (Group Contribution Method) to predict the primary target u0 using size features and RDKit group counts on the training set.
+		- Calculate residuals (u0_actual - u0_predicted) for train, validation, and test sets.
+		- Apply z-score standardization to these residuals.
+		- Evaluate the baseline performance (e.g., R-squared, MSE) and persist the baseline model, metrics, and standardized residuals to the data/ directory.
 
 - Step 3:
-	* sub-task: Non-Linear Baseline Comparison
+	* sub-task: Non-linear Baseline (Random Forest) Training
 	* agent in charge: engineer
 	* code_execution_timeout: 1800s
 	* instructions:
-		- Load the dataset with additive features and computed residuals from Step 2.
-		- Train a Random Forest or XGBoost regressor strictly on the same additive features to predict the computed residuals for u0, gap, and mu.
-		- Evaluate the performance (MSE, R2) of these models on a standard train/test split to establish a non-linear baseline.
-		- Save the performance metrics (e.g., data/baseline_metrics.txt) and baseline predictions to the data/ directory.
+		- Load the standardized residuals and RDKit descriptor splits from data/.
+		- Train a Random Forest model to predict the standardized residuals using the same RDKit descriptors utilized by the Ridge baseline.
+		- Evaluate model performance on the validation and test sets (MSE, R2).
+		- Save the trained Random Forest model, its predictions, and performance metrics to the data/ directory for later benchmarking.
 
 - Step 4:
-	* sub-task: Advanced Feature Engineering and Scaffold Split
+	* sub-task: GNN Architecture Definition and Training
 	* agent in charge: engineer
 	* code_execution_timeout: 1800s
 	* instructions:
-		- Load the cleaned dataset and the target residuals.
-		- Generate Morgan fingerprints (radius 2 or 3) and standard RDKit 2D descriptors for each molecule to capture extended topological motifs (replacing explicit graph construction).
-		- Perform a scaffold split using RDKit to divide the data into training, validation, and test sets to test generalization across molecular architectures.
-		- Apply StandardScaler to the residuals to stabilize downstream model training.
-		- Save the engineered features, the target scalers, and the split indices to the data/ directory.
+		- Load the SMILES splits and standardized residuals.
+		- Explicitly set OMP_NUM_THREADS=1 and check torch.cuda.mem_get_info() before allocating to GPU.
+		- Construct a Graph Isomorphism Network (GIN) or Gated Graph Convolutional Network (GGCN) with a Global Attention Pooling layer and a linear output layer.
+		- Define GNN input features explicitly: Node features must include atom type, degree, formal charge, aromaticity, and hydrogen count; Edge features must include bond type.
+		- Train the GNN on the standardized residuals using MSE loss and tight patience for early stopping based on validation loss.
+		- Save the trained GNN model, test set predictions, and training/evaluation metrics (MSE, R2) to data/.
 
 - Step 5:
-	* sub-task: Topological Model Training (GBM/PyTorch)
+	* sub-task: Latent Space Extraction and Dimensionality Reduction (Compute)
 	* agent in charge: engineer
 	* code_execution_timeout: 1800s
 	* instructions:
-		- Load the split datasets and topological features from Step 4.
-		- Implement an advanced non-linear model (e.g., XGBoost with GPU tree method or a pure PyTorch MLP). If using PyTorch, explicitly check torch.cuda.mem_get_info() to ensure the batch fits within the VRAM budget, falling back to CPU if unavailable.
-		- Train the model on the training set to predict the scaled residuals, using the validation set for early stopping to prevent overfitting.
-		- Evaluate the model on the test set, computing MSE and R2.
-		- Save the trained model, training curves, and test set predictions to the data/ directory.
+		- Load the trained GNN model and test set data from the data/ directory.
+		- Extract latent representations from the penultimate layer of the GNN for the test set molecules.
+		- Perform UMAP or t-SNE dimensionality reduction on these latent vectors.
+		- Save the raw latent vectors and their reduced UMAP/t-SNE embeddings to disk (e.g., as NumPy arrays or a CSV/Parquet file) in the data/ directory to prevent re-computation.
 
 - Step 6:
-	* sub-task: Attribution via SHAP
+	* sub-task: Latent Space Visualization and Correlation (Present)
 	* agent in charge: engineer
 	* code_execution_timeout: 1800s
 	* instructions:
-		- Load the trained topological model and the test set features from Step 5.
-		- Compute SHAP values for the Morgan fingerprints/descriptors to attribute the predicted non-additive residuals to specific topological sub-structures and functional groups.
-		- Calculate and aggregate the mean absolute SHAP values for each feature across the test set.
-		- Save the SHAP attribution arrays and a summary table of the most influential structural motifs (e.g., data/shap_motif_summary.csv) to the data/ directory.
+		- Load the saved latent embeddings, test set target properties (gap, mu, homo, lumo), and residuals from data/.
+		- Correlate the latent representations and their reduced projections with these intensive properties.
+		- Generate UMAP/t-SNE scatter plots colored by intensive properties.
+		- Compute and save correlation matrices/tables between latent dimensions and chemical properties to the data/ directory.
+		- Save all generated plots (e.g., PNG/PDF) to the data/ directory.
 
 - Step 7:
-	* sub-task: Motif Analysis and Correlation (Computation)
+	* sub-task: Subgraph Attribution and Statistical Validation
 	* agent in charge: engineer
 	* code_execution_timeout: 1800s
 	* instructions:
-		- Load the test set predictions, intensive properties (gap, mu, homo, lumo), and the SHAP motif summary from the previous steps.
-		- Compute correlation matrices (Pearson/Spearman) between the predicted energetic residuals and the intensive properties.
-		- Group molecules based on the presence of the highest-influence structural motifs identified by SHAP (e.g., specific conjugation patterns or rings).
-		- Calculate descriptive statistics (mean, variance) for gap and mu across these specific motif groups to quantify deviations from classical group-contribution theory.
-		- Save the correlation matrices and the aggregated motif statistics dataframes to data/.
+		- Load the trained GNN and test dataset. Ensure the model is end-to-end differentiable.
+		- Apply Integrated Gradients using the Captum library to compute node and edge attribution scores. Define the null graph baseline as having the identical topology but zeroed-out features.
+		- Normalize the resulting Integrated Gradients scores by molecule size.
+		- Identify highly influential molecular subgraphs/motifs based on peak attribution scores and group molecules into those containing these motifs versus those without.
+		- Perform statistical validation on these groups for properties like gap and mu. Include Levene's test for homoscedasticity; use ANOVA if assumptions hold, or Kruskal-Wallis if violated. Apply multiple-comparison corrections (e.g., Bonferroni or Benjamini-Hochberg).
+		- Save the statistical test outputs, motif attribution tables, and attribution visualizations to data/.
 
 - Step 8:
-	* sub-task: Motif Analysis and Correlation (Visualization)
-	* agent in charge: engineer
-	* code_execution_timeout: 1800s
-	* instructions:
-		- Load the correlation matrices and aggregated motif statistics from Step 7.
-		- Generate scatter plots visualizing the correlation between non-additive energy residuals and intensive properties (gap, mu).
-		- Create bar or box plots comparing the distributions of gap and mu across the high-influence motif groups.
-		- Save all generated plots (e.g., data/residual_gap_corr.png, data/motif_distributions.png) to the data/ directory.
-
-- Step 9:
-	* sub-task: Final Results Reporting
+	* sub-task: Final Synthesis and Results Reporting
 	* agent in charge: researcher
 	* instructions:
-		- Review all metrics, tables, and plots saved in the data/ directory by the engineer across the previous steps.
-		- Write a comprehensive Results section for the final research report.
-		- Discuss the performance of the baseline additive models and non-linear baseline in isolating extensive energetics versus the topological models.
-		- Interpret the SHAP attributions, identifying specifically which structural motifs (e.g., extended π-conjugation) govern non-additive energetic stability.
-		- Analyze the correlations between structural non-additivities and intensive properties (gap, mu), explicitly referencing the specific generated plots and statistics files by their paths in data/.
-		- Synthesize how these empirical findings successfully decouple extensive scaling from intrinsic electronic physics.
+		- Thoroughly review all generated metrics, statistical results, data files, and plots produced in the previous steps.
+		- Explicitly cross-reference the Ridge regression R-squared and residuals against the Random Forest and GNN performances to quantitatively assess the magnitude of non-additivity.
+		- Write a comprehensive Results section detailing how extensive scaling was decoupled via the additive baseline and analyzing the GNN's ability to model the non-linear electronic physics.
+		- Discuss the structure of the latent space and evaluate how well the "non-additivity" captured by the GNN correlates with intensive electronic properties (gap, mu).
+		- Provide a chemical interpretation of the specific structural motifs identified via Integrated Gradients, leveraging the ANOVA/Kruskal-Wallis results to support their statistical significance in modulating properties.
+		- Reference specific saved plots and data files by their names in the text to provide a fully supported final report.
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-▶ STEP 1/9: Data Cleaning and Preprocessing
+▶ STEP 1/8: Data Preprocessing and Feature Engineering
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[time] preflight: 0.01s
-[time] engineer: 59.50s
-[time] format_engineer: 4.37s
-[time] api_preflight: 0.34s
-[time] executor.subprocess: 2.82s (timeout=1800s, timed_out=False)
-[time] executor: 2.82s
-[time] execution_evaluator: 1.11s
-[time] image_reviewer: 0.00s
-[time] step_evaluator: 1.00s
-[time] run_step: 69.16s
-[time] adaptive_review: 5.32s
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-▶ STEP 2/9: Baseline Additive Modeling
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[time] preflight: 0.01s
-[time] engineer: 75.57s
-[time] format_engineer: 4.89s
-[time] api_preflight: 1.08s
-[time] executor.subprocess: 5.25s (timeout=1800s, timed_out=False)
-[time] executor: 5.25s
-[time] execution_evaluator: 1.04s
-[time] image_reviewer: 7.38s
-[time] engineer: 33.99s
-[time] format_engineer: 5.02s
-[time] api_preflight: 0.03s
-[time] executor.subprocess: 2.90s (timeout=1800s, timed_out=False)
-[time] executor: 2.91s
+[time] preflight: 0.05s
+[time] engineer: 92.61s
+[time] format_engineer: 5.65s
+[time] static_preflight: 0.00s
+[time] api_preflight: 0.74s
+[time] executor.subprocess: 0.21s (timeout=1800s, timed_out=False)
+[time] executor: 0.21s
 [time] execution_evaluator: 1.30s
-[time] image_reviewer: 6.59s
-[time] step_evaluator: 2.77s
-[time] run_step: 147.84s
-[time] adaptive_review: 5.98s
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-▶ STEP 3/9: Non-Linear Baseline Comparison
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[time] preflight: 0.02s
-[time] engineer: 47.42s
-[time] format_engineer: 5.39s
-[time] api_preflight: 0.06s
-[time] executor.subprocess: 3.83s (timeout=1800s, timed_out=False)
-[time] executor: 3.83s
-[time] execution_evaluator: 1.46s
-[time] image_reviewer: 3.87s
-[time] step_evaluator: 1.14s
-[time] run_step: 63.22s
-[time] adaptive_review: 5.40s
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-▶ STEP 4/9: Advanced Feature Engineering and Scaffold Split
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[time] preflight: 0.02s
-[time] engineer: 62.71s
-[time] format_engineer: 6.29s
-[time] api_preflight: 0.10s
-[time] executor.subprocess: 18.90s (timeout=1800s, timed_out=False)
-[time] executor: 18.91s
-[time] execution_evaluator: 1.00s
-[time] image_reviewer: 0.00s
-[time] step_evaluator: 1.02s
-[time] run_step: 90.05s
-[time] adaptive_review: 12.02s
-[time] replan_tail: 10.22s
-[time] format_tail: 3.22s
-[time] merge_plan: 0.00s
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-▶ STEP 5/9: Topological Model Training (GBM / PyTorch)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[time] preflight: 0.02s
-[time] engineer: 83.76s
-[time] format_engineer: 7.61s
-[time] api_preflight: 1.59s
-[time] executor.subprocess: 90.41s (timeout=1800s, timed_out=False)
-[time] executor: 90.41s
-[time] execution_evaluator: 1.10s
-[time] image_reviewer: 3.30s
-[time] step_evaluator: 1.32s
-[time] run_step: 189.11s
-[time] adaptive_review: 5.39s
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-▶ STEP 6/9: Attribution via SHAP
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[time] preflight: 0.02s
-[time] engineer: 96.23s
-[time] format_engineer: 5.06s
-[time] api_preflight: 0.03s
-[time] executor.subprocess: 1.07s (timeout=1800s, timed_out=False)
-[time] executor: 1.07s
-[time] execution_evaluator: 1.72s
-[time] engineer: 73.64s
-[time] format_engineer: 5.82s
-[time] api_preflight: 0.03s
-[time] executor.subprocess: 16.83s (timeout=1800s, timed_out=False)
-[time] executor: 16.83s
-[time] execution_evaluator: 1.65s
-[time] engineer: 44.09s
-[time] format_engineer: 6.57s
-[time] api_preflight: 0.03s
-[time] executor.subprocess: 36.39s (timeout=1800s, timed_out=False)
-[time] executor: 36.39s
-[time] execution_evaluator: 1.06s
-[time] image_reviewer: 0.00s
-[time] step_evaluator: 1.07s
-[time] run_step: 291.31s
-[time] adaptive_review: 6.08s
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-▶ STEP 7/9: Motif Analysis and Correlation (Computation)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[time] preflight: 0.01s
-[time] engineer: 87.29s
-[time] format_engineer: 5.19s
+[time] engineer: 82.52s
+[time] format_engineer: 3.88s
+[time] static_preflight: 0.00s
 [time] api_preflight: 0.02s
-[time] executor.subprocess: 1.34s (timeout=1800s, timed_out=False)
-[time] executor: 1.35s
-[time] execution_evaluator: 1.10s
+[time] executor.subprocess: 9.50s (timeout=1800s, timed_out=False)
+[time] executor: 9.50s
+[time] execution_evaluator: 1.25s
 [time] image_reviewer: 0.00s
-[time] step_evaluator: 1.00s
-[time] run_step: 95.97s
-[time] adaptive_review: 4.25s
+[time] step_evaluator: 1.19s
+[time] run_step: 198.94s
+[time] adaptive_review: 5.51s
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-▶ STEP 8/9: Motif Analysis and Correlation (Visualization)
+▶ STEP 2/8: Additive Baseline Modeling
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [time] preflight: 0.01s
-[time] engineer: 97.12s
-[time] format_engineer: 7.00s
+[time] engineer: 39.71s
+[time] format_engineer: 4.34s
+[time] static_preflight: 0.00s
 [time] api_preflight: 0.03s
-[time] executor.subprocess: 1.78s (timeout=1800s, timed_out=False)
-[time] executor: 1.78s
-[time] execution_evaluator: 1.03s
-[time] image_reviewer: 6.37s
-[time] step_evaluator: 1.01s
-[time] run_step: 114.36s
-[time] adaptive_review: 4.49s
+[time] executor.subprocess: 1.67s (timeout=1800s, timed_out=False)
+[time] executor: 1.67s
+[time] execution_evaluator: 1.12s
+[time] image_reviewer: 0.00s
+[time] step_evaluator: 2.19s
+[time] run_step: 49.09s
+[time] adaptive_review: 4.87s
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-▶ STEP 9/9: Final Results Reporting
+▶ STEP 3/8: Non-linear Baseline (Random Forest) Training
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[react_researcher] attempt 1: 5 tool round-trip(s), 6 LLM call(s), 5 artifact(s) read
-[time] react_researcher: 47.21s
-[time] researcher_step_evaluator: 3.49s
-[claim_auditor] step 9: 17 claim(s), 0 unsupported-hard, 0 advisory → pass
-[time] researcher_claim_auditor: 12.09s
-[time] run_step: 62.80s
+[time] preflight: 0.01s
+[time] engineer: 24.14s
+[time] format_engineer: 3.59s
+[time] static_preflight: 0.00s
+[time] api_preflight: 0.04s
+[time] executor.subprocess: 3.39s (timeout=1800s, timed_out=False)
+[time] executor: 3.39s
+[time] execution_evaluator: 1.02s
+[time] image_reviewer: 0.00s
+[time] step_evaluator: 1.08s
+[time] run_step: 33.29s
+[time] adaptive_review: 5.13s
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+▶ STEP 4/8: GNN Architecture Definition and Training
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[time] preflight: 0.01s
+[time] engineer: 121.34s
+[time] format_engineer: 9.41s
+[time] static_preflight: 0.00s
+[time] api_preflight: 0.99s
+[time] executor.subprocess: 288.05s (timeout=1800s, timed_out=False)
+[time] executor: 288.06s
+[time] execution_evaluator: 1.21s
+[time] image_reviewer: 0.00s
+[time] step_evaluator: 2.83s
+[time] run_step: 423.87s
+[time] adaptive_review: 5.13s
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+▶ STEP 5/8: Latent Space Extraction and Dimensionality Reduction (Compute)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[time] preflight: 0.02s
+[time] engineer: 50.48s
+[time] format_engineer: 7.59s
+[time] static_preflight: 0.00s
+[time] api_preflight: 0.04s
+[time] executor.subprocess: 49.27s (timeout=1800s, timed_out=False)
+[time] executor: 49.27s
+[time] execution_evaluator: 1.19s
+[time] image_reviewer: 0.00s
+[time] step_evaluator: 1.21s
+[time] run_step: 109.82s
+[time] adaptive_review: 8.14s
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+▶ STEP 6/8: Latent Space Visualization and Correlation (Present)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[time] preflight: 0.01s
+[time] engineer: 32.79s
+[time] format_engineer: 4.11s
+[time] static_preflight: 0.00s
+[time] api_preflight: 0.54s
+[time] executor.subprocess: 2.68s (timeout=1800s, timed_out=False)
+[time] executor: 2.69s
+[time] execution_evaluator: 1.05s
+[time] image_reviewer: 6.24s
+[time] step_evaluator: 1.45s
+[time] run_step: 48.90s
+[time] adaptive_review: 4.92s
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+▶ STEP 7/8: Subgraph Attribution and Statistical Validation
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[time] preflight: 0.01s
+[time] engineer: 148.86s
+[time] format_engineer: 12.06s
+[time] static_preflight: 0.01s
+[time] api_preflight: 0.09s
+[time] executor.subprocess: 78.47s (timeout=1800s, timed_out=False)
+[time] executor: 78.48s
+[time] execution_evaluator: 1.47s
+[time] engineer: 35.09s
+[time] format_engineer: 9.43s
+[time] static_preflight: 0.00s
+[time] api_preflight: 0.04s
+[time] executor.subprocess: 4.80s (timeout=1800s, timed_out=False)
+[time] executor: 4.80s
+[time] execution_evaluator: 3.13s
+[time] engineer: 87.12s
+[time] format_engineer: 9.85s
+[time] static_preflight: 0.00s
+[time] api_preflight: 0.04s
+[time] executor.subprocess: 8.02s (timeout=1800s, timed_out=False)
+[time] executor: 8.03s
+[time] execution_evaluator: 1.10s
+[time] image_reviewer: 6.02s
+[time] step_evaluator: 3.33s
+[time] engineer: 63.49s
+[time] format_engineer: 11.08s
+[time] static_preflight: 0.00s
+[time] api_preflight: 0.04s
+[time] executor.subprocess: 7.15s (timeout=1800s, timed_out=False)
+[time] executor: 7.15s
+[time] execution_evaluator: 1.85s
+[time] engineer: 75.38s
+[time] format_engineer: 7.92s
+[time] static_preflight: 0.00s
+[time] api_preflight: 0.04s
+[time] executor.subprocess: 9.37s (timeout=1800s, timed_out=False)
+[time] executor: 9.37s
+[time] execution_evaluator: 1.30s
+[time] image_reviewer: 6.48s
+[time] engineer: 114.95s
+[time] format_engineer: 11.65s
+[time] static_preflight: 0.00s
+[time] api_preflight: 0.04s
+[time] executor.subprocess: 7.35s (timeout=1800s, timed_out=False)
+[time] executor: 7.36s
+[time] execution_evaluator: 1.67s
+[time] engineer: 61.80s
+[time] format_engineer: 12.01s
+[time] static_preflight: 0.00s
+[time] api_preflight: 0.04s
+[time] executor.subprocess: 4.85s (timeout=1800s, timed_out=False)
+[time] executor: 4.85s
+[time] execution_evaluator: 1.68s
+[time] engineer: 94.56s
+[time] format_engineer: 11.35s
+[time] static_preflight: 0.00s
+[time] api_preflight: 0.04s
+[time] executor.subprocess: 10.16s (timeout=1800s, timed_out=False)
+[time] executor: 10.16s
+[time] execution_evaluator: 1.20s
+[time] image_reviewer: 4.11s
+[time] step_evaluator: 1.15s
+[time] run_step: 931.79s
+[time] adaptive_review: 4.12s
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+▶ STEP 8/8: Final Synthesis and Results Reporting
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[react_researcher] attempt 1: 0 tool round-trip(s), 2 LLM call(s), 0 artifact(s) read
+[time] react_researcher: 43.97s
+[time] researcher_step_evaluator: 4.85s
+[react_researcher] attempt 2: 1 tool round-trip(s), 2 LLM call(s), 3 artifact(s) read
+[time] react_researcher: 18.46s
+[time] researcher_step_evaluator: 3.78s
+[claim_auditor] step 8: 17 claim(s), 0 unsupported-hard, 0 advisory → pass
+[time] researcher_claim_auditor: 10.26s
+[time] run_step: 81.33s
 [time] adaptive_review: 0.00s
-[cmbagent_lg] deep_research COMPLETE (9/9 steps)
+[cmbagent_lg] deep_research COMPLETE (8/8 steps fulfilled)
+[cmbagent_lg] analysis_status.json written by the engine: status='complete'

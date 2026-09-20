@@ -1,17 +1,22 @@
 {
   "step_number": 6,
-  "sub_task": "Attribution via SHAP",
-  "attempt": 3,
+  "sub_task": "Latent Space Visualization and Correlation (Present)",
+  "attempt": 1,
   "files": [
     {
-      "path": "data/shap_motif_summary.csv",
-      "bytes": 287868,
-      "modified": "2026-09-20T01:22:00.619726Z"
+      "path": "data/latent_128d_property_correlations.csv",
+      "bytes": 14243,
+      "modified": "2026-09-20T19:51:22.015764Z"
     },
     {
-      "path": "data/shap_values.npz",
-      "bytes": 14698219,
-      "modified": "2026-09-20T01:22:00.611726Z"
+      "path": "data/tsne_property_correlations.csv",
+      "bytes": 571,
+      "modified": "2026-09-20T19:51:21.734763Z"
+    },
+    {
+      "path": "data/tsne_property_scatter.png",
+      "bytes": 3328480,
+      "modified": "2026-09-20T19:51:23.180774Z"
     }
   ]
 }

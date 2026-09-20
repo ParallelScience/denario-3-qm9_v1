@@ -1,0 +1,12 @@
+{
+  "needs_revision": true,
+  "issues": [
+    "The y-axes are missing labels and units (e.g., gap in eV, mu in Debye).",
+    "The x-axes are missing labels explaining what 'False' and 'True' represent (e.g., 'Contains Motif')."
+  ],
+  "suggestions": [
+    "Add appropriate y-axis labels with units to each subplot (e.g., `ax.set_ylabel('gap (eV)')` or `ax.set_ylabel('mu (Debye)')`).",
+    "Add an x-axis label to each subplot (e.g., `ax.set_xlabel('Contains Motif')`)."
+  ],
+  "summary": "The boxplots clearly show the property distributions, but lack axis labels and units."
+}
