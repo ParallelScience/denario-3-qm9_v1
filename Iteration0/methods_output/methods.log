@@ -97,38 +97,39 @@ In <METHODS> put the methods you have generated.
 \begin{METHODS}
 1. **Data Preprocessing and Feature Engineering**:
    - Load the QM9 dataset and use RDKit to parse SMILES strings.
-   - Calculate the number of heavy atoms and implicit hydrogens for each molecule to derive total atom counts.
-   - Generate a baseline additive feature set by counting occurrences of specific bond types (e.g., C-C, C=C, C-O, C=O, C-N, C#N) and functional groups (e.g., rings, specific heteroatom motifs) using RDKit’s substructure matching.
-   - Compute the target variable for the baseline: internal energy at 0 K (`u0`).
+   - Calculate the number of heavy atoms and total hydrogen count for each molecule to derive size-normalization factors.
+   - Generate a "Group-Contribution" feature matrix by counting occurrences of specific bond types (e.g., C-C, C=C, C-O, C=O, C-N, C#N) and functional groups (e.g., rings, aromaticity, heteroatom counts) using RDKit’s substructure matching.
 
-2. **Baseline Additive Modeling**:
-   - Train a Ridge regression model to predict `u0` using the bond-type and functional-group counts as predictors.
-   - Calculate the residuals (actual `u0` minus predicted `u0`) for the entire dataset. These residuals represent the non-additive energetic contributions that the linear group-contribution model fails to capture.
+2. **Baseline Additive Model Construction**:
+   - Train a Ridge regression model to predict `u0` using the bond-type and functional-group counts as independent variables.
+   - Calculate the residuals for each molecule: `residual = u0_actual - u0_predicted_by_linear_model`.
+   - Validate the baseline by checking the R² score to ensure the additive model captures the expected extensive scaling, leaving only non-additive electronic effects in the residuals.
 
 3. **Graph Neural Network (GNN) Architecture**:
-   - Construct a Graph Neural Network (e.g., a Message Passing Neural Network) where nodes represent atoms (encoded by atomic number and degree) and edges represent bond types.
-   - Configure the GNN to predict the residuals calculated in Step 2, rather than the raw `u0` values, to force the model to focus exclusively on non-additive electronic effects.
+   - Construct a Message Passing Neural Network (MPNN) where each molecule is represented as a graph (nodes = atoms, edges = bonds).
+   - Initialize node features with atomic number, hybridization, and degree; initialize edge features with bond type and aromaticity.
+   - Configure the GNN to predict the `residual` values calculated in Step 2, ensuring the model learns the non-linear, non-additive energetic contributions.
 
-4. **GNN Training and Validation**:
-   - Split the dataset into training, validation, and test sets.
-   - Train the GNN using a Mean Squared Error (MSE) loss function on the residuals.
-   - Monitor performance on the validation set to prevent overfitting, ensuring the model captures structural motifs (like conjugation or ring strain) that correlate with the residuals.
+4. **GNN Training and Optimization**:
+   - Split the dataset into training, validation, and test sets (80/10/10).
+   - Train the GNN using Mean Squared Error (MSE) loss on the residuals.
+   - Use early stopping based on validation loss to prevent overfitting to the specific molecular configurations in the training set.
 
-5. **Attribution via Integrated Gradients**:
-   - Apply the Integrated Gradients (IG) technique to the trained GNN to attribute the predicted residual values back to individual atoms and bonds within each molecule.
-   - Aggregate these IG scores to identify specific subgraphs (e.g., extended π-conjugated systems or strained ring-oxygen configurations) that contribute most significantly to the non-additive energy residuals.
+5. **Attribution of Non-Additive Energetics**:
+   - Apply Integrated Gradients (IG) to the trained GNN to attribute the predicted residual value back to individual atoms and bonds within each molecule.
+   - Aggregate these IG scores to identify specific subgraphs (e.g., extended conjugated systems, strained ring-oxygen motifs) that contribute most significantly to the non-additive energy residuals.
 
 6. **Correlation with Intensive Properties**:
-   - Extract the "non-additivity scores" (the GNN-predicted residuals) for each molecule.
-   - Perform a correlation analysis between these scores and intensive properties (`gap`, `mu`, `homo`, `lumo`) to determine if the non-additive energetic stability is physically linked to electronic properties.
+   - Extract the latent representations from the penultimate layer of the GNN for all molecules.
+   - Perform a correlation analysis between these latent vectors and intensive properties (`gap`, `mu`, `homo`, `lumo`) to determine if the "non-additivity" captured by the GNN aligns with known electronic descriptors.
 
-7. **Statistical Analysis of Structural Motifs**:
-   - Group molecules by their high-influence subgraphs identified in Step 5.
-   - Compare the mean `gap` and `mu` values across these groups to quantify how specific structural motifs deviate from classical group-contribution theory.
+7. **Statistical Validation of Structural Motifs**:
+   - Group molecules by the presence of high-influence subgraphs identified in Step 5.
+   - Perform a statistical comparison (e.g., t-tests or ANOVA) of the `gap` and `mu` values between molecules containing these motifs versus those that do not, confirming the physical relevance of the GNN-identified non-additive features.
 
-8. **Final Evaluation**:
-   - Assess the model's ability to explain the variance in `u0` that remains after accounting for linear additivity.
-   - Summarize the findings by mapping the identified "non-additivity" motifs to their respective impacts on molecular electronic stability.
+8. **Final Synthesis**:
+   - Compile the results to demonstrate the decoupling of extensive scaling from non-linear electronic physics.
+   - Summarize the findings by mapping the "non-additivity scores" to specific chemical motifs, providing a quantitative assessment of how these motifs deviate from classical group-contribution theory.
 \end{METHODS}
 
 
@@ -206,54 +207,55 @@ Idea:
 Current research plan:
 1. **Data Preprocessing and Feature Engineering**:
    - Load the QM9 dataset and use RDKit to parse SMILES strings.
-   - Calculate the number of heavy atoms and implicit hydrogens for each molecule to derive total atom counts.
-   - Generate a baseline additive feature set by counting occurrences of specific bond types (e.g., C-C, C=C, C-O, C=O, C-N, C#N) and functional groups (e.g., rings, specific heteroatom motifs) using RDKit’s substructure matching.
-   - Compute the target variable for the baseline: internal energy at 0 K (`u0`).
+   - Calculate the number of heavy atoms and total hydrogen count for each molecule to derive size-normalization factors.
+   - Generate a "Group-Contribution" feature matrix by counting occurrences of specific bond types (e.g., C-C, C=C, C-O, C=O, C-N, C#N) and functional groups (e.g., rings, aromaticity, heteroatom counts) using RDKit’s substructure matching.
 
-2. **Baseline Additive Modeling**:
-   - Train a Ridge regression model to predict `u0` using the bond-type and functional-group counts as predictors.
-   - Calculate the residuals (actual `u0` minus predicted `u0`) for the entire dataset. These residuals represent the non-additive energetic contributions that the linear group-contribution model fails to capture.
+2. **Baseline Additive Model Construction**:
+   - Train a Ridge regression model to predict `u0` using the bond-type and functional-group counts as independent variables.
+   - Calculate the residuals for each molecule: `residual = u0_actual - u0_predicted_by_linear_model`.
+   - Validate the baseline by checking the R² score to ensure the additive model captures the expected extensive scaling, leaving only non-additive electronic effects in the residuals.
 
 3. **Graph Neural Network (GNN) Architecture**:
-   - Construct a Graph Neural Network (e.g., a Message Passing Neural Network) where nodes represent atoms (encoded by atomic number and degree) and edges represent bond types.
-   - Configure the GNN to predict the residuals calculated in Step 2, rather than the raw `u0` values, to force the model to focus exclusively on non-additive electronic effects.
+   - Construct a Message Passing Neural Network (MPNN) where each molecule is represented as a graph (nodes = atoms, edges = bonds).
+   - Initialize node features with atomic number, hybridization, and degree; initialize edge features with bond type and aromaticity.
+   - Configure the GNN to predict the `residual` values calculated in Step 2, ensuring the model learns the non-linear, non-additive energetic contributions.
 
-4. **GNN Training and Validation**:
-   - Split the dataset into training, validation, and test sets.
-   - Train the GNN using a Mean Squared Error (MSE) loss function on the residuals.
-   - Monitor performance on the validation set to prevent overfitting, ensuring the model captures structural motifs (like conjugation or ring strain) that correlate with the residuals.
+4. **GNN Training and Optimization**:
+   - Split the dataset into training, validation, and test sets (80/10/10).
+   - Train the GNN using Mean Squared Error (MSE) loss on the residuals.
+   - Use early stopping based on validation loss to prevent overfitting to the specific molecular configurations in the training set.
 
-5. **Attribution via Integrated Gradients**:
-   - Apply the Integrated Gradients (IG) technique to the trained GNN to attribute the predicted residual values back to individual atoms and bonds within each molecule.
-   - Aggregate these IG scores to identify specific subgraphs (e.g., extended π-conjugated systems or strained ring-oxygen configurations) that contribute most significantly to the non-additive energy residuals.
+5. **Attribution of Non-Additive Energetics**:
+   - Apply Integrated Gradients (IG) to the trained GNN to attribute the predicted residual value back to individual atoms and bonds within each molecule.
+   - Aggregate these IG scores to identify specific subgraphs (e.g., extended conjugated systems, strained ring-oxygen motifs) that contribute most significantly to the non-additive energy residuals.
 
 6. **Correlation with Intensive Properties**:
-   - Extract the "non-additivity scores" (the GNN-predicted residuals) for each molecule.
-   - Perform a correlation analysis between these scores and intensive properties (`gap`, `mu`, `homo`, `lumo`) to determine if the non-additive energetic stability is physically linked to electronic properties.
+   - Extract the latent representations from the penultimate layer of the GNN for all molecules.
+   - Perform a correlation analysis between these latent vectors and intensive properties (`gap`, `mu`, `homo`, `lumo`) to determine if the "non-additivity" captured by the GNN aligns with known electronic descriptors.
 
-7. **Statistical Analysis of Structural Motifs**:
-   - Group molecules by their high-influence subgraphs identified in Step 5.
-   - Compare the mean `gap` and `mu` values across these groups to quantify how specific structural motifs deviate from classical group-contribution theory.
+7. **Statistical Validation of Structural Motifs**:
+   - Group molecules by the presence of high-influence subgraphs identified in Step 5.
+   - Perform a statistical comparison (e.g., t-tests or ANOVA) of the `gap` and `mu` values between molecules containing these motifs versus those that do not, confirming the physical relevance of the GNN-identified non-additive features.
 
-8. **Final Evaluation**:
-   - Assess the model's ability to explain the variance in `u0` that remains after accounting for linear additivity.
-   - Summarize the findings by mapping the identified "non-additivity" motifs to their respective impacts on molecular electronic stability.
+8. **Final Synthesis**:
+   - Compile the results to demonstrate the decoupling of extensive scaling from non-linear electronic physics.
+   - Summarize the findings by mapping the "non-additivity scores" to specific chemical motifs, providing a quantitative assessment of how these motifs deviate from classical group-contribution theory.
 
 Suggestions:
 
 
         Suggestion #1:
-        content='The research plan is well-structured and logically sound. To further strengthen the methodology and ensure the results are robust, I suggest the following refinements:\n\n1. **Refine the Baseline Model**: Instead of a simple Ridge regression, consider using a **Group Contribution Method (GCM)** approach that explicitly accounts for the number of atoms as a primary feature. Since `u0` is highly extensive, the Ridge model should include the total atom count (or heavy atom count) as a feature to ensure the residuals are truly capturing non-additive effects rather than just scaling errors.\n2. **GNN Input Features**: In Step 3, ensure the node features include more than just atomic number and degree. Incorporating hybridization (e.g., sp, sp2, sp3) and aromaticity flags will significantly help the GNN capture the electronic effects (like conjugation) that you are targeting.\n3. **Normalization of Residuals**: Since `u0` is extensive, the residuals might still exhibit some scaling behavior if the baseline model is not perfectly calibrated. Consider checking if the residuals are independent of molecule size (e.g., plotting residuals vs. number of heavy atoms). If they are not, you may need to normalize the residuals by the number of heavy atoms before training the GNN.\n4. **Baseline Comparison**: To demonstrate the value of the GNN, add a step to compare the GNN\'s performance against a non-linear baseline (e.g., a Random Forest or XGBoost) trained on the same bond/group counts. This will clarify whether the GNN\'s advantage comes from the graph topology or simply from capturing non-linearities in the features.\n5. **Integrated Gradients Validation**: When using Integrated Gradients, ensure you use a "neutral" baseline (e.g., a graph of zeros or a disconnected set of atoms) to ensure the attribution is meaningful.\n6. **Data Splitting**: Ensure the train/test split is performed randomly but consider a scaffold split (using RDKit) to ensure the model generalizes to unseen molecular architectures, which is critical for validating that the model has learned chemical motifs rather than just memorizing specific molecules.' additional_kwargs={} response_metadata={} id='98efea64-4ca5-4447-8f58-1eeb504521d9'
+        content='The research plan is well-structured and scientifically sound. To further strengthen the methodology and ensure robustness, I suggest the following refinements:\n\n1. **Refine the Baseline Model (Step 2)**: Instead of a simple Ridge regression, consider using a **Group Contribution Method (GCM)** approach that explicitly includes the number of heavy atoms as a feature. Since `u0` is highly extensive, the linear model should be `u0 ~ N_atoms + sum(count_i * coefficient_i)`. This ensures the baseline captures the "size" component explicitly, making the residuals truly representative of non-additive electronic effects.\n\n2. **GNN Input Normalization (Step 3)**: Since the GNN is predicting residuals (which can be positive or negative), ensure the target `residual` is standardized (mean=0, std=1) before training. This is standard practice for regression tasks in GNNs to stabilize gradient descent.\n\n3. **Address Data Duplicates (Step 1)**: The data description notes 83 duplicated SMILES. Before training, explicitly handle these by either averaging their properties or removing them to prevent the model from learning to memorize specific `mol_id` mappings rather than chemical features.\n\n4. **Interpretability Check (Step 5)**: Integrated Gradients can be sensitive to the choice of the "baseline" input (the "all-zero" graph). Ensure you use a meaningful baseline (e.g., a graph with zeroed-out node/edge features) and consider normalizing the IG scores by the molecule size to ensure that larger molecules don\'t disproportionately dominate the attribution results.\n\n5. **Validation of "Non-Additivity" (Step 6/7)**: To verify that the GNN is actually capturing non-additive physics rather than just "fixing" the linear model\'s errors, compare the GNN\'s performance on the residuals against a non-linear baseline (e.g., a Random Forest or XGBoost trained on the same RDKit descriptors used in Step 1). If the GNN significantly outperforms these, it provides stronger evidence that the graph-based topological features (like conjugation pathways) are indeed the source of the non-additivity.' additional_kwargs={} response_metadata={} id='a6d3e43f-af47-4dba-b4ab-0f6127d8f2b5'
 
 
 
         Suggestion #2:
-        content='The research plan is well-structured and scientifically sound. To further strengthen the methodology and ensure robustness, consider the following refinements:\n\n1. **Refine the Baseline Model**: Instead of a simple Ridge regression, consider using a more robust baseline that accounts for the size-extensivity explicitly. Since `u0` scales linearly with the number of atoms, including the total heavy atom count as a feature in your Ridge regression (or using a Lasso model to perform feature selection on the bond/group counts) will provide a cleaner "non-additive" residual for the GNN to learn.\n\n2. **GNN Input Features**: Ensure the node features in your GNN include more than just atomic number and degree. Adding hybridization state (e.g., sp, sp2, sp3) and formal charge will significantly help the GNN capture the electronic effects (like conjugation and ring strain) that you are targeting.\n\n3. **Normalization of Residuals**: Since the residuals represent energy, they might have a wide range. Consider scaling the residuals (e.g., using `StandardScaler`) before training the GNN to improve convergence and stability.\n\n4. **Addressing Duplicates**: The data description notes 83 duplicated SMILES. Before training, it is advisable to either drop these duplicates or average their properties to prevent the model from learning inconsistent targets for identical inputs.\n\n5. **Validation of Attribution**: To ensure the Integrated Gradients (IG) results are meaningful, perform a sanity check by visualizing the IG scores for a few known cases (e.g., comparing a simple alkane vs. a highly conjugated system). This will confirm that the GNN is indeed picking up on the intended structural motifs rather than noise.\n\n6. **Baseline Comparison**: To quantify the "value-add" of the GNN, compare the GNN\'s performance on the residuals against a non-linear baseline (like a Random Forest or XGBoost) trained on the same RDKit descriptors. This will demonstrate whether the GNN\'s graph-based representation is truly superior to standard fingerprint-based machine learning for capturing non-additive effects.' additional_kwargs={} response_metadata={} id='3218979f-1517-45e6-b682-741defe6d3e6'
+        content='The research plan is well-structured and scientifically sound. To further strengthen the implementation and ensure the results are robust, I suggest the following refinements:\n\n1. **Refine the Baseline Model (Step 2):**\n   - Instead of a simple Ridge regression, consider using a **weighted linear model** where the target is `u0 / N_heavy_atoms` (intensive energy) or include `N_heavy_atoms` as a feature. Since `u0` is highly extensive, a raw regression might struggle to capture the baseline scaling accurately.\n   - Ensure the "Group-Contribution" features are normalized or standardized, as counts of different functional groups can vary by orders of magnitude.\n\n2. **GNN Architecture Considerations (Step 3):**\n   - Given that the goal is to predict residuals (which can be positive or negative), ensure the GNN output layer has no activation function (linear).\n   - Since you are working with SMILES and no 3D coordinates, consider using a **Graph Isomorphism Network (GIN)** or a **Gated Graph Convolutional Network (GGCN)**, as these are generally more effective at capturing the topological nuances (like conjugation pathways) required for your objective.\n\n3. **Integrated Gradients Implementation (Step 5):**\n   - Integrated Gradients on graphs can be sensitive to the choice of the "baseline" input (e.g., a graph of all zeros or a graph with only carbon atoms). Explicitly define the baseline graph to be used for the IG calculation to ensure the attribution scores are interpretable.\n\n4. **Data Leakage and Normalization (General):**\n   - When calculating residuals in Step 2, ensure the Ridge regression is trained only on the training set, and residuals for the validation/test sets are calculated using the model trained on the training set to prevent data leakage.\n   - For Step 6, consider using **UMAP or t-SNE** to visualize the latent space of the GNN. This will provide a more intuitive check on whether the "non-additivity" clusters by chemical family (e.g., aromatic vs. aliphatic).\n\n5. **Handling Duplicates:**\n   - The dataset contains 83 duplicated SMILES. Before training, it is recommended to either drop these duplicates or average their properties to avoid the model learning to "memorize" inconsistent labels for the same structure.' additional_kwargs={} response_metadata={} id='563bcdb6-e2fe-4ada-aded-e8368ec478ea'
 
 
 
         Suggestion #3:
-        content='The research plan is well-structured and scientifically sound. To improve its robustness and clarity, I suggest the following refinements:\n\n1. **Refine the Baseline Model (Step 1 & 2):** Instead of manually selecting bond types and functional groups, consider using a more comprehensive set of descriptors for the baseline. Using RDKit\'s `Fragments` or `MACCS` keys alongside atom counts will provide a more rigorous "additive" baseline, ensuring the GNN is truly learning higher-order non-linear effects rather than just missing simple structural features.\n\n2. **GNN Input Normalization (Step 3):** Since the residuals are derived from `u0` (which is extensive), ensure that the GNN is not inadvertently learning size-dependent patterns that the linear model missed. You might consider normalizing the residuals by the number of heavy atoms before training the GNN, or explicitly including the heavy atom count as a global feature in the GNN input to ensure the model focuses on *intensive* non-additivity.\n\n3. **Integrated Gradients Baseline (Step 5):** When applying Integrated Gradients, the choice of the "baseline" input (the "zero" reference) is critical. For molecular graphs, a common practice is to use a "null" graph (e.g., a graph with no edges or atoms with zeroed-out features). Explicitly define this baseline to ensure the attribution scores are physically meaningful.\n\n4. **Validation of Non-Additivity (Step 6 & 7):** To strengthen the claim that the GNN is capturing "non-additive electronic physics," compare the GNN\'s performance on the residuals against a non-linear baseline (e.g., a Random Forest or XGBoost trained on the same RDKit descriptors). This will help quantify how much of the residual variance is captured specifically by the graph topology versus general non-linear feature interactions.\n\n5. **Handling Duplicates:** The data description notes 83 duplicated SMILES. Before training, ensure these are handled (e.g., by averaging their properties or removing them) to prevent the model from learning to memorize specific `u0` values for identical structures.' additional_kwargs={} response_metadata={} id='08197342-d1c5-45a5-8976-6ec2614c18cf'
+        content='The research plan is well-structured and scientifically sound. To further strengthen the implementation and ensure the results are robust, I suggest the following refinements:\n\n1. **Refine the Baseline Model (Step 2):** Instead of simple Ridge regression, consider using a **Lasso (L1) regression** or a **Random Forest** as the baseline. Since you are looking for "non-additive" residuals, a slightly more powerful baseline ensures that the GNN is truly learning complex electronic effects rather than just correcting for a poorly tuned linear model. Additionally, ensure the baseline includes the total number of atoms as a feature to explicitly account for the size-extensivity mentioned in the data description.\n\n2. **GNN Architecture Considerations (Step 3):** Since you are predicting a scalar residual (a continuous value), ensure the MPNN uses a **Global Readout layer** (e.g., Set2Set or Global Attention Pooling) rather than simple mean/sum pooling. This is crucial for capturing the global electronic effects (like conjugation) that you aim to study.\n\n3. **Normalization of Residuals (Step 4):** The residuals of `u0` might still have a scale dependency. Consider standardizing the residuals (z-score normalization) before training the GNN to ensure stable gradient descent.\n\n4. **Integrated Gradients Implementation (Step 5):** Integrated Gradients can be sensitive to the choice of the "baseline" input (the "black" image equivalent for graphs). For molecular graphs, use a "null" graph (a graph with no edges or zeroed-out features) as the baseline for the IG calculation to ensure the attribution is meaningful.\n\n5. **Addressing Stereochemistry/Duplicates (Data Preprocessing):** Given the 83 duplicated SMILES, ensure that your train/val/test split is **molecule-aware** (i.e., ensure all instances of a specific SMILES string end up in the same split) to prevent data leakage.\n\n6. **Validation of "Non-Additivity" (Step 7):** To make the statistical validation more rigorous, compare the GNN\'s performance on the residuals against a "null" model (e.g., a simple MLP on the same graph features). This will help demonstrate that the *graph-based* message passing is specifically capturing the spatial/topological dependencies (like conjugation) rather than just learning a better non-linear function of the atom counts.' additional_kwargs={} response_metadata={} id='8f33d888-4a6f-482c-855c-be8876c21051'
 
 
 
@@ -269,42 +271,44 @@ In <METHODS> put the new research methodology. Reply with the new research metho
 
 ###### RESPONSE [model: gemini-3.1-flash-lite-preview] ########
 \begin{METHODS}
-1. **Data Cleaning and Preprocessing**:
+1. **Data Preprocessing and Quality Control**:
    - Load the QM9 dataset and parse SMILES using RDKit.
-   - Identify and handle the 83 duplicated SMILES by averaging their property values to ensure consistent targets.
-   - Calculate heavy atom counts and implicit hydrogen counts for each molecule.
+   - Identify and handle the 83 duplicated SMILES by averaging their property values to ensure consistent labels.
+   - Perform a molecule-aware train/validation/test split (80/10/10) to ensure all instances of the same SMILES reside in the same partition, preventing data leakage.
+   - Calculate heavy atom counts and hydrogen counts to be used as explicit size-normalization features.
 
-2. **Baseline Additive Modeling**:
-   - Generate a comprehensive additive feature set including total heavy atom count, RDKit fragment descriptors (e.g., MACCS keys), and specific bond-type counts.
-   - Train a Ridge regression model to predict `u0` using these features.
-   - Calculate the residuals (actual `u0` minus predicted `u0`).
-   - Verify that residuals are independent of molecule size by plotting them against the heavy atom count; if scaling remains, normalize residuals by the number of heavy atoms.
+2. **Baseline Additive Model Construction**:
+   - Construct a Group Contribution Method (GCM) baseline using Ridge regression. The model should predict `u0` using `N_heavy_atoms` and counts of bond types/functional groups as independent variables.
+   - Train the baseline only on the training set.
+   - Calculate residuals (`u0_actual - u0_predicted`) for all sets. Standardize these residuals (z-score normalization) to ensure stable training for the GNN.
 
-3. **Non-Linear Baseline Comparison**:
-   - Train a Random Forest or XGBoost regressor on the same additive feature set used in Step 2 to predict the residuals.
-   - Use this as a performance benchmark to quantify whether the GNN's graph-based representation provides superior predictive power over standard descriptor-based non-linear models.
+3. **GNN Architecture Design**:
+   - Implement a Graph Isomorphism Network (GIN) or Gated Graph Convolutional Network (GGCN) to capture topological nuances.
+   - Initialize node features (atomic number, hybridization, degree) and edge features (bond type, aromaticity).
+   - Incorporate a Global Attention Pooling layer to effectively aggregate global electronic effects like conjugation.
+   - Ensure the output layer is linear (no activation) to accommodate the range of the standardized residuals.
 
-4. **GNN Architecture Design**:
-   - Construct a Message Passing Neural Network (MPNN).
-   - Define node features to include atomic number, degree, hybridization state (sp, sp2, sp3), aromaticity flags, and formal charge.
-   - Include the heavy atom count as a global feature to ensure the model focuses on intensive non-additive electronic effects.
+4. **GNN Training and Benchmarking**:
+   - Train the GNN on the standardized residuals using MSE loss.
+   - Implement early stopping based on validation loss.
+   - To validate the GNN's efficacy, train a non-linear baseline (e.g., Random Forest or MLP) on the same RDKit descriptors used in Step 1. Compare the GNN’s performance against this baseline to confirm that graph-based message passing captures unique topological dependencies.
 
-5. **GNN Training and Validation**:
-   - Perform a scaffold split (using RDKit) to divide the dataset into training, validation, and test sets to ensure generalization to unseen molecular architectures.
-   - Scale the residuals using `StandardScaler` to improve training stability.
-   - Train the GNN to predict the scaled residuals using MSE loss, monitoring validation performance to prevent overfitting.
+5. **Attribution of Non-Additive Energetics**:
+   - Apply Integrated Gradients (IG) to the trained GNN.
+   - Define the baseline input as a "null" graph (zeroed-out node/edge features).
+   - Normalize IG scores by molecule size to ensure that attribution is comparable across molecules of different scales.
 
-6. **Attribution via Integrated Gradients**:
-   - Apply Integrated Gradients (IG) to the trained GNN to attribute residual values to specific atoms and bonds.
-   - Use a "null" graph (a graph with zeroed-out features and no edges) as the baseline reference for the IG calculation to ensure attribution scores are physically meaningful.
+6. **Latent Space Analysis**:
+   - Extract latent representations from the penultimate layer of the GNN.
+   - Use UMAP or t-SNE to visualize the latent space, checking for clusters corresponding to chemical families (e.g., aromatic vs. aliphatic).
+   - Correlate these latent vectors with intensive properties (`gap`, `mu`, `homo`, `lumo`) to determine if the "non-additivity" aligns with known electronic descriptors.
 
-7. **Correlation with Intensive Properties**:
-   - Extract the GNN-predicted residuals for each molecule.
-   - Perform a correlation analysis between these residuals and intensive properties (`gap`, `mu`, `homo`, `lumo`) to determine if the non-additive energetic stability is physically linked to electronic properties.
+7. **Statistical Validation of Structural Motifs**:
+   - Group molecules based on high-influence subgraphs identified via IG scores.
+   - Perform statistical tests (e.g., ANOVA) to compare `gap` and `mu` values between molecules containing these motifs versus those that do not, confirming the physical relevance of the GNN-identified features.
 
-8. **Structural Motif Analysis and Final Evaluation**:
-   - Group molecules by high-influence subgraphs identified via IG scores.
-   - Compare mean `gap` and `mu` values across these groups to quantify how specific motifs (e.g., conjugation, ring strain) deviate from classical group-contribution theory.
-   - Summarize the findings by mapping the identified "non-additivity" motifs to their respective impacts on molecular electronic stability.
+8. **Final Synthesis**:
+   - Compile findings to demonstrate the decoupling of extensive scaling from non-linear electronic physics.
+   - Map "non-additivity scores" to specific chemical motifs, providing a quantitative assessment of how these motifs deviate from classical group-contribution theory.
 \end{METHODS}
 
