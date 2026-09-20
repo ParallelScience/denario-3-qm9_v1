@@ -1,0 +1,10 @@
+{
+  "needs_revision": true,
+  "issues": [
+    "The 'u0' and 'u0_norm' subplots contain an extreme outlier (y > 35) that compresses the rest of the data to a flat line at y=0, making it impossible to verify size independence for the vast majority of molecules."
+  ],
+  "suggestions": [
+    "Set y-axis limits (e.g., using `plt.ylim()`) based on percentiles (like the 1st and 99th) to exclude extreme outliers and reveal the distribution of the bulk of the residuals."
+  ],
+  "summary": "The plots for u0 and u0_norm are unreadable due to an extreme outlier squashing the y-axis scale."
+}

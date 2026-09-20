@@ -1,0 +1,35 @@
+# returncode=0 timed_out=False elapsed=1.7768s
+--- stdout ---
+Loading precomputed statistics from Step 7...
+
+Precomputed Correlations:
+    Residual Property  Pearson_r     Pearson_p  Spearman_r    Spearman_p
+ res_u0_pred      gap  -0.198104 1.757990e-118   -0.169777  4.456753e-87
+ res_u0_pred       mu  -0.155086  8.476132e-73   -0.194855 1.287227e-114
+ res_u0_pred     homo   0.149754  5.983857e-68    0.236825 6.306255e-170
+ res_u0_pred     lumo  -0.139820  2.195944e-59   -0.081715  2.887139e-21
+res_gap_pred      gap   0.474455  0.000000e+00    0.467191  0.000000e+00
+res_gap_pred       mu  -0.038926  6.674615e-06   -0.019396  2.486422e-02
+res_gap_pred     homo  -0.356456  0.000000e+00   -0.390474  0.000000e+00
+res_gap_pred     lumo   0.335739  0.000000e+00    0.328562  0.000000e+00
+ res_mu_pred      gap  -0.049065  1.362045e-08   -0.044225  3.097762e-07
+ res_mu_pred       mu   0.611469  0.000000e+00    0.605072  0.000000e+00
+ res_mu_pred     homo   0.023453  6.671181e-03   -0.047034  5.245846e-08
+ res_mu_pred     lumo  -0.040087  3.514680e-06   -0.076667  6.676854e-19
+
+Top 5 motifs selected for visualization: ['fr_ether', 'MorganFP_314', 'fr_ketone_Topliss', 'MorganFP_807', 'fr_ketone']
+
+Loading predictions and QM9 dataset for plotting...
+Merging datasets on SMILES...
+
+Generating scatter plots...
+Saved data/residual_gap_corr.png
+
+--- Motif Distribution Analysis ---
+Loading engineered features to reconstruct test set motif presence...
+
+Generating bar and box plots...
+Saved data/motif_distributions.png
+
+--- stderr ---
+

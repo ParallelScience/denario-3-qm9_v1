@@ -1,0 +1,22 @@
+{
+  "step_number": 2,
+  "sub_task": "Baseline Additive Modeling",
+  "attempt": 2,
+  "files": [
+    {
+      "path": "data/additive_features.npz",
+      "bytes": 9634752,
+      "modified": "2026-09-20T01:10:36.558134Z"
+    },
+    {
+      "path": "data/residuals.csv",
+      "bytes": 13427346,
+      "modified": "2026-09-20T01:10:36.543134Z"
+    },
+    {
+      "path": "data/residuals_vs_size.png",
+      "bytes": 687571,
+      "modified": "2026-09-20T01:10:35.978130Z"
+    }
+  ]
+}

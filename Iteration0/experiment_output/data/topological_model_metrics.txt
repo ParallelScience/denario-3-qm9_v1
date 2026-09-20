@@ -1,0 +1,12 @@
+Target: res_u0
+  Test MSE: 0.041299
+  Test R2:  0.649264
+
+Target: res_gap
+  Test MSE: 0.472747
+  Test R2:  0.620479
+
+Target: res_mu
+  Test MSE: 0.483195
+  Test R2:  0.523926
+

@@ -1,0 +1,111 @@
+{
+  "sub_tasks": [
+    {
+      "sub_task": "Data Cleaning and Preprocessing",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Load the QM9 dataset from /home/node/work/data/qm9/qm9.csv.",
+        "Parse the SMILES strings using RDKit.",
+        "Identify the 83 duplicated SMILES (stereochemistry collapsed) and handle them by averaging their target property values (u0, gap, mu, homo, lumo) to ensure consistency.",
+        "Calculate heavy atom counts and implicit hydrogen counts for each molecule using RDKit.",
+        "Derive element count vectors, specific bond-type count vectors, and compute per-heavy-atom u0.",
+        "Save the cleaned and augmented dataframe to data/cleaned_qm9.csv (or .pkl)."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "Baseline Additive Modeling",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Load the cleaned dataset from data/.",
+        "Using the derived element and bond-type count vectors as additive features, train separate Ridge regression models to predict u0, gap, and mu.",
+        "Calculate the residuals (actual minus predicted) for each of these three properties.",
+        "Plot the residuals against heavy atom counts to verify size independence; if scaling remains for u0, normalize the residuals by the number of heavy atoms.",
+        "Save the computed residuals, the additive features array, and the size-independence plots (e.g., data/residuals_vs_size.png) to the data/ directory."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "Non-Linear Baseline Comparison",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Load the dataset with additive features and computed residuals from Step 2.",
+        "Train a Random Forest or XGBoost regressor strictly on the same additive features to predict the computed residuals for u0, gap, and mu.",
+        "Evaluate the performance (MSE, R2) of these models on a standard train/test split to establish a non-linear baseline.",
+        "Save the performance metrics (e.g., data/baseline_metrics.txt) and baseline predictions to the data/ directory."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "Advanced Feature Engineering and Scaffold Split",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Load the cleaned dataset and the target residuals.",
+        "Generate Morgan fingerprints (radius 2 or 3) and standard RDKit 2D descriptors for each molecule to capture extended topological motifs (replacing explicit graph construction).",
+        "Perform a scaffold split using RDKit to divide the data into training, validation, and test sets to test generalization across molecular architectures.",
+        "Apply StandardScaler to the residuals to stabilize downstream model training.",
+        "Save the engineered features, the target scalers, and the split indices to the data/ directory."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "Topological Model Training (GBM/PyTorch)",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Load the split datasets and topological features from Step 4.",
+        "Implement an advanced non-linear model (e.g., XGBoost with GPU tree method or a pure PyTorch MLP). If using PyTorch, explicitly check torch.cuda.mem_get_info() to ensure the batch fits within the VRAM budget, falling back to CPU if unavailable.",
+        "Train the model on the training set to predict the scaled residuals, using the validation set for early stopping to prevent overfitting.",
+        "Evaluate the model on the test set, computing MSE and R2.",
+        "Save the trained model, training curves, and test set predictions to the data/ directory."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "Attribution via SHAP",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Load the trained topological model and the test set features from Step 5.",
+        "Compute SHAP values for the Morgan fingerprints/descriptors to attribute the predicted non-additive residuals to specific topological sub-structures and functional groups.",
+        "Calculate and aggregate the mean absolute SHAP values for each feature across the test set.",
+        "Save the SHAP attribution arrays and a summary table of the most influential structural motifs (e.g., data/shap_motif_summary.csv) to the data/ directory."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "Motif Analysis and Correlation (Computation)",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Load the test set predictions, intensive properties (gap, mu, homo, lumo), and the SHAP motif summary from the previous steps.",
+        "Compute correlation matrices (Pearson/Spearman) between the predicted energetic residuals and the intensive properties.",
+        "Group molecules based on the presence of the highest-influence structural motifs identified by SHAP (e.g., specific conjugation patterns or rings).",
+        "Calculate descriptive statistics (mean, variance) for gap and mu across these specific motif groups to quantify deviations from classical group-contribution theory.",
+        "Save the correlation matrices and the aggregated motif statistics dataframes to data/."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "Motif Analysis and Correlation (Visualization)",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Load the correlation matrices and aggregated motif statistics from Step 7.",
+        "Generate scatter plots visualizing the correlation between non-additive energy residuals and intensive properties (gap, mu).",
+        "Create bar or box plots comparing the distributions of gap and mu across the high-influence motif groups.",
+        "Save all generated plots (e.g., data/residual_gap_corr.png, data/motif_distributions.png) to the data/ directory."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "Final Results Reporting",
+      "sub_task_agent": "researcher",
+      "bullet_points": [
+        "Review all metrics, tables, and plots saved in the data/ directory by the engineer across the previous steps.",
+        "Write a comprehensive Results section for the final research report.",
+        "Discuss the performance of the baseline additive models and non-linear baseline in isolating extensive energetics versus the topological models.",
+        "Interpret the SHAP attributions, identifying specifically which structural motifs (e.g., extended π-conjugation) govern non-additive energetic stability.",
+        "Analyze the correlations between structural non-additivities and intensive properties (gap, mu), explicitly referencing the specific generated plots and statistics files by their paths in data/.",
+        "Synthesize how these empirical findings successfully decouple extensive scaling from intrinsic electronic physics."
+      ],
+      "code_execution_timeout": null
+    }
+  ]
+}

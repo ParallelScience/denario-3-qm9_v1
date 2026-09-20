@@ -1,0 +1,40 @@
+# returncode=0 timed_out=False elapsed=90.4066s
+--- stdout ---
+Using device: cuda
+CUDA memory: 87.99 GB free / 101.97 GB total
+
+Loading datasets...
+Scaling features (fitting on training set only)...
+Saved feature scaler to data/feature_scaler.pkl
+
+--- Training PyTorch MLP for res_u0 ---
+    Early stopping triggered at epoch 18 (Best Val Loss: 0.0247)
+  Final Test MSE: 0.0413
+  Final Test R2:  0.6493
+  Saved model checkpoint to data/mlp_res_u0.pt
+
+--- Training PyTorch MLP for res_gap ---
+    Epoch  20/150 - Train Loss: 0.0384, Val Loss: 0.3146
+    Epoch  40/150 - Train Loss: 0.0223, Val Loss: 0.3066
+    Epoch  60/150 - Train Loss: 0.0165, Val Loss: 0.3064
+    Early stopping triggered at epoch 61 (Best Val Loss: 0.3036)
+  Final Test MSE: 0.4727
+  Final Test R2:  0.6205
+  Saved model checkpoint to data/mlp_res_gap.pt
+
+--- Training PyTorch MLP for res_mu ---
+    Epoch  20/150 - Train Loss: 0.0733, Val Loss: 0.4561
+    Epoch  40/150 - Train Loss: 0.0386, Val Loss: 0.4298
+    Epoch  60/150 - Train Loss: 0.0285, Val Loss: 0.4328
+    Early stopping triggered at epoch 66 (Best Val Loss: 0.4288)
+  Final Test MSE: 0.4832
+  Final Test R2:  0.5239
+  Saved model checkpoint to data/mlp_res_mu.pt
+
+Saved metrics to data/topological_model_metrics.txt
+Saved predictions to data/topological_model_predictions.csv
+Saved data/topological_model_predictions.csv columns: ['smiles', 'res_u0_true', 'res_u0_pred', 'res_gap_true', 'res_gap_pred', 'res_mu_true', 'res_mu_pred']
+Saved plot to data/topological_model_predictions.png
+
+--- stderr ---
+

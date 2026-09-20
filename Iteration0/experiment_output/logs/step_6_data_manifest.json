@@ -1,0 +1,17 @@
+{
+  "step_number": 6,
+  "sub_task": "Attribution via SHAP",
+  "attempt": 3,
+  "files": [
+    {
+      "path": "data/shap_motif_summary.csv",
+      "bytes": 287868,
+      "modified": "2026-09-20T01:22:00.619726Z"
+    },
+    {
+      "path": "data/shap_values.npz",
+      "bytes": 14698219,
+      "modified": "2026-09-20T01:22:00.611726Z"
+    }
+  ]
+}

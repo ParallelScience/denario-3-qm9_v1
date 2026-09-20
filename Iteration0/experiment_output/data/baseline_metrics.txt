@@ -1,0 +1,12 @@
+Target: res_u0
+  Train MSE: 0.012596, R2: 0.1008
+  Test MSE:  0.001988, R2: -0.8541
+
+Target: res_gap
+  Train MSE: 0.000448, R2: 0.3037
+  Test MSE:  0.000459, R2: 0.2760
+
+Target: res_mu
+  Train MSE: 1.422145, R2: 0.1764
+  Test MSE:  1.455235, R2: 0.1345
+

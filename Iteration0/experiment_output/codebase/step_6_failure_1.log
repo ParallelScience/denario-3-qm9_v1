@@ -1,0 +1,9 @@
+# returncode=1 timed_out=False elapsed=1.0655s
+--- stdout ---
+
+--- stderr ---
+Traceback (most recent call last):
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/codebase/step_6.py", line 7, in <module>
+    import shap
+ModuleNotFoundError: No module named 'shap'
+

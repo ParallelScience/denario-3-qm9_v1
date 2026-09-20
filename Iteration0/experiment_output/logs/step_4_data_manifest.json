@@ -1,0 +1,27 @@
+{
+  "step_number": 4,
+  "sub_task": "Advanced Feature Engineering and Scaffold Split",
+  "attempt": 1,
+  "files": [
+    {
+      "path": "data/engineered_features.npz",
+      "bytes": 30585041,
+      "modified": "2026-09-20T01:13:29.417264Z"
+    },
+    {
+      "path": "data/scaled_residuals.csv",
+      "bytes": 12852530,
+      "modified": "2026-09-20T01:13:29.801267Z"
+    },
+    {
+      "path": "data/split_indices.npz",
+      "bytes": 278128,
+      "modified": "2026-09-20T01:13:29.455265Z"
+    },
+    {
+      "path": "data/target_scalers.pkl",
+      "bytes": 990,
+      "modified": "2026-09-20T01:13:29.802267Z"
+    }
+  ]
+}

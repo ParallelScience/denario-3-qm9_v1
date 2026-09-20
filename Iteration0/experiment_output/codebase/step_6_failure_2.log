@@ -1,0 +1,31 @@
+# returncode=1 timed_out=False elapsed=16.8289s
+--- stdout ---
+Loading features and splits...
+loaded keys: ['fps', 'descs', 'desc_names']
+loaded keys: ['train_idx', 'val_idx', 'test_idx']
+Loading scaler...
+Using device: cuda
+
+--- Computing SHAP values for res_u0 ---
+Calculating SHAP values for 500 test samples...
+
+--- stderr ---
+Traceback (most recent call last):
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/codebase/step_6.py", line 172, in <module>
+    main()
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/codebase/step_6.py", line 140, in main
+    df = pd.DataFrame({
+         ^^^^^^^^^^^^^^
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pandas/core/frame.py", line 769, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pandas/core/internals/construction.py", line 460, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, consolidate=copy)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pandas/core/internals/construction.py", line 113, in arrays_to_mgr
+    index = _extract_index(arrays)
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/node/work/projects/qm9_v1/Iteration0/experiment_output/.pip_overrides/pandas/core/internals/construction.py", line 631, in _extract_index
+    raise ValueError("Per-column arrays must each be 1-dimensional")
+ValueError: Per-column arrays must each be 1-dimensional
+

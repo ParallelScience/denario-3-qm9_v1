@@ -1,0 +1,60 @@
+# returncode=0 timed_out=False elapsed=1.3443s
+--- stdout ---
+Loading datasets...
+Merging predictions with QM9 intensive properties...
+
+--- Computing Correlations ---
+Saved data/motif_correlations.csv
+    Residual Property  Pearson_r  Pearson_p  Spearman_r  Spearman_p
+ res_u0_pred      gap    -0.1981     0.0000     -0.1698      0.0000
+ res_u0_pred       mu    -0.1551     0.0000     -0.1949      0.0000
+ res_u0_pred     homo     0.1498     0.0000      0.2368      0.0000
+ res_u0_pred     lumo    -0.1398     0.0000     -0.0817      0.0000
+res_gap_pred      gap     0.4745     0.0000      0.4672      0.0000
+res_gap_pred       mu    -0.0389     0.0000     -0.0194      0.0249
+res_gap_pred     homo    -0.3565     0.0000     -0.3905      0.0000
+res_gap_pred     lumo     0.3357     0.0000      0.3286      0.0000
+ res_mu_pred      gap    -0.0491     0.0000     -0.0442      0.0000
+ res_mu_pred       mu     0.6115     0.0000      0.6051      0.0000
+ res_mu_pred     homo     0.0235     0.0067     -0.0470      0.0000
+ res_mu_pred     lumo    -0.0401     0.0000     -0.0767      0.0000
+
+--- Motif Analysis ---
+Loading engineered features to extract motif presence...
+Top 15 identified structural motifs: ['fr_ether', 'MorganFP_314', 'fr_ketone_Topliss', 'MorganFP_807', 'fr_ketone', 'NumAmideBonds', 'fr_bicyclic', 'fr_amide', 'fr_epoxide', 'fr_Imine', 'NumBridgeheadAtoms', 'NumRotatableBonds', 'MorganFP_650', 'NumHAcceptors', 'fr_aldehyde']
+
+Saved data/motif_statistics.csv
+             Motif Property  Present_Count  Present_Mean  Present_Var  Present_Std  Absent_Count  Absent_Mean  Absent_Var  Absent_Std
+          fr_ether      gap           7910        0.2598       0.0019       0.0437          5469       0.2234      0.0024      0.0488
+          fr_ether       mu           7910        2.4487       1.5427       1.2421          5469       2.7801      3.3625      1.8337
+      MorganFP_314      gap           4367        0.2179       0.0013       0.0356          9012       0.2580      0.0025      0.0496
+      MorganFP_314       mu           4367        3.5221       1.7909       1.3382          9012       2.1297      1.9333      1.3904
+ fr_ketone_Topliss      gap           1826        0.2046       0.0004       0.0200         11553       0.2513      0.0024      0.0495
+ fr_ketone_Topliss       mu           1826        3.0682       1.5331       1.2382         11553       2.5076      2.3935      1.5471
+      MorganFP_807      gap           1027        0.2416       0.0021       0.0457         12352       0.2452      0.0025      0.0495
+      MorganFP_807       mu           1027        2.4992       3.6527       1.9112         12352       2.5912      2.2012      1.4836
+         fr_ketone      gap           2098        0.2006       0.0005       0.0221         11281       0.2531      0.0024      0.0485
+         fr_ketone       mu           2098        3.1560       1.6241       1.2744         11281       2.4778      2.3691      1.5392
+     NumAmideBonds      gap           1317        0.2364       0.0011       0.0328         12062       0.2458      0.0026      0.0506
+     NumAmideBonds       mu           1317        3.7398       1.3202       1.1490         12062       2.4580      2.2597      1.5032
+       fr_bicyclic      gap           7846        0.2460       0.0023       0.0484          5533       0.2434      0.0025      0.0503
+       fr_bicyclic       mu           7846        2.6264       2.2508       1.5003          5533       2.5242      2.3954      1.5477
+          fr_amide      gap           1317        0.2364       0.0011       0.0328         12062       0.2458      0.0026      0.0506
+          fr_amide       mu           1317        3.7398       1.3202       1.1490         12062       2.4580      2.2597      1.5032
+        fr_epoxide      gap           1502        0.2693       0.0022       0.0472         11877       0.2418      0.0024      0.0486
+        fr_epoxide       mu           1502        2.4069       1.1767       1.0848         11877       2.6066      2.4523      1.5660
+          fr_Imine      gap           1138        0.2297       0.0010       0.0311         12241       0.2463      0.0025      0.0504
+          fr_Imine       mu           1138        2.4979       1.3652       1.1684         12241       2.5922      2.4004      1.5493
+NumBridgeheadAtoms      gap           3786        0.2631       0.0023       0.0480          9593       0.2377      0.0023      0.0478
+NumBridgeheadAtoms       mu           3786        2.1283       1.4917       1.2214          9593       2.7641      2.5229      1.5883
+ NumRotatableBonds      gap           1949        0.2601       0.0023       0.0475         11430       0.2423      0.0024      0.0491
+ NumRotatableBonds       mu           1949        2.7455       3.4339       1.8531         11430       2.5566      2.1169      1.4550
+      MorganFP_650      gap           4587        0.2179       0.0013       0.0357          8792       0.2590      0.0024      0.0494
+      MorganFP_650       mu           4587        3.5906       2.1674       1.4722          8792       2.0591      1.5849      1.2589
+     NumHAcceptors      gap          12778        0.2436       0.0023       0.0484           601       0.2724      0.0035      0.0587
+     NumHAcceptors       mu          12778        2.6877       2.1717       1.4737           601       0.3819      0.2376      0.4875
+       fr_aldehyde      gap             47        0.1689       0.0003       0.0159         13332       0.2452      0.0024      0.0491
+       fr_aldehyde       mu             47        6.0934       9.4484       3.0738         13332       2.5718      2.2449      1.4983
+
+--- stderr ---
+
