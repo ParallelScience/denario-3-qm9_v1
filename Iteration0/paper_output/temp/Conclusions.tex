@@ -1,0 +1,109 @@
+\documentclass[]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textgreek}
+\usepackage{newunicodechar}
+\newunicodechar{⁰}{\ensuremath{^0}}
+\newunicodechar{²}{\ensuremath{^2}}
+\newunicodechar{³}{\ensuremath{^3}}
+\newunicodechar{₁}{\ensuremath{_1}}
+\newunicodechar{₂}{\ensuremath{_2}}
+\newunicodechar{₃}{\ensuremath{_3}}
+\newunicodechar{×}{\ensuremath{\times}}
+\newunicodechar{∇}{\ensuremath{\nabla}}
+\newunicodechar{≈}{\ensuremath{\approx}}
+\newunicodechar{≡}{\ensuremath{\equiv}}
+\newunicodechar{≤}{\ensuremath{\leq}}
+\newunicodechar{≥}{\ensuremath{\geq}}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+\newunicodechar{←}{\ensuremath{\leftarrow}}
+\newunicodechar{↑}{\ensuremath{\uparrow}}
+\newunicodechar{↓}{\ensuremath{\downarrow}}
+\newunicodechar{↔}{\ensuremath{\leftrightarrow}}
+\newunicodechar{—}{\textemdash}
+\newunicodechar{–}{\textendash}
+\newunicodechar{−}{\ensuremath{-}}
+\newunicodechar{√}{\ensuremath{\surd}}
+\newunicodechar{∼}{\ensuremath{\sim}}
+\newunicodechar{≲}{\ensuremath{\lesssim}}
+\newunicodechar{≳}{\ensuremath{\gtrsim}}
+\newunicodechar{⟨}{\ensuremath{\langle}}
+\newunicodechar{⟩}{\ensuremath{\rangle}}
+\newunicodechar{₀}{\ensuremath{_0}}
+\newunicodechar{₄}{\ensuremath{_4}}
+\newunicodechar{₅}{\ensuremath{_5}}
+\newunicodechar{₆}{\ensuremath{_6}}
+\newunicodechar{₇}{\ensuremath{_7}}
+\newunicodechar{₈}{\ensuremath{_8}}
+\newunicodechar{₉}{\ensuremath{_9}}
+\newunicodechar{⁴}{\ensuremath{^4}}
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{β}{\ensuremath{\beta}}
+\newunicodechar{γ}{\ensuremath{\gamma}}
+\newunicodechar{δ}{\ensuremath{\delta}}
+\newunicodechar{ε}{\ensuremath{\epsilon}}
+\newunicodechar{θ}{\ensuremath{\theta}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{μ}{\ensuremath{\mu}}
+\newunicodechar{ν}{\ensuremath{\nu}}
+\newunicodechar{ξ}{\ensuremath{\xi}}
+\newunicodechar{π}{\ensuremath{\pi}}
+\newunicodechar{ρ}{\ensuremath{\rho}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{τ}{\ensuremath{\tau}}
+\newunicodechar{φ}{\ensuremath{\phi}}
+\newunicodechar{ϕ}{\ensuremath{\phi}}
+\newunicodechar{χ}{\ensuremath{\chi}}
+\newunicodechar{ψ}{\ensuremath{\psi}}
+\newunicodechar{ω}{\ensuremath{\omega}}
+\newunicodechar{Δ}{\ensuremath{\Delta}}
+\newunicodechar{Λ}{\ensuremath{\Lambda}}
+\newunicodechar{Σ}{\ensuremath{\Sigma}}
+\newunicodechar{Φ}{\ensuremath{\Phi}}
+\newunicodechar{Ω}{\ensuremath{\Omega}}
+\newunicodechar{“}{``}
+\newunicodechar{”}{''}
+\newunicodechar{‘}{`}
+\newunicodechar{’}{'}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{black!4},
+  frame=none,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  xleftmargin=1em,
+  xrightmargin=1em,
+  aboveskip=0.6em,
+  belowskip=0.6em,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\itshape\color{black!60},
+  stringstyle=\color{green!50!black},
+}
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+
+In this work, we introduced a graph-latent residual decomposition framework to rigorously isolate and quantify non-additive electronic effects from the extensive scaling inherent in molecular internal energy ($U_0$). By first establishing a classical group-contribution baseline using Ridge regression, we successfully decoupled size-dependent energetic scaling. The remaining residuals, representing purely non-linear quantum-mechanical deviations, were then modeled using a Graph Neural Network (GNN). Our results demonstrate that explicit graph-based message passing is highly effective at capturing these topological nuances. The GNN achieved a test $R^2$ of 0.9985 on the standardized residuals, substantially outperforming a descriptor-based Random Forest baseline and confirming that molecular topology is essential for modeling complex electronic physics.
+
+Beyond predictive accuracy, this framework provides deep interpretability into the learned representations of non-additivity. Analysis of the GNN's 128-dimensional latent space revealed that the network intrinsically learned to encode fundamental intensive properties, such as the HOMO-LUMO gap and HOMO energy, despite receiving no direct supervision on these targets. Dimensionality reduction further illustrated a highly structured embedding landscape where distinct property gradients align with the modeled energetic deviations, proving that the network captures genuine quantum-mechanical phenomena rather than arbitrary statistical variance.
+
+Furthermore, by applying Integrated Gradients, we successfully mapped these non-additive energetic deviations back to specific structural motifs. Statistical validation confirmed that features such as aromatic rings and the integration of highly electronegative heteroatoms (nitrogen and fluorine) are significant drivers of non-additivity. These motifs correspond directly to physically observable shifts, notably compressed HOMO-LUMO gaps and increased dipole moments, which are characteristic of extended $\pi$-conjugation and complex electron localization. 
+
+Ultimately, this approach bridges the gap between classical additivity models and advanced deep learning techniques. By explicitly separating extensive scaling from underlying non-linear electronic physics, our framework not only improves predictive performance but also provides a chemically intuitive mapping of how specific structural motifs deviate from classical group-contribution theory. This methodology offers a robust and interpretable tool for future computational chemistry applications, enabling more targeted molecular design and a deeper understanding of structure-property relationships without the computational overhead of 3D coordinate generation.
+
+\end{document}
+                

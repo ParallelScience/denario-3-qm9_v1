@@ -1,0 +1,862 @@
+\documentclass[]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textgreek}
+\usepackage{newunicodechar}
+\newunicodechar{⁰}{\ensuremath{^0}}
+\newunicodechar{²}{\ensuremath{^2}}
+\newunicodechar{³}{\ensuremath{^3}}
+\newunicodechar{₁}{\ensuremath{_1}}
+\newunicodechar{₂}{\ensuremath{_2}}
+\newunicodechar{₃}{\ensuremath{_3}}
+\newunicodechar{×}{\ensuremath{\times}}
+\newunicodechar{∇}{\ensuremath{\nabla}}
+\newunicodechar{≈}{\ensuremath{\approx}}
+\newunicodechar{≡}{\ensuremath{\equiv}}
+\newunicodechar{≤}{\ensuremath{\leq}}
+\newunicodechar{≥}{\ensuremath{\geq}}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+\newunicodechar{←}{\ensuremath{\leftarrow}}
+\newunicodechar{↑}{\ensuremath{\uparrow}}
+\newunicodechar{↓}{\ensuremath{\downarrow}}
+\newunicodechar{↔}{\ensuremath{\leftrightarrow}}
+\newunicodechar{—}{\textemdash}
+\newunicodechar{–}{\textendash}
+\newunicodechar{−}{\ensuremath{-}}
+\newunicodechar{√}{\ensuremath{\surd}}
+\newunicodechar{∼}{\ensuremath{\sim}}
+\newunicodechar{≲}{\ensuremath{\lesssim}}
+\newunicodechar{≳}{\ensuremath{\gtrsim}}
+\newunicodechar{⟨}{\ensuremath{\langle}}
+\newunicodechar{⟩}{\ensuremath{\rangle}}
+\newunicodechar{₀}{\ensuremath{_0}}
+\newunicodechar{₄}{\ensuremath{_4}}
+\newunicodechar{₅}{\ensuremath{_5}}
+\newunicodechar{₆}{\ensuremath{_6}}
+\newunicodechar{₇}{\ensuremath{_7}}
+\newunicodechar{₈}{\ensuremath{_8}}
+\newunicodechar{₉}{\ensuremath{_9}}
+\newunicodechar{⁴}{\ensuremath{^4}}
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{β}{\ensuremath{\beta}}
+\newunicodechar{γ}{\ensuremath{\gamma}}
+\newunicodechar{δ}{\ensuremath{\delta}}
+\newunicodechar{ε}{\ensuremath{\epsilon}}
+\newunicodechar{θ}{\ensuremath{\theta}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{μ}{\ensuremath{\mu}}
+\newunicodechar{ν}{\ensuremath{\nu}}
+\newunicodechar{ξ}{\ensuremath{\xi}}
+\newunicodechar{π}{\ensuremath{\pi}}
+\newunicodechar{ρ}{\ensuremath{\rho}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{τ}{\ensuremath{\tau}}
+\newunicodechar{φ}{\ensuremath{\phi}}
+\newunicodechar{ϕ}{\ensuremath{\phi}}
+\newunicodechar{χ}{\ensuremath{\chi}}
+\newunicodechar{ψ}{\ensuremath{\psi}}
+\newunicodechar{ω}{\ensuremath{\omega}}
+\newunicodechar{Δ}{\ensuremath{\Delta}}
+\newunicodechar{Λ}{\ensuremath{\Lambda}}
+\newunicodechar{Σ}{\ensuremath{\Sigma}}
+\newunicodechar{Φ}{\ensuremath{\Phi}}
+\newunicodechar{Ω}{\ensuremath{\Omega}}
+\newunicodechar{“}{``}
+\newunicodechar{”}{''}
+\newunicodechar{‘}{`}
+\newunicodechar{’}{'}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{black!4},
+  frame=none,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  xleftmargin=1em,
+  xrightmargin=1em,
+  aboveskip=0.6em,
+  belowskip=0.6em,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\itshape\color{black!60},
+  stringstyle=\color{green!50!black},
+}
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+
+
+
+@misc{fu2025benchmarkquantumchemistryrelaxations,
+      title={A Benchmark for Quantum Chemistry Relaxations via Machine Learning Interatomic Potentials}, 
+      author={Cong Fu and Yuchao Lin and Zachary Krueger and Wendi Yu and Xiaoning Qian and Byung-Jun Yoon and Raymundo Arróyave and Xiaofeng Qian and Toshiyuki Maeda and Maho Nakata and Shuiwang Ji},
+      year={2025},
+      eprint={2506.23008},
+      archivePrefix={arXiv},
+      primaryClass={q-bio.QM},
+      url={https://arxiv.org/abs/2506.23008}, 
+}
+
+@misc{schütt2016quantumchemicalinsightsdeeptensor,
+      title={Quantum-Chemical Insights from Deep Tensor Neural Networks}, 
+      author={Kristof T. Schütt and Farhad Arbabzadah and Stefan Chmiela and Klaus R. Müller and Alexandre Tkatchenko},
+      year={2016},
+      eprint={1609.08259},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      doi={https://doi.org/10.1038/ncomms13890},
+      url={https://arxiv.org/abs/1609.08259}, 
+}
+
+@misc{xiang2025edbenchlargescaleelectrondensity,
+      title={EDBench: Large-Scale Electron Density Data for Molecular Modeling}, 
+      author={Hongxin Xiang and Ke Li and Mingquan Liu and Zhixiang Cheng and Bin Yao and Wenjie Du and Jun Xia and Li Zeng and Xin Jin and Xiangxiang Zeng},
+      year={2025},
+      eprint={2505.09262},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      url={https://arxiv.org/abs/2505.09262}, 
+}
+
+@misc{esders2024analyzingatomicinteractionsmolecules,
+      title={Analyzing Atomic Interactions in Molecules as Learned by Neural Networks}, 
+      author={Malte Esders and Thomas Schnake and Jonas Lederer and Adil Kabylda and Grégoire Montavon and Alexandre Tkatchenko and Klaus-Robert Müller},
+      year={2024},
+      eprint={2410.13833},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      doi={https://doi.org/10.1021/acs.jctc.4c01424},
+      url={https://arxiv.org/abs/2410.13833}, 
+}
+
+@misc{himmetoglu2016treebasedmachinelearning,
+      title={Tree based machine learning framework for predicting ground state energies of molecules}, 
+      author={Burak Himmetoglu},
+      year={2016},
+      eprint={1609.07124},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      doi={https://doi.org/10.1063/1.4964093},
+      url={https://arxiv.org/abs/1609.07124}, 
+}
+
+@misc{yao2017bondenergiesdiatomicsinmoleculesneural,
+      title={Bond Energies from a Diatomics-in-Molecules Neural Network}, 
+      author={Kun Yao and John Herr and Seth Brown and John Parkhill},
+      year={2017},
+      eprint={1703.08640},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      url={https://arxiv.org/abs/1703.08640}, 
+}
+
+@misc{tang2019predictionatomizationenergyusing,
+      title={Prediction of Atomization Energy Using Graph Kernel and Active Learning}, 
+      author={Yu-Hang Tang and Wibe A. de Jong},
+      year={2019},
+      eprint={1810.07310},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      doi={https://doi.org/10.1063/1.5078640},
+      url={https://arxiv.org/abs/1810.07310}, 
+}
+
+@misc{banchode2025machinelearnedpotentialssolvationmodeling,
+      title={Machine-Learned Potentials for Solvation Modeling}, 
+      author={Roopshree Banchode and Surajit Das and Shampa Raghunathan and Raghunathan Ramakrishnan},
+      year={2025},
+      eprint={2505.22402},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      doi={https://doi.org/10.1088/1361-648X/ae2177},
+      url={https://arxiv.org/abs/2505.22402}, 
+}
+
+@misc{schütt2018schnetpackdeeplearningtoolbox,
+      title={SchNetPack: A Deep Learning Toolbox For Atomistic Systems}, 
+      author={K. T. Schütt and P. Kessel and M. Gastegger and K. Nicoli and A. Tkatchenko and K. -R. Müller},
+      year={2018},
+      eprint={1809.01072},
+      archivePrefix={arXiv},
+      primaryClass={physics.comp-ph},
+      doi={https://doi.org/10.1021/acs.jctc.8b00908},
+      url={https://arxiv.org/abs/1809.01072}, 
+}
+
+@misc{christensen2020rolegradientsmachinelearning,
+      title={On the role of gradients for machine learning of molecular energies and forces}, 
+      author={Anders S. Christensen and O. Anatole von Lilienfeld},
+      year={2020},
+      eprint={2007.09593},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      url={https://arxiv.org/abs/2007.09593}, 
+}
+
+@misc{ward2019machinelearningpredictionaccurate,
+      title={Machine Learning Prediction of Accurate Atomization Energies of Organic Molecules from Low-Fidelity Quantum Chemical Calculations}, 
+      author={Logan Ward and Ben Blaiszik and Ian Foster and Rajeev S. Assary and Badri Narayanan and Larry Curtiss},
+      year={2019},
+      eprint={1906.03233},
+      archivePrefix={arXiv},
+      primaryClass={physics.comp-ph},
+      doi={https://doi.org/10.1557/mrc.2019.107},
+      url={https://arxiv.org/abs/1906.03233}, 
+}
+
+@misc{zhang2023pointgatquantumchemicalproperty,
+      title={PointGAT: A quantum chemical property prediction model integrating graph attention and 3D geometry}, 
+      author={Rong Zhang and Rongqing Yuan and Boxue Tian},
+      year={2023},
+      eprint={2310.05217},
+      archivePrefix={arXiv},
+      primaryClass={q-bio.QM},
+      url={https://arxiv.org/abs/2310.05217}, 
+}
+
+@misc{villadsen2022predictingbindingenergiesastrochemically,
+      title={Predicting binding energies of astrochemically relevant molecules via machine learning}, 
+      author={Torben Villadsen and Niels F. W. Ligterink and Mie Andersen},
+      year={2022},
+      eprint={2207.03906},
+      archivePrefix={arXiv},
+      primaryClass={astro-ph.GA},
+      doi={https://doi.org/10.1051/0004-6361/202244091},
+      url={https://arxiv.org/abs/2207.03906}, 
+}
+
+@misc{christensen2020fchlrevisitedfasteraccurate,
+      title={FCHL revisited: faster and more accurate quantum machine learning}, 
+      author={Anders S. Christensen and Lars A. Bratholm and Felix A. Faber and O. Anatole von Lilienfeld},
+      year={2020},
+      eprint={1909.01946},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      doi={https://doi.org/10.1063/1.5126701},
+      url={https://arxiv.org/abs/1909.01946}, 
+}
+
+@misc{ren2024physicalconsistencybridgesheterogeneous,
+      title={Physical Consistency Bridges Heterogeneous Data in Molecular Multi-Task Learning}, 
+      author={Yuxuan Ren and Dihan Zheng and Chang Liu and Peiran Jin and Yu Shi and Lin Huang and Jiyan He and Shengjie Luo and Tao Qin and Tie-Yan Liu},
+      year={2024},
+      eprint={2410.10118},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2410.10118}, 
+}
+
+@misc{williams2024hessianqm9quantumchemistry,
+      title={Hessian QM9: A quantum chemistry database of molecular Hessians in implicit solvents}, 
+      author={Nicholas J. Williams and Lara Kabalan and Ljiljana Stojanovic and Viktor Zolyomi and Edward O. Pyzer-Knapp},
+      year={2024},
+      eprint={2408.08006},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      url={https://arxiv.org/abs/2408.08006}, 
+}
+
+@misc{valdés2023understandingstructureqm7bqm9,
+      title={Understanding the Structure of QM7b and QM9 Quantum Mechanical Datasets Using Unsupervised Learning}, 
+      author={Julio J. Valdés and Alain B. Tchagang},
+      year={2023},
+      eprint={2309.15130},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      url={https://arxiv.org/abs/2309.15130}, 
+}
+
+@misc{chen2019alchemyquantumchemistrydataset,
+      title={Alchemy: A Quantum Chemistry Dataset for Benchmarking AI Models}, 
+      author={Guangyong Chen and Pengfei Chen and Chang-Yu Hsieh and Chee-Kong Lee and Benben Liao and Renjie Liao and Weiwen Liu and Jiezhong Qiu and Qiming Sun and Jie Tang and Richard Zemel and Shengyu Zhang},
+      year={2019},
+      eprint={1906.09427},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/1906.09427}, 
+}
+
+@misc{gilmer2017neuralmessagepassingquantum,
+      title={Neural Message Passing for Quantum Chemistry}, 
+      author={Justin Gilmer and Samuel S. Schoenholz and Patrick F. Riley and Oriol Vinyals and George E. Dahl},
+      year={2017},
+      eprint={1704.01212},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/1704.01212}, 
+}
+
+@misc{zeng2025quantumchem200klargescaleopenorganic,
+      title={QuantumChem-200K: A Large-Scale Open Organic Molecular Dataset for Quantum-Chemistry Property Screening and Language Model Benchmarking}, 
+      author={Yinqi Zeng and Renjie Li},
+      year={2025},
+      eprint={2511.21747},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      url={https://arxiv.org/abs/2511.21747}, 
+}
+
+@misc{nakata2023pubchemqcb3lyp631gpm6datasetelectronic,
+      title={PubChemQC B3LYP/6-31G*//PM6 dataset: the Electronic Structures of 86 Million Molecules using B3LYP/6-31G* calculations}, 
+      author={Maho Nakata and Toshiyuki Maeda},
+      year={2023},
+      eprint={2305.18454},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      url={https://arxiv.org/abs/2305.18454}, 
+}
+
+@misc{yu2024qh9quantumhamiltonianprediction,
+      title={QH9: A Quantum Hamiltonian Prediction Benchmark for QM9 Molecules}, 
+      author={Haiyang Yu and Meng Liu and Youzhi Luo and Alex Strasser and Xiaofeng Qian and Xiaoning Qian and Shuiwang Ji},
+      year={2024},
+      eprint={2306.09549},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      url={https://arxiv.org/abs/2306.09549}, 
+}
+
+@misc{ji2024unimol2exploringmolecularpretraining,
+      title={Uni-Mol2: Exploring Molecular Pretraining Model at Scale}, 
+      author={Xiaohong Ji and Wang Zhen and Zhifeng Gao and Hang Zheng and Linfeng Zhang and Guolin Ke and Weinan E},
+      year={2024},
+      eprint={2406.14969},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2406.14969}, 
+}
+
+@misc{zhu2024qcdgedatabasequantumchemistry,
+      title={QCDGE database, Quantum Chemistry Database with Ground- and Excited-state Properties of 450 Kilo Molecules}, 
+      author={Yifei Zhu and Mengge Li and Chao Xu and Zhenggang Lan},
+      year={2024},
+      eprint={2406.02341},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      url={https://arxiv.org/abs/2406.02341}, 
+}
+
+@misc{ghosh2023discoverystructurepropertyrelationsmolecules,
+      title={Discovery of structure-property relations for molecules via hypothesis-driven active learning over the chemical space}, 
+      author={Ayana Ghosh and Sergei V. Kalinin and Maxim A. Ziatdinov},
+      year={2023},
+      eprint={2301.02665},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      doi={https://doi.org/10.1063/5.0157644},
+      url={https://arxiv.org/abs/2301.02665}, 
+}
+
+@misc{khan2024adaptivehybriddensityfunctionals,
+      title={Adaptive hybrid density functionals}, 
+      author={Danish Khan and Alastair James Arthur Price and Maximilian L. Ach and Olivier Trottier and O. Anatole von Lilienfeld},
+      year={2024},
+      eprint={2402.14793},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      url={https://arxiv.org/abs/2402.14793}, 
+}
+
+@misc{gaul2022machinelearningscreeninglarge,
+      title={Machine Learning for Screening Large Organic Molecules}, 
+      author={Christopher Gaul and Santiago Cuesta-Lopez},
+      year={2022},
+      eprint={2211.15415},
+      archivePrefix={arXiv},
+      primaryClass={cond-mat.mtrl-sci},
+      doi={https://doi.org/10.1002/pssb.202200553},
+      url={https://arxiv.org/abs/2211.15415}, 
+}
+
+@misc{liu2024openquantumchemistryproperty,
+      title={An Open Quantum Chemistry Property Database of 120 Kilo Molecules with 20 Million Conformers}, 
+      author={Weiqi Liu and Xi Ai and Zhijian Zhou and Chao Qu and Junyi An and Zhipeng Zhou and Yuan Cheng and Yinghui Xu and Fenglei Cao and Alan Qi},
+      year={2024},
+      eprint={2410.19316},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      url={https://arxiv.org/abs/2410.19316}, 
+}
+
+@misc{ghosh2023discoverystructurepropertyrelationsmolecules,
+      title={Discovery of structure-property relations for molecules via hypothesis-driven active learning over the chemical space}, 
+      author={Ayana Ghosh and Sergei V. Kalinin and Maxim A. Ziatdinov},
+      year={2023},
+      eprint={2301.02665},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      doi={https://doi.org/10.1063/5.0157644},
+      url={https://arxiv.org/abs/2301.02665}, 
+}
+
+@misc{kosmala2023ewaldbasedlongrangemessagepassing,
+      title={Ewald-based Long-Range Message Passing for Molecular Graphs}, 
+      author={Arthur Kosmala and Johannes Gasteiger and Nicholas Gao and Stephan Günnemann},
+      year={2023},
+      eprint={2303.04791},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2303.04791}, 
+}
+
+@misc{fey2020hierarchicalintermessagepassinglearning,
+      title={Hierarchical Inter-Message Passing for Learning on Molecular Graphs}, 
+      author={Matthias Fey and Jan-Gin Yuen and Frank Weichert},
+      year={2020},
+      eprint={2006.12179},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2006.12179}, 
+}
+
+@misc{gilmer2017neuralmessagepassingquantum,
+      title={Neural Message Passing for Quantum Chemistry}, 
+      author={Justin Gilmer and Samuel S. Schoenholz and Patrick F. Riley and Oriol Vinyals and George E. Dahl},
+      year={2017},
+      eprint={1704.01212},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/1704.01212}, 
+}
+
+@misc{jørgensen2018neuralmessagepassingedge,
+      title={Neural Message Passing with Edge Updates for Predicting Properties of Molecules and Materials}, 
+      author={Peter Bjørn Jørgensen and Karsten Wedel Jacobsen and Mikkel N. Schmidt},
+      year={2018},
+      eprint={1806.03146},
+      archivePrefix={arXiv},
+      primaryClass={stat.ML},
+      url={https://arxiv.org/abs/1806.03146}, 
+}
+
+@misc{ehrlich2026ximpcrossgraphintermessage,
+      title={XIMP: Cross Graph Inter-Message Passing for Molecular Property Prediction}, 
+      author={Anatol Ehrlich and Lorenz Kummer and Vojtech Voracek and Franka Bause and Nils M. Kriege},
+      year={2026},
+      eprint={2601.19037},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2601.19037}, 
+}
+
+@misc{shui2020heterogeneousmoleculargraphneural,
+      title={Heterogeneous Molecular Graph Neural Networks for Predicting Molecule Properties}, 
+      author={Zeren Shui and George Karypis},
+      year={2020},
+      eprint={2009.12710},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2009.12710}, 
+}
+
+@misc{nguyen2026mmgnnmultilevelmulticolorgraph,
+      title={MMGNN: Multi-level, multi-color graph neural networks for molecular property prediction}, 
+      author={Trung Nguyen and Duc Duy Nguyen},
+      year={2026},
+      eprint={2606.20906},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2606.20906}, 
+}
+
+@misc{flamshepherd2020neuralmessagepassinghigh,
+      title={Neural Message Passing on High Order Paths}, 
+      author={Daniel Flam-Shepherd and Tony Wu and Pascal Friederich and Alan Aspuru-Guzik},
+      year={2020},
+      eprint={2002.10413},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2002.10413}, 
+}
+
+@misc{bongini2021moleculargraphgenerationgraph,
+      title={Molecular graph generation with Graph Neural Networks}, 
+      author={Pietro Bongini and Monica Bianchini and Franco Scarselli},
+      year={2021},
+      eprint={2012.07397},
+      archivePrefix={arXiv},
+      primaryClass={stat.ML},
+      doi={https://doi.org/10.1016/j.neucom.2021.04.039},
+      url={https://arxiv.org/abs/2012.07397}, 
+}
+
+@misc{gasteiger2022directionalmessagepassingmolecular,
+      title={Directional Message Passing for Molecular Graphs}, 
+      author={Johannes Gasteiger and Janek Groß and Stephan Günnemann},
+      year={2022},
+      eprint={2003.03123},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2003.03123}, 
+}
+
+@misc{castanedaleautaud2025optimalmessagepassingmolecular,
+      title={Optimal message passing for molecular prediction is simple, attentive and spatial}, 
+      author={Alma C. Castaneda-Leautaud and Rommie E. Amaro},
+      year={2025},
+      eprint={2509.10871},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      doi={https://doi.org/10.1039/D5DD00193E},
+      url={https://arxiv.org/abs/2509.10871}, 
+}
+
+@misc{schütt2021equivariantmessagepassingprediction,
+      title={Equivariant message passing for the prediction of tensorial properties and molecular spectra}, 
+      author={Kristof T. Schütt and Oliver T. Unke and Michael Gastegger},
+      year={2021},
+      eprint={2102.03150},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2102.03150}, 
+}
+
+@misc{jørgensen2022equivariantgraphneuralnetworks,
+      title={Equivariant graph neural networks for fast electron density estimation of molecules, liquids, and solids}, 
+      author={Peter Bjørn Jørgensen and Arghya Bhowmik},
+      year={2022},
+      eprint={2112.00652},
+      archivePrefix={arXiv},
+      primaryClass={physics.comp-ph},
+      doi={https://doi.org/10.1038/s41524-022-00863-y},
+      url={https://arxiv.org/abs/2112.00652}, 
+}
+
+@misc{masters2023gpsrevivingartmessage,
+      title={GPS++: Reviving the Art of Message Passing for Molecular Property Prediction}, 
+      author={Dominic Masters and Josef Dean and Kerstin Klaser and Zhiyi Li and Sam Maddrell-Mander and Adam Sanders and Hatem Helal and Deniz Beker and Andrew Fitzgibbon and Shenyang Huang and Ladislav Rampášek and Dominique Beaini},
+      year={2023},
+      eprint={2302.02947},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2302.02947}, 
+}
+
+@misc{shindo2019gatedgraphrecursiveneural,
+      title={Gated Graph Recursive Neural Networks for Molecular Property Prediction}, 
+      author={Hiroyuki Shindo and Yuji Matsumoto},
+      year={2019},
+      eprint={1909.00259},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/1909.00259}, 
+}
+
+@misc{liu2026latentflowvisualanalyticslatent,
+      title={LatentFlow: Visual Analytics for Latent Space Analysis in Molecular Graph Neural Networks}, 
+      author={Shiyi Liu and Jiaqing Chen and Nicholas Hadler and Rostyslav Hnatyshyn and Michael W. Mahoney and Talita Perciano and John F. Hartwig and Gunther H. Weber and Ross Maciejewski},
+      year={2026},
+      eprint={2607.21941},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2607.21941}, 
+}
+
+@misc{untarabut2026orderedtodisorderedtransferlearninggraph,
+      title={Ordered-to-disordered transfer learning with graph neural networks for formation-energy and HOMO-LUMO gap prediction in high-entropy perovskite oxides}, 
+      author={Panupol Untarabut and Narjes Jomaa and Sylvian Cadars and Olivier Masson and Samuel Bernard and Assil Bouzid and Santanu Saha},
+      year={2026},
+      eprint={2607.29510},
+      archivePrefix={arXiv},
+      primaryClass={cond-mat.mtrl-sci},
+      url={https://arxiv.org/abs/2607.29510}, 
+}
+
+@misc{han2026multimodalmolecularrepresentationlearning,
+      title={Multimodal Molecular Representation Learning with Graph Neural Networks, Deep & Cross Networks, and SMILES Embeddings}, 
+      author={Qiwei Han and Chi Zhou and Ruobing Wang and Zheng Ma},
+      year={2026},
+      eprint={2607.05736},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2607.05736}, 
+}
+
+@misc{kosasih2021graphneuralnetworkensembles,
+      title={On Graph Neural Network Ensembles for Large-Scale Molecular Property Prediction}, 
+      author={Edward Elson Kosasih and Joaquin Cabezas and Xavier Sumba and Piotr Bielak and Kamil Tagowski and Kelvin Idanwekhai and Benedict Aaron Tjandra and Arian Rokkum Jamasb},
+      year={2021},
+      eprint={2106.15529},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2106.15529}, 
+}
+
+@misc{choi2022scalabletraininggraphconvolutional,
+      title={Scalable training of graph convolutional neural networks for fast and accurate predictions of HOMO-LUMO gap in molecules}, 
+      author={Jong Youl Choi and Pei Zhang and Kshitij Mehta and Andrew Blanchard and Massimiliano Lupo Pasini},
+      year={2022},
+      eprint={2207.11333},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2207.11333}, 
+}
+
+@misc{zhang2021litegemlitegeometryenhanced,
+      title={LiteGEM: Lite Geometry Enhanced Molecular Representation Learning for Quantum Property Prediction}, 
+      author={Shanzhuo Zhang and Lihang Liu and Sheng Gao and Donglong He and Xiaomin Fang and Weibin Li and Zhengjie Huang and Weiyue Su and Wenjin Wang},
+      year={2021},
+      eprint={2106.14494},
+      archivePrefix={arXiv},
+      primaryClass={physics.chem-ph},
+      url={https://arxiv.org/abs/2106.14494}, 
+}
+
+@misc{wang2023ensemblevisnettransformermpretraining,
+      title={An ensemble of VisNet, Transformer-M, and pretraining models for molecular property prediction in OGB Large-Scale Challenge @ NeurIPS 2022}, 
+      author={Yusong Wang and Shaoning Li and Zun Wang and Xinheng He and Bin Shao and Tie-Yan Liu and Tong Wang},
+      year={2023},
+      eprint={2211.12791},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2211.12791}, 
+}
+
+@misc{liu2021fastquantumpropertyprediction,
+      title={Fast Quantum Property Prediction via Deeper 2D and 3D Graph Networks}, 
+      author={Meng Liu and Cong Fu and Xuan Zhang and Limei Wang and Yaochen Xie and Hao Yuan and Youzhi Luo and Zhao Xu and Shenglong Xu and Shuiwang Ji},
+      year={2021},
+      eprint={2106.08551},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2106.08551}, 
+}
+
+@misc{pombala2025exploringmoleculegenerationusing,
+      title={Exploring Molecule Generation Using Latent Space Graph Diffusion}, 
+      author={Prashanth Pombala and Gerrit Grossmann and Verena Wolf},
+      year={2025},
+      eprint={2501.03696},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2501.03696}, 
+}
+
+@misc{soares2023improvingmolecularpropertiesprediction,
+      title={Improving Molecular Properties Prediction Through Latent Space Fusion}, 
+      author={Eduardo Soares and Akihiro Kishimoto and Emilio Vital Brazil and Seiji Takeda and Hiroshi Kajino and Renato Cerqueira},
+      year={2023},
+      eprint={2310.13802},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2310.13802}, 
+}
+
+@misc{wang2023graphneuralnetworksmolecules,
+      title={Graph Neural Networks for Molecules}, 
+      author={Yuyang Wang and Zijie Li and Amir Barati Farimani},
+      year={2023},
+      eprint={2209.05582},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      doi={https://doi.org/10.1007/978-3-031-37196-7_2},
+      url={https://arxiv.org/abs/2209.05582}, 
+}
+
+@misc{raj2026scalablemessagepassingquantumgraph,
+      title={Scalable Message-Passing Quantum Graph Neural Networks in the Weisfeiler-Leman Hierarchy}, 
+      author={Snehal Raj and Brian Coyle and Léo Monbroussou and André J. Ferreira-Martins and Renato M. S. Farias and Elham Kashefi},
+      year={2026},
+      eprint={2606.26873},
+      archivePrefix={arXiv},
+      primaryClass={quant-ph},
+      url={https://arxiv.org/abs/2606.26873}, 
+}
+
+@misc{zhu2026rethinkingquantumnoisequantum,
+      title={Rethinking Quantum Noise in Quantum Machine Learning: When Noise Improves Learning}, 
+      author={Linghua Zhu and Yulong Dong and Ziyu Zhang and Xiaosong Li},
+      year={2026},
+      eprint={2601.13275},
+      archivePrefix={arXiv},
+      primaryClass={quant-ph},
+      url={https://arxiv.org/abs/2601.13275}, 
+}
+
+@misc{liu2026enhancingmolecularpropertypredictions,
+      title={Enhancing Molecular Property Predictions by Learning from Bond Modelling and Interactions}, 
+      author={Yunqing Liu and Yi Zhou and Wenqi Fan},
+      year={2026},
+      eprint={2603.00568},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2603.00568}, 
+}
+
+@misc{chakraborty2026duallevelatomiccoordinationgeometry,
+      title={Dual-Level Atomic and Coordination Geometry Learning for Crystal Property Prediction Using Graph Neural Networks}, 
+      author={Sanjay Chakraborty},
+      year={2026},
+      eprint={2607.24818},
+      archivePrefix={arXiv},
+      primaryClass={cs.IR},
+      url={https://arxiv.org/abs/2607.24818}, 
+}
+
+@misc{vitz2024hybridquantumgraphneural,
+      title={Hybrid Quantum Graph Neural Network for Molecular Property Prediction}, 
+      author={Michael Vitz and Hamed Mohammadbagherpoor and Samarth Sandeep and Andrew Vlasic and Richard Padbury and Anh Pham},
+      year={2024},
+      eprint={2405.05205},
+      archivePrefix={arXiv},
+      primaryClass={quant-ph},
+      url={https://arxiv.org/abs/2405.05205}, 
+}
+
+@misc{rittig2022graphneuralnetworksprediction,
+      title={Graph neural networks for the prediction of molecular structure-property relationships}, 
+      author={Jan G. Rittig and Qinghe Gao and Manuel Dahmen and Alexander Mitsos and Artur M. Schweidtmann},
+      year={2022},
+      eprint={2208.04852},
+      archivePrefix={arXiv},
+      primaryClass={q-bio.BM},
+      doi={https://doi.org/10.1039/BK9781837670178-00159},
+      url={https://arxiv.org/abs/2208.04852}, 
+}
+
+@misc{liu2021fastquantumpropertyprediction,
+      title={Fast Quantum Property Prediction via Deeper 2D and 3D Graph Networks}, 
+      author={Meng Liu and Cong Fu and Xuan Zhang and Limei Wang and Yaochen Xie and Hao Yuan and Youzhi Luo and Zhao Xu and Shenglong Xu and Shuiwang Ji},
+      year={2021},
+      eprint={2106.08551},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2106.08551}, 
+}
+
+@misc{nguyen2026mmgnnmultilevelmulticolorgraph,
+      title={MMGNN: Multi-level, multi-color graph neural networks for molecular property prediction}, 
+      author={Trung Nguyen and Duc Duy Nguyen},
+      year={2026},
+      eprint={2606.20906},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2606.20906}, 
+}
+
+@misc{wang2023graphneuralnetworksmolecules,
+      title={Graph Neural Networks for Molecules}, 
+      author={Yuyang Wang and Zijie Li and Amir Barati Farimani},
+      year={2023},
+      eprint={2209.05582},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      doi={https://doi.org/10.1007/978-3-031-37196-7_2},
+      url={https://arxiv.org/abs/2209.05582}, 
+}
+
+@misc{shindo2019gatedgraphrecursiveneural,
+      title={Gated Graph Recursive Neural Networks for Molecular Property Prediction}, 
+      author={Hiroyuki Shindo and Yuji Matsumoto},
+      year={2019},
+      eprint={1909.00259},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/1909.00259}, 
+}
+
+@misc{helal2022extremeaccelerationgraphneural,
+      title={Extreme Acceleration of Graph Neural Network-based Prediction Models for Quantum Chemistry}, 
+      author={Hatem Helal and Jesun Firoz and Jenna Bilbrey and Mario Michael Krell and Tom Murray and Ang Li and Sotiris Xantheas and Sutanay Choudhury},
+      year={2022},
+      eprint={2211.13853},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2211.13853}, 
+}
+
+@misc{piperno2024studyquantumgraphneural,
+      title={A Study on Quantum Graph Neural Networks Applied to Molecular Physics}, 
+      author={Simone Piperno and Andrea Ceschini and Su Yeon Chang and Michele Grossi and Sofia Vallecorsa and Massimo Panella},
+      year={2024},
+      eprint={2408.03427},
+      archivePrefix={arXiv},
+      primaryClass={quant-ph},
+      doi={https://doi.org/10.1088/1402-4896/add8e9},
+      url={https://arxiv.org/abs/2408.03427}, 
+}
+
+@misc{shui2020heterogeneousmoleculargraphneural,
+      title={Heterogeneous Molecular Graph Neural Networks for Predicting Molecule Properties}, 
+      author={Zeren Shui and George Karypis},
+      year={2020},
+      eprint={2009.12710},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2009.12710}, 
+}
+
+@misc{jiang2020graphneuralnetworkarchitecture,
+      title={Graph Neural Network Architecture Search for Molecular Property Prediction}, 
+      author={Shengli Jiang and Prasanna Balaprakash},
+      year={2020},
+      eprint={2008.12187},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2008.12187}, 
+}
+
+@misc{arjonamedina2024analysisatomlevelpretrainingquantum,
+      title={Analysis of Atom-level pretraining with Quantum Mechanics (QM) data for Graph Neural Networks Molecular property models}, 
+      author={Jose Arjona-Medina and Ramil Nugmanov},
+      year={2024},
+      eprint={2405.14837},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2405.14837}, 
+}
+
+@misc{raj2026scalablemessagepassingquantumgraph,
+      title={Scalable Message-Passing Quantum Graph Neural Networks in the Weisfeiler-Leman Hierarchy}, 
+      author={Snehal Raj and Brian Coyle and Léo Monbroussou and André J. Ferreira-Martins and Renato M. S. Farias and Elham Kashefi},
+      year={2026},
+      eprint={2606.26873},
+      archivePrefix={arXiv},
+      primaryClass={quant-ph},
+      url={https://arxiv.org/abs/2606.26873}, 
+}
+
+@misc{lu2019molecularpropertypredictionmultilevel,
+      title={Molecular Property Prediction: A Multilevel Quantum Interactions Modeling Perspective}, 
+      author={Chengqiang Lu and Qi Liu and Chao Wang and Zhenya Huang and Peize Lin and Lixin He},
+      year={2019},
+      eprint={1906.11081},
+      archivePrefix={arXiv},
+      primaryClass={physics.comp-ph},
+      url={https://arxiv.org/abs/1906.11081}, 
+}
+
+@misc{wang2022motifbasedgraphrepresentationlearning,
+      title={Motif-based Graph Representation Learning with Application to Chemical Molecules}, 
+      author={Yifei Wang and Shiyang Chen and Guobin Chen and Ethan Shurberg and Hang Liu and Pengyu Hong},
+      year={2022},
+      eprint={2208.04529},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2208.04529}, 
+}
+
+@misc{yu2025magemodellevelgraphneural,
+      title={MAGE: Model-Level Graph Neural Networks Explanations via Motif-based Graph Generation}, 
+      author={Zhaoning Yu and Hongyang Gao},
+      year={2025},
+      eprint={2405.12519},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2405.12519}, 
+}
+
+\end{document}
+                

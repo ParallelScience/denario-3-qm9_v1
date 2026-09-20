@@ -1,0 +1,22 @@
+{
+  "image0": {
+    "key": "image0",
+    "name": "residual_gap_corr.png",
+    "caption": "Hexbin scatter plots illustrating the relationship between the predicted non-additive internal energy ($u_0$) residuals and fundamental intensive electronic properties: the HOMO-LUMO gap (left) and the dipole moment (right). The residuals represent energetic deviations from a classical additive baseline model. By mapping these predicted non-additive contributions against the gap and dipole moment\u2014properties shown to be significantly driven by structural motifs such as extended $\\pi$-conjugation and heteroatom electronegativity\u2014the distributions reveal how non-linear electronic physics are captured by the Graph Neural Network. The observed clustering demonstrates that the modeled deviations from classical additivity are intrinsically linked to underlying quantum-mechanical phenomena rather than extensive scaling."
+  },
+  "image1": {
+    "key": "image1",
+    "name": "motif_distributions.png",
+    "caption": "Comparison of the HOMO-LUMO gap (left) and dipole moment (right) distributions based on the presence or absence of specific high-influence structural motifs, including oxygen-containing groups such as \\texttt{fr\\_ether} and \\texttt{fr\\_ketone}. The top panels display mean property values with error bars, while the bottom panels provide detailed boxplots of the divergent distributions. Consistent with statistical validation, the incorporation of these topological features significantly shifts fundamental intensive electronic properties. These structural attributions demonstrate that the graph neural network successfully learns underlying non-linear quantum-mechanical phenomena, effectively capturing the non-additive energetics that classical group-contribution baselines miss."
+  },
+  "image2": {
+    "key": "image2",
+    "name": "tsne_property_scatter.png",
+    "caption": "Two-dimensional t-SNE projection of the 128-dimensional latent space extracted from the trained Graph Neural Network (GNN). The scatter plots are colored by fundamental intensive electronic properties (HOMO-LUMO gap, dipole moment $\\mu$, HOMO, and LUMO) alongside the target non-additive residual. The structured embedding landscape demonstrates that the network intrinsically learns underlying electronic structures without direct supervision. As visually captured, the first t-SNE dimension correlates with the HOMO-LUMO gap and HOMO energy, while the second dimension strongly orders the target non-additive residual. These distinct property gradients and clustering structures confirm that the GNN effectively models the non-linear electronic physics and non-additive energetics missed by classical additivity models."
+  },
+  "image3": {
+    "key": "image3",
+    "name": "motif_property_boxplots.png",
+    "caption": "Boxplots illustrating the distributions of the HOMO-LUMO gap (top row, in Hartree) and dipole moment $\\mu$ (bottom row, in Debye) for molecules partitioned by the presence of high-influence structural motifs: aromaticity, oxygen, nitrogen, and fluorine. The distributions reveal that the incorporation of these features\u2014particularly aromatic rings and nitrogen\u2014substantially compresses the HOMO-LUMO gap and increases the dipole moment. These statistically significant divergent distributions demonstrate that the energetic deviations from classical additivity, which are successfully captured by the Graph Neural Network, correspond directly to fundamental quantum-mechanical phenomena such as extended $\\pi$-conjugation and heteroatom electronegativity."
+  }
+}

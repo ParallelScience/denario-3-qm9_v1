@@ -1,0 +1,41 @@
+/opt/denario-venv/lib/python3.12/site-packages/denario/langgraph_agents/paper_module/LaTeX/AAS_keywords.txt
+Extracted 0 table(s) and 0 code block(s) from markdown
+Abstract found on Abstract.tex...
+Keywords found on Keywords.tex...
+Found 4 plot files to process....
+Plot files: ['residual_gap_corr.png', 'motif_distributions.png', 'tsne_property_scatter.png']...
+...............Captions generated
+✅................Figures generated
+Introduction found on Introduction.tex
+Methods found on Methods.tex.....
+Results found on Results.tex.....
+Conclusions found on Conclusions.tex
+Compiling paper_v1_preliminary...✅✅
+Refined Results found on Results_refined.tex
+Compiling paper_v2_no_citations..✅✅
+   - Perplexity citation query failed (HTTPError: 429 Client Error: Too Many Requests for url: https://api.perplexity.ai/chat/completions); leaving paragraph uncited
+   - Perplexity citation query failed (HTTPError: 429 Client Error: Too Many Requests for url: https://api.perplexity.ai/chat/completions); leaving paragraph uncited
+   - Perplexity citation query failed (HTTPError: 429 Client Error: Too Many Requests for url: https://api.perplexity.ai/chat/completions); leaving paragraph uncited
+   - Perplexity citation query failed (HTTPError: 429 Client Error: Too Many Requests for url: https://api.perplexity.ai/chat/completions); leaving paragraph uncited
+   - Perplexity citation query failed (HTTPError: 429 Client Error: Too Many Requests for url: https://api.perplexity.ai/chat/completions); leaving paragraph uncited
+   - Perplexity citation query failed (HTTPError: 429 Client Error: Too Many Requests for url: https://api.perplexity.ai/chat/completions); leaving paragraph uncited
+   - Perplexity citation query failed (HTTPError: 429 Client Error: Too Many Requests for url: https://api.perplexity.ai/chat/completions); leaving paragraph uncited
+   - Perplexity citation query failed (HTTPError: 429 Client Error: Too Many Requests for url: https://api.perplexity.ai/chat/completions); leaving paragraph uncited
+   - Citations added to Conclusions
+   - Citations added to Introduction
+   - Citations added to Methods
+   - Citations added to Results
+Sanitized BibTeX saved to: /home/node/work/projects/qm9_v1/Iteration0/paper_output/bibliography.bib
+✅ Citations added to all sections.
+Compiling paper_v3_citations.....❌❌✅
+Refining Introduction with citations
+Refining Conclusions with citations
+Refining Methods with citations
+Refining Results with citations
+✅  - Conclusions with citations refined
+✅  - Methods with citations refined
+✅  - Introduction with citations refined
+✅  - Results with citations refined
+Compiling paper_v4_final.........✅✅✅
+Paper written in 6 min 21 sec.
+Cost: $0.487

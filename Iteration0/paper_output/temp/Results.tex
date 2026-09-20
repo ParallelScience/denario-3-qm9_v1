@@ -1,0 +1,150 @@
+\documentclass[]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textgreek}
+\usepackage{newunicodechar}
+\newunicodechar{⁰}{\ensuremath{^0}}
+\newunicodechar{²}{\ensuremath{^2}}
+\newunicodechar{³}{\ensuremath{^3}}
+\newunicodechar{₁}{\ensuremath{_1}}
+\newunicodechar{₂}{\ensuremath{_2}}
+\newunicodechar{₃}{\ensuremath{_3}}
+\newunicodechar{×}{\ensuremath{\times}}
+\newunicodechar{∇}{\ensuremath{\nabla}}
+\newunicodechar{≈}{\ensuremath{\approx}}
+\newunicodechar{≡}{\ensuremath{\equiv}}
+\newunicodechar{≤}{\ensuremath{\leq}}
+\newunicodechar{≥}{\ensuremath{\geq}}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+\newunicodechar{←}{\ensuremath{\leftarrow}}
+\newunicodechar{↑}{\ensuremath{\uparrow}}
+\newunicodechar{↓}{\ensuremath{\downarrow}}
+\newunicodechar{↔}{\ensuremath{\leftrightarrow}}
+\newunicodechar{—}{\textemdash}
+\newunicodechar{–}{\textendash}
+\newunicodechar{−}{\ensuremath{-}}
+\newunicodechar{√}{\ensuremath{\surd}}
+\newunicodechar{∼}{\ensuremath{\sim}}
+\newunicodechar{≲}{\ensuremath{\lesssim}}
+\newunicodechar{≳}{\ensuremath{\gtrsim}}
+\newunicodechar{⟨}{\ensuremath{\langle}}
+\newunicodechar{⟩}{\ensuremath{\rangle}}
+\newunicodechar{₀}{\ensuremath{_0}}
+\newunicodechar{₄}{\ensuremath{_4}}
+\newunicodechar{₅}{\ensuremath{_5}}
+\newunicodechar{₆}{\ensuremath{_6}}
+\newunicodechar{₇}{\ensuremath{_7}}
+\newunicodechar{₈}{\ensuremath{_8}}
+\newunicodechar{₉}{\ensuremath{_9}}
+\newunicodechar{⁴}{\ensuremath{^4}}
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{β}{\ensuremath{\beta}}
+\newunicodechar{γ}{\ensuremath{\gamma}}
+\newunicodechar{δ}{\ensuremath{\delta}}
+\newunicodechar{ε}{\ensuremath{\epsilon}}
+\newunicodechar{θ}{\ensuremath{\theta}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{μ}{\ensuremath{\mu}}
+\newunicodechar{ν}{\ensuremath{\nu}}
+\newunicodechar{ξ}{\ensuremath{\xi}}
+\newunicodechar{π}{\ensuremath{\pi}}
+\newunicodechar{ρ}{\ensuremath{\rho}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{τ}{\ensuremath{\tau}}
+\newunicodechar{φ}{\ensuremath{\phi}}
+\newunicodechar{ϕ}{\ensuremath{\phi}}
+\newunicodechar{χ}{\ensuremath{\chi}}
+\newunicodechar{ψ}{\ensuremath{\psi}}
+\newunicodechar{ω}{\ensuremath{\omega}}
+\newunicodechar{Δ}{\ensuremath{\Delta}}
+\newunicodechar{Λ}{\ensuremath{\Lambda}}
+\newunicodechar{Σ}{\ensuremath{\Sigma}}
+\newunicodechar{Φ}{\ensuremath{\Phi}}
+\newunicodechar{Ω}{\ensuremath{\Omega}}
+\newunicodechar{“}{``}
+\newunicodechar{”}{''}
+\newunicodechar{‘}{`}
+\newunicodechar{’}{'}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{black!4},
+  frame=none,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  xleftmargin=1em,
+  xrightmargin=1em,
+  aboveskip=0.6em,
+  belowskip=0.6em,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\itshape\color{black!60},
+  stringstyle=\color{green!50!black},
+}
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+
+\subsection{Extensivity decoupling and baseline performance}
+To isolate the non-additive electronic contributions to the internal energy ($U_0$), the extensive scaling inherent to the QM9 dataset was first decoupled using a classical group-contribution approach. The Ridge regression baseline, which predicted $U_0$ directly from heavy atom and functional group counts, yielded a test $R^2$ of 0.9850 and a test Mean Squared Error (MSE) of 23.6894. This confirms that while classical additivity captures the bulk of the extensive scaling, a meaningful residual variance remains, representing the purely non-additive energetics.
+
+To evaluate how well graph-based topological models capture this non-additivity compared to non-linear descriptor-based models, a Random Forest (RF) and a Graph Neural Network (GNN) were trained to predict the standardized residuals of the Ridge baseline. The Random Forest achieved a test $R^2$ of 0.9779 and a test MSE of 0.0209. In contrast, the GNN substantially outperformed the descriptor-based baseline, achieving a test $R^2$ of 0.9985 and a test MSE of 0.0014. By successfully modeling these deviations, the GNN demonstrates that explicit message passing over the molecular graph is highly effective at capturing the non-linear electronic physics that classical additivity models miss. The relationship between these predicted non-additive residuals and fundamental intensive properties, such as the HOMO-LUMO gap and dipole moment, reveals that the modeled deviations are intrinsically linked to underlying quantum-mechanical phenomena rather than extensive scaling (Figure \ref{fig:image0}).
+
+\begin{figure}[!tbp]
+    \centering
+    \includegraphics[width=0.99\textwidth]{../input_files/plots/residual_gap_corr.png}
+    \caption{Hexbin scatter plots illustrating the relationship between the predicted non-additive internal energy ($u_0$) residuals and fundamental intensive electronic properties: the HOMO-LUMO gap (left) and the dipole moment (right). The residuals represent energetic deviations from a classical additive baseline model. By mapping these predicted non-additive contributions against the gap and dipole moment—properties shown to be significantly driven by structural motifs such as extended $\pi$-conjugation and heteroatom electronegativity—the distributions reveal how non-linear electronic physics are captured by the Graph Neural Network. The observed clustering demonstrates that the modeled deviations from classical additivity are intrinsically linked to underlying quantum-mechanical phenomena rather than extensive scaling.}
+    \label{fig:image0}
+\end{figure}
+
+\subsection{Latent space and intensive property correlation}
+To interpret the learned representations of non-additivity, the 128-dimensional latent vectors were extracted from the penultimate layer of the trained GNN for the 13,381 molecules in the test set. The extracted latent space exhibits a mean of $-0.2883$ and a standard deviation of $2.7265$. 
+
+Analysis of this latent space confirms that the network intrinsically learned underlying electronic structures without direct supervision on these targets. Individual latent dimensions highly correlate with the modeled non-additive residual; for instance, latent dimension 24 correlates with the residual at a Pearson $r = -0.8520$, and dimension 102 at $r = 0.8274$. Furthermore, these dimensions capture physical intensive properties: latent dimension 83 correlates with the HOMO-LUMO gap at $r = 0.5207$, and dimension 50 correlates with the HOMO energy at $r = 0.3756$.
+
+Projecting this latent space into two dimensions using t-Distributed Stochastic Neighbor Embedding (t-SNE) further illustrates a structured embedding landscape (Figure \ref{fig:image2}). The first principal dimension of the projection correlates with the HOMO-LUMO gap (Pearson $r = -0.3635$, Spearman $\rho = -0.3414$) and HOMO energy ($r = 0.3068$). The second dimension strongly orders the target non-additive residual (Spearman $\rho = 0.7871$, Pearson $r = 0.4611$). These distinct property gradients confirm that the GNN effectively models the non-linear electronic physics missed by classical additivity models.
+
+\begin{figure}[!tbp]
+    \centering
+    \includegraphics[width=0.99\textwidth]{../input_files/plots/tsne_property_scatter.png}
+    \caption{Two-dimensional t-SNE projection of the 128-dimensional latent space extracted from the trained Graph Neural Network (GNN). The scatter plots are colored by fundamental intensive electronic properties (HOMO-LUMO gap, dipole moment $\mu$, HOMO, and LUMO) alongside the target non-additive residual. The structured embedding landscape demonstrates that the network intrinsically learns underlying electronic structures without direct supervision. As visually captured, the first t-SNE dimension correlates with the HOMO-LUMO gap and HOMO energy, while the second dimension strongly orders the target non-additive residual. These distinct property gradients and clustering structures confirm that the GNN effectively models the non-linear electronic physics and non-additive energetics missed by classical additivity models.}
+    \label{fig:image2}
+\end{figure}
+
+\subsection{Structural motif attribution and statistical validation}
+To chemically interpret the non-additivity captured by the model, Integrated Gradients were applied to attribute energetic deviations to specific atomic and bond motifs. Molecules were partitioned based on the presence of identified high-influence topological features, specifically aromaticity, nitrogen, fluorine, and oxygen. Statistical validation confirmed that these structural motifs are significant drivers of intensive electronic properties, as visualized in Figure \ref{fig:image3}.
+
+\begin{figure}[!tbp]
+    \centering
+    \includegraphics[width=0.99\textwidth]{../input_files/plots/motif_property_boxplots.png}
+    \caption{Boxplots illustrating the distributions of the HOMO-LUMO gap (top row, in Hartree) and dipole moment $\mu$ (bottom row, in Debye) for molecules partitioned by the presence of high-influence structural motifs: aromaticity, oxygen, nitrogen, and fluorine. The distributions reveal that the incorporation of these features—particularly aromatic rings and nitrogen—substantially compresses the HOMO-LUMO gap and increases the dipole moment. These statistically significant divergent distributions demonstrate that the energetic deviations from classical additivity, which are successfully captured by the Graph Neural Network, correspond directly to fundamental quantum-mechanical phenomena such as extended $\pi$-conjugation and heteroatom electronegativity.}
+    \label{fig:image3}
+\end{figure}
+
+Molecules containing aromatic motifs exhibit a significantly compressed HOMO-LUMO gap (mean $0.2071$ Hartree) compared to those without ($0.2608$ Hartree). A Kruskal-Wallis test confirms this difference is highly significant ($p < 0.0001$, Cohen's $d = -1.3990$). Furthermore, aromaticity significantly increases the dipole moment ($3.2036$ Debye vs. $2.6075$ Debye, $p < 0.0001$, Cohen's $d = 0.3734$). The integration of nitrogen similarly compresses the gap (mean $0.2396$ Hartree vs. $0.2704$ Hartree, $p < 0.0001$, Cohen's $d = -0.6734$) while massively shifting the dipole moment (mean $3.1419$ Debye vs. $2.0190$ Debye, $p < 0.0001$, Cohen's $d = 0.8312$). Fluorine incorporation also narrows the gap (mean $0.2133$ Hartree vs. $0.2519$ Hartree, ANOVA $p < 0.0001$, Cohen's $d = -0.7677$) and increases the dipole (mean $2.9627$ Debye vs. $2.7084$ Debye, ANOVA $p = 0.0162$, Cohen's $d = 0.1728$). 
+
+Oxygen incorporation yields statistically significant but physically smaller shifts, modifying the gap (mean $0.2504$ Hartree vs. $0.2570$ Hartree, $p < 0.0001$, Cohen's $d = -0.1347$) and dipole (mean $2.7610$ Debye vs. $2.4275$ Debye, $p < 0.0001$, Cohen's $d = 0.2009$). Further detailing the oxygen-containing groups, Figure \ref{fig:image1} highlights the specific distributions for motifs such as ethers and ketones, confirming that the incorporation of these topological features significantly shifts fundamental intensive electronic properties. 
+
+\begin{figure}[!tbp]
+    \centering
+    \includegraphics[width=0.99\textwidth]{../input_files/plots/motif_distributions.png}
+    \caption{Comparison of the HOMO-LUMO gap (left) and dipole moment (right) distributions based on the presence or absence of specific high-influence structural motifs, including oxygen-containing groups such as \texttt{fr\_ether} and \texttt{fr\_ketone}. The top panels display mean property values with error bars, while the bottom panels provide detailed boxplots of the divergent distributions. Consistent with statistical validation, the incorporation of these topological features significantly shifts fundamental intensive electronic properties. These structural attributions demonstrate that the graph neural network successfully learns underlying non-linear quantum-mechanical phenomena, effectively capturing the non-additive energetics that classical group-contribution baselines miss.}
+    \label{fig:image1}
+\end{figure}
+
+Overall, these divergent distributions demonstrate that the energetic deviations from classical additivity modeled by the GNN correspond directly to fundamental quantum-mechanical phenomena, such as extended $\pi$-conjugation and heteroatom electronegativity.
+
+\end{document}
+                

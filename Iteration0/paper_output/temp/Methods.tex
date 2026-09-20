@@ -1,0 +1,136 @@
+\documentclass[]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textgreek}
+\usepackage{newunicodechar}
+\newunicodechar{⁰}{\ensuremath{^0}}
+\newunicodechar{²}{\ensuremath{^2}}
+\newunicodechar{³}{\ensuremath{^3}}
+\newunicodechar{₁}{\ensuremath{_1}}
+\newunicodechar{₂}{\ensuremath{_2}}
+\newunicodechar{₃}{\ensuremath{_3}}
+\newunicodechar{×}{\ensuremath{\times}}
+\newunicodechar{∇}{\ensuremath{\nabla}}
+\newunicodechar{≈}{\ensuremath{\approx}}
+\newunicodechar{≡}{\ensuremath{\equiv}}
+\newunicodechar{≤}{\ensuremath{\leq}}
+\newunicodechar{≥}{\ensuremath{\geq}}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+\newunicodechar{←}{\ensuremath{\leftarrow}}
+\newunicodechar{↑}{\ensuremath{\uparrow}}
+\newunicodechar{↓}{\ensuremath{\downarrow}}
+\newunicodechar{↔}{\ensuremath{\leftrightarrow}}
+\newunicodechar{—}{\textemdash}
+\newunicodechar{–}{\textendash}
+\newunicodechar{−}{\ensuremath{-}}
+\newunicodechar{√}{\ensuremath{\surd}}
+\newunicodechar{∼}{\ensuremath{\sim}}
+\newunicodechar{≲}{\ensuremath{\lesssim}}
+\newunicodechar{≳}{\ensuremath{\gtrsim}}
+\newunicodechar{⟨}{\ensuremath{\langle}}
+\newunicodechar{⟩}{\ensuremath{\rangle}}
+\newunicodechar{₀}{\ensuremath{_0}}
+\newunicodechar{₄}{\ensuremath{_4}}
+\newunicodechar{₅}{\ensuremath{_5}}
+\newunicodechar{₆}{\ensuremath{_6}}
+\newunicodechar{₇}{\ensuremath{_7}}
+\newunicodechar{₈}{\ensuremath{_8}}
+\newunicodechar{₉}{\ensuremath{_9}}
+\newunicodechar{⁴}{\ensuremath{^4}}
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{β}{\ensuremath{\beta}}
+\newunicodechar{γ}{\ensuremath{\gamma}}
+\newunicodechar{δ}{\ensuremath{\delta}}
+\newunicodechar{ε}{\ensuremath{\epsilon}}
+\newunicodechar{θ}{\ensuremath{\theta}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{μ}{\ensuremath{\mu}}
+\newunicodechar{ν}{\ensuremath{\nu}}
+\newunicodechar{ξ}{\ensuremath{\xi}}
+\newunicodechar{π}{\ensuremath{\pi}}
+\newunicodechar{ρ}{\ensuremath{\rho}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{τ}{\ensuremath{\tau}}
+\newunicodechar{φ}{\ensuremath{\phi}}
+\newunicodechar{ϕ}{\ensuremath{\phi}}
+\newunicodechar{χ}{\ensuremath{\chi}}
+\newunicodechar{ψ}{\ensuremath{\psi}}
+\newunicodechar{ω}{\ensuremath{\omega}}
+\newunicodechar{Δ}{\ensuremath{\Delta}}
+\newunicodechar{Λ}{\ensuremath{\Lambda}}
+\newunicodechar{Σ}{\ensuremath{\Sigma}}
+\newunicodechar{Φ}{\ensuremath{\Phi}}
+\newunicodechar{Ω}{\ensuremath{\Omega}}
+\newunicodechar{“}{``}
+\newunicodechar{”}{''}
+\newunicodechar{‘}{`}
+\newunicodechar{’}{'}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{black!4},
+  frame=none,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  xleftmargin=1em,
+  xrightmargin=1em,
+  aboveskip=0.6em,
+  belowskip=0.6em,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\itshape\color{black!60},
+  stringstyle=\color{green!50!black},
+}
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+
+\subsection{Data preprocessing and quality control}
+The QM9 dataset was utilized to investigate the non-additive electronic contributions to molecular internal energy at 0 K ($U_0$). Molecular structures were parsed from SMILES strings using the RDKit library. During initial quality control, 83 duplicated SMILES representations were identified; to ensure consistent labeling and prevent training instability, the target property values for these duplicates were averaged. 
+
+To rigorously evaluate model generalization and prevent data leakage, the dataset was partitioned into training (80\%), validation (10\%), and test (10\%) sets using a molecule-aware splitting strategy. This ensured that all instances of identical SMILES strings, if any remained after deduplication, resided within the same partition. For each molecule, explicit size-normalization features, including heavy atom counts and hydrogen counts, were calculated alongside counts of specific bond types and functional groups to serve as inputs for the classical additive baseline.
+
+\subsection{Baseline additive model construction}
+To decouple the extensive scaling inherent to the dataset from the underlying non-linear electronic physics, a Group Contribution Method (GCM) baseline was constructed using Ridge regression. The baseline model was trained exclusively on the training set to predict $U_0$ using the number of heavy atoms and the counts of various bond types and functional groups as independent variables. 
+
+By modeling the purely additive components of the internal energy, the Ridge regression isolates the non-additive energetic deviations as residuals. For each molecule $i$, the residual $r_i$ was calculated as the difference between the actual internal energy and the baseline prediction:
+\begin{equation}
+    r_i = U_{0,i} - \hat{U}_{0,i}^{\text{Ridge}}
+\end{equation}
+To ensure stable gradient dynamics during the subsequent neural network training, these residuals were standardized using z-score normalization based on the training set mean ($\mu_r$) and standard deviation ($\sigma_r$):
+\begin{equation}
+    z_i = \frac{r_i - \mu_r}{\sigma_r}
+\end{equation}
+These standardized residuals ($z_i$) served as the target variable for the non-linear models.
+
+\subsection{Graph neural network architecture and training}
+To capture the topological nuances and long-range electronic effects missed by the additive baseline, a Graph Neural Network (GNN) was designed to predict the standardized residuals. The molecular graphs were constructed with node features encoding atomic number, hybridization state, and atomic degree, while edge features encoded bond type and aromaticity. 
+
+The network architecture employed message-passing layers to propagate local structural information across the molecular graph. To effectively aggregate global electronic effects, such as extended $\pi$-conjugation pathways, a Global Attention Pooling layer was incorporated. The pooled graph-level representation was then passed through a multi-layer perceptron terminating in a linear output layer (without an activation function) to accommodate the unbounded continuous range of the standardized residuals.
+
+The GNN was trained to minimize the Mean Squared Error (MSE) loss between the predicted and actual standardized residuals. Training was regulated using an early stopping criterion monitored on the validation loss to prevent overfitting. To benchmark the efficacy of the graph-based message passing, a Random Forest regressor was also trained on the same RDKit-derived descriptors used for the Ridge baseline. Comparing the GNN against this non-linear descriptor-based baseline isolates the performance gain attributable specifically to the explicit modeling of molecular topology.
+
+\subsection{Latent space extraction and analysis}
+To interpret the learned representations of non-additivity, the 128-dimensional latent vectors were extracted from the penultimate layer of the trained GNN for all molecules in the test set. This latent space was analyzed to determine whether the network intrinsically learned fundamental intensive properties without direct supervision. 
+
+Dimensionality reduction was performed using t-Distributed Stochastic Neighbor Embedding (t-SNE) to visualize the embedding landscape and identify structural clustering. Both the raw 128-dimensional latent features and the reduced t-SNE components were statistically correlated (using Pearson $r$ and Spearman $\rho$ coefficients) with known intensive electronic properties provided in the QM9 dataset, specifically the HOMO-LUMO gap, HOMO energy, LUMO energy, and dipole moment ($\mu$).
+
+\subsection{Structural motif attribution and statistical validation}
+To map the predicted non-additive energetics back to specific chemical features, the Integrated Gradients (IG) attribution method was applied to the trained GNN. The baseline input for the IG algorithm was defined as a "null" graph, where all node and edge features were zeroed out. To ensure that the attribution scores were comparable across molecules of varying sizes, the raw IG scores were normalized by the total number of atoms in the molecule.
+
+Molecules were subsequently partitioned into groups based on the presence of high-influence topological features identified by the network, such as aromatic rings and the integration of specific heteroatoms (nitrogen, oxygen, and fluorine). To validate the physical relevance of these GNN-identified motifs, statistical tests were conducted to compare the distributions of intensive properties (HOMO-LUMO gap and dipole moment) between molecules containing these motifs and those without. Depending on the distribution of the data, Analysis of Variance (ANOVA) or non-parametric Kruskal-Wallis tests were employed to determine statistical significance, while Cohen's $d$ was calculated to quantify the effect size of each structural motif on the electronic properties.
+
+\end{document}
+                

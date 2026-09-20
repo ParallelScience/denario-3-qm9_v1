@@ -1,0 +1,845 @@
+
+==== ERROR on iteration Pass 1 ====
+---- STDOUT ----
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022/Debian) (preloaded format=xelatex)
+ restricted \write18 enabled.
+entering extended mode
+(./paper_v3_citations.tex
+LaTeX2e <2022-11-01> patch level 1
+L3 programming layer <2023-01-16>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
+
+Package inputenc Warning: inputenc package ignored with utf8 based engines.
+
+) (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+(/home/node/texmf/tex/latex/lm/t1lmr.fd))
+(/home/node/texmf/tex/latex/lm/lmodern.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/textgreek/textgreek.sty
+(/usr/share/texlive/texmf-dist/tex/latex/greek-fontenc/lgrenc.def
+(/usr/share/texlive/texmf-dist/tex/latex/greek-fontenc/greek-fontenc.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/newunicodechar/newunicodechar.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/xetex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjustbox.sty
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/trimclip.sty
+(/usr/share/texlive/texmf-dist/tex/latex/collectbox/collectbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/tc-xetex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/varwidth/varwidth.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc-greekbasic.def))
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hxetex.def
+(/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-xetex.def)
+No file paper_v3_citations.aux.
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/cbfonts-fd/lgrcmr.fd)
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+(/home/node/texmf/tex/latex/lm/ot1lmr.fd)
+(/home/node/texmf/tex/latex/lm/omllmm.fd)
+(/home/node/texmf/tex/latex/lm/omslmsy.fd)
+(/home/node/texmf/tex/latex/lm/omxlmex.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+
+Package natbib Warning: Citation `fu2025benchmarkquantumchemistryrelaxations' o
+n page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `schütt2016quantumchemicalinsightsdeeptensor' 
+on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `xiang2025edbenchlargescaleelectrondensity' on
+ page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `schütt2016quantumchemicalinsightsdeeptensor' 
+on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `esders2024analyzingatomicinteractionsmolecule
+s' on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `xiang2025edbenchlargescaleelectrondensity' on
+ page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `wang2023graphneuralnetworksmolecules' on page
+ 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `liu2026latentflowvisualanalyticslatent' on pa
+ge 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `han2026multimodalmolecularrepresentationlearn
+ing' on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `choi2022scalabletraininggraphconvolutional' o
+n page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `liu2026enhancingmolecularpropertypredictions'
+ on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `chakraborty2026duallevelatomiccoordinationgeo
+metry' on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `shui2020heterogeneousmoleculargraphneural' on
+ page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `liu2021fastquantumpropertyprediction' on page
+ 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `rittig2022graphneuralnetworksprediction' on p
+age 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `lu2019molecularpropertypredictionmultilevel' 
+on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `liu2021fastquantumpropertyprediction' on page
+ 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `arjonamedina2024analysisatomlevelpretrainingq
+uantum' on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `shui2020heterogeneousmoleculargraphneural' on
+ page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `wang2022motifbasedgraphrepresentationlearning
+' on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `yu2025magemodellevelgraphneural' on page 1 un
+defined on input line 120.
+
+
+Package natbib Warning: Citation `lu2019molecularpropertypredictionmultilevel' 
+on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `shui2020heterogeneousmoleculargraphneural' on
+ page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `liu2021fastquantumpropertyprediction' on page
+ 1 undefined on input line 120.
+
+[1]
+
+./paper_v3_citations.tex:124: LaTeX Error: Command \bfseries invalid in math mo
+de.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.124 ...{yun2024znormzscoregradientnormalization}
+                                                  \end{equation}These standa...
+
+
+Package natbib Warning: Citation `yun2024znormzscoregradientnormalization' on p
+age 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `ma2020multiviewgraphneuralnetworks' on page 2
+ undefined on input line 124.
+
+
+Package natbib Warning: Citation `ma2020multiviewgraphneuralnetworks' on page 2
+ undefined on input line 124.
+
+
+Package natbib Warning: Citation `nguyen2026mmgnnmultilevelmulticolorgraph' on 
+page 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `berry2025surveygraphneuralnetworks' on page 2
+ undefined on input line 124.
+
+
+Package natbib Warning: Citation `jo2021flexibledualbranchedmessagepassing' on 
+page 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `pescia2023messagepassingneuralquantumstates' 
+on page 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `liu2026localglobalmultimodalcontrastivelearni
+ng' on page 2 undefined on input line 124.
+
+[2]
+
+Package natbib Warning: Citation `ji2026molledgeradditivegraphneural' on page 3
+ undefined on input line 124.
+
+
+Package natbib Warning: Citation `esders2024analyzingatomicinteractionsmolecule
+s' on page 3 undefined on input line 124.
+
+
+Package natbib Warning: Citation `polat2025understandingcapabilitiesmoleculargr
+aph' on page 3 undefined on input line 124.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 3 undefined on input line 124.
+
+
+Package natbib Warning: Citation `choi2022scalabletraininggraphconvolutional' o
+n page 3 undefined on input line 124.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `rittig2022graphneuralnetworksprediction' on p
+age 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `panapitiya2025fragnetgraphneuralnetwork' on p
+age 3 undefined on input line 128.
+
+
+LaTeX Warning: Reference `fig:image0' on page 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `zhao2023molecularpropertypredictionbased' on 
+page 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `rittig2022graphneuralnetworksprediction' on p
+age 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `wang2023graphneuralnetworksmolecules' on page
+ 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `xing2025learningcontinuoussolventeffects' on 
+page 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `ye2019symmetricalgraphneuralnetwork' on page 
+3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `atlas2026latentspacedesigninteratomic' on pag
+e 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `wu2019comprehensivesurveygraphneural' on page
+ 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `kosasih2021graphneuralnetworkensembles' on pa
+ge 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `schiff2022augmentingmoleculardeepgenerative' 
+on page 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `han2026multimodalmolecularrepresentationlearn
+ing' on page 3 undefined on input line 128.
+
+
+LaTeX Warning: Reference `fig:image2' on page 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `liu2021fastquantumpropertyprediction' on page
+ 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `choi2022scalabletraininggraphconvolutional' o
+n page 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `zhang2021litegemlitegeometryenhanced' on page
+ 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `ye2019symmetricalgraphneuralnetwork' on page 
+3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `kosasih2021graphneuralnetworkensembles' on pa
+ge 3 undefined on input line 128.
+
+[3]
+
+Package natbib Warning: Citation `rao2021quantitativeevaluationexplainablegraph
+' on page 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `lundstrom2022rigorousstudyintegratedgradients
+' on page 4 undefined on input line 128.
+
+
+LaTeX Warning: Reference `fig:image3' on page 4 undefined on input line 128.
+
+
+LaTeX Warning: Reference `fig:image1' on page 4 undefined on input line 128.
+
+(/home/node/texmf/tex/latex/lm/t1lmtt.fd) [4] [5] [6] [7]
+
+Package natbib Warning: Citation `sundararajan2017axiomaticattributiondeepnetwo
+rks' on page 8 undefined on input line 132.
+
+
+Package natbib Warning: Citation `polat2025xchemagentsagenticaiexplainable' on 
+page 8 undefined on input line 132.
+
+
+Package natbib Warning: Citation `ji2026molledgeradditivegraphneural' on page 8
+ undefined on input line 132.
+
+
+Package natbib Warning: Citation `lundstrom2022rigorousstudyintegratedgradients
+' on page 8 undefined on input line 132.
+
+
+Package natbib Warning: Citation `wang2026explainablemolecularpropertypredictio
+n' on page 8 undefined on input line 132.
+
+
+Package natbib Warning: Citation `chen2026interpretablemachinelearningquantumin
+formed' on page 8 undefined on input line 132.
+
+
+Package natbib Warning: Citation `mick2026datafusioncontrastivealignment' on pa
+ge 8 undefined on input line 132.
+
+
+Package natbib Warning: Citation `bigting2026martinimapperautomatedfragmentbase
+d' on page 8 undefined on input line 132.
+
+No file paper_v3_citations.bbl.
+
+Package natbib Warning: There were undefined citations.
+
+[8] (./paper_v3_citations.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `paper_v3_citations.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+(see the transcript file for additional information)
+Output written on paper_v3_citations.pdf (8 pages).
+Transcript written on paper_v3_citations.log.
+---- STDERR ----
+
+==== ERROR on iteration Final Pass 1 ====
+---- STDOUT ----
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022/Debian) (preloaded format=xelatex)
+ restricted \write18 enabled.
+entering extended mode
+(./paper_v3_citations.tex
+LaTeX2e <2022-11-01> patch level 1
+L3 programming layer <2023-01-16>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
+
+Package inputenc Warning: inputenc package ignored with utf8 based engines.
+
+) (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+(/home/node/texmf/tex/latex/lm/t1lmr.fd))
+(/home/node/texmf/tex/latex/lm/lmodern.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/textgreek/textgreek.sty
+(/usr/share/texlive/texmf-dist/tex/latex/greek-fontenc/lgrenc.def
+(/usr/share/texlive/texmf-dist/tex/latex/greek-fontenc/greek-fontenc.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/newunicodechar/newunicodechar.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/xetex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjustbox.sty
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/trimclip.sty
+(/usr/share/texlive/texmf-dist/tex/latex/collectbox/collectbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/tc-xetex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/varwidth/varwidth.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc-greekbasic.def))
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hxetex.def
+(/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-xetex.def)
+(./paper_v3_citations.aux)
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/cbfonts-fd/lgrcmr.fd)
+(./paper_v3_citations.out) (./paper_v3_citations.out)
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+(/home/node/texmf/tex/latex/lm/ot1lmr.fd)
+(/home/node/texmf/tex/latex/lm/omllmm.fd)
+(/home/node/texmf/tex/latex/lm/omslmsy.fd)
+(/home/node/texmf/tex/latex/lm/omxlmex.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+
+Package natbib Warning: Citation `fu2025benchmarkquantumchemistryrelaxations' o
+n page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `schütt2016quantumchemicalinsightsdeeptensor' 
+on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `xiang2025edbenchlargescaleelectrondensity' on
+ page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `schütt2016quantumchemicalinsightsdeeptensor' 
+on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `esders2024analyzingatomicinteractionsmolecule
+s' on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `xiang2025edbenchlargescaleelectrondensity' on
+ page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `wang2023graphneuralnetworksmolecules' on page
+ 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `liu2026latentflowvisualanalyticslatent' on pa
+ge 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `han2026multimodalmolecularrepresentationlearn
+ing' on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `choi2022scalabletraininggraphconvolutional' o
+n page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `liu2026enhancingmolecularpropertypredictions'
+ on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `chakraborty2026duallevelatomiccoordinationgeo
+metry' on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `shui2020heterogeneousmoleculargraphneural' on
+ page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `liu2021fastquantumpropertyprediction' on page
+ 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `rittig2022graphneuralnetworksprediction' on p
+age 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `lu2019molecularpropertypredictionmultilevel' 
+on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `liu2021fastquantumpropertyprediction' on page
+ 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `arjonamedina2024analysisatomlevelpretrainingq
+uantum' on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `shui2020heterogeneousmoleculargraphneural' on
+ page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `wang2022motifbasedgraphrepresentationlearning
+' on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `yu2025magemodellevelgraphneural' on page 1 un
+defined on input line 120.
+
+
+Package natbib Warning: Citation `lu2019molecularpropertypredictionmultilevel' 
+on page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `shui2020heterogeneousmoleculargraphneural' on
+ page 1 undefined on input line 120.
+
+
+Package natbib Warning: Citation `liu2021fastquantumpropertyprediction' on page
+ 1 undefined on input line 120.
+
+[1]
+
+./paper_v3_citations.tex:124: LaTeX Error: Command \bfseries invalid in math mo
+de.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.124 ...{yun2024znormzscoregradientnormalization}
+                                                  \end{equation}These standa...
+
+
+Package natbib Warning: Citation `yun2024znormzscoregradientnormalization' on p
+age 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `ma2020multiviewgraphneuralnetworks' on page 2
+ undefined on input line 124.
+
+
+Package natbib Warning: Citation `ma2020multiviewgraphneuralnetworks' on page 2
+ undefined on input line 124.
+
+
+Package natbib Warning: Citation `nguyen2026mmgnnmultilevelmulticolorgraph' on 
+page 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `berry2025surveygraphneuralnetworks' on page 2
+ undefined on input line 124.
+
+
+Package natbib Warning: Citation `jo2021flexibledualbranchedmessagepassing' on 
+page 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `pescia2023messagepassingneuralquantumstates' 
+on page 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 2 undefined on input line 124.
+
+
+Package natbib Warning: Citation `liu2026localglobalmultimodalcontrastivelearni
+ng' on page 2 undefined on input line 124.
+
+[2]
+
+Package natbib Warning: Citation `ji2026molledgeradditivegraphneural' on page 3
+ undefined on input line 124.
+
+
+Package natbib Warning: Citation `esders2024analyzingatomicinteractionsmolecule
+s' on page 3 undefined on input line 124.
+
+
+Package natbib Warning: Citation `polat2025understandingcapabilitiesmoleculargr
+aph' on page 3 undefined on input line 124.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 3 undefined on input line 124.
+
+
+Package natbib Warning: Citation `choi2022scalabletraininggraphconvolutional' o
+n page 3 undefined on input line 124.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `rittig2022graphneuralnetworksprediction' on p
+age 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `panapitiya2025fragnetgraphneuralnetwork' on p
+age 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 3 undefined on input line 128.
+
+
+Package natbib Warning: Citation `zhao2023molecularpropertypredictionbased' on 
+page 3 undefined on input line 128.
+
+[3]
+
+Package natbib Warning: Citation `rittig2022graphneuralnetworksprediction' on p
+age 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `wang2023graphneuralnetworksmolecules' on page
+ 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `xing2025learningcontinuoussolventeffects' on 
+page 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `ye2019symmetricalgraphneuralnetwork' on page 
+4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `atlas2026latentspacedesigninteratomic' on pag
+e 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `wu2019comprehensivesurveygraphneural' on page
+ 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `kosasih2021graphneuralnetworkensembles' on pa
+ge 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `schiff2022augmentingmoleculardeepgenerative' 
+on page 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `han2026multimodalmolecularrepresentationlearn
+ing' on page 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `liu2021fastquantumpropertyprediction' on page
+ 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `choi2022scalabletraininggraphconvolutional' o
+n page 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `gilmer2017neuralmessagepassingquantum' on pag
+e 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `zhang2021litegemlitegeometryenhanced' on page
+ 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `ye2019symmetricalgraphneuralnetwork' on page 
+4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `kosasih2021graphneuralnetworkensembles' on pa
+ge 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `rao2021quantitativeevaluationexplainablegraph
+' on page 4 undefined on input line 128.
+
+
+Package natbib Warning: Citation `lundstrom2022rigorousstudyintegratedgradients
+' on page 4 undefined on input line 128.
+
+(/home/node/texmf/tex/latex/lm/t1lmtt.fd) [4] [5]
+
+Package natbib Warning: Citation `sundararajan2017axiomaticattributiondeepnetwo
+rks' on page 6 undefined on input line 132.
+
+
+Package natbib Warning: Citation `polat2025xchemagentsagenticaiexplainable' on 
+page 6 undefined on input line 132.
+
+
+Package natbib Warning: Citation `ji2026molledgeradditivegraphneural' on page 6
+ undefined on input line 132.
+
+
+Package natbib Warning: Citation `lundstrom2022rigorousstudyintegratedgradients
+' on page 6 undefined on input line 132.
+
+
+Package natbib Warning: Citation `wang2026explainablemolecularpropertypredictio
+n' on page 6 undefined on input line 132.
+
+
+Package natbib Warning: Citation `chen2026interpretablemachinelearningquantumin
+formed' on page 6 undefined on input line 132.
+
+
+Package natbib Warning: Citation `mick2026datafusioncontrastivealignment' on pa
+ge 6 undefined on input line 132.
+
+
+Package natbib Warning: Citation `bigting2026martinimapperautomatedfragmentbase
+d' on page 6 undefined on input line 132.
+
+[6] [7] (./paper_v3_citations.bbl [8] [9])
+
+Package natbib Warning: There were undefined citations.
+
+[10] (./paper_v3_citations.aux
+
+Package natbib Warning: Citation(s) may have changed.
+(natbib)                Rerun to get citations correct.
+
+)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ )
+(see the transcript file for additional information)
+Output written on paper_v3_citations.pdf (10 pages).
+Transcript written on paper_v3_citations.log.
+---- STDERR ----

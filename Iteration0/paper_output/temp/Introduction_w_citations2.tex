@@ -1,0 +1,109 @@
+\documentclass[]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textgreek}
+\usepackage{newunicodechar}
+\newunicodechar{⁰}{\ensuremath{^0}}
+\newunicodechar{²}{\ensuremath{^2}}
+\newunicodechar{³}{\ensuremath{^3}}
+\newunicodechar{₁}{\ensuremath{_1}}
+\newunicodechar{₂}{\ensuremath{_2}}
+\newunicodechar{₃}{\ensuremath{_3}}
+\newunicodechar{×}{\ensuremath{\times}}
+\newunicodechar{∇}{\ensuremath{\nabla}}
+\newunicodechar{≈}{\ensuremath{\approx}}
+\newunicodechar{≡}{\ensuremath{\equiv}}
+\newunicodechar{≤}{\ensuremath{\leq}}
+\newunicodechar{≥}{\ensuremath{\geq}}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+\newunicodechar{←}{\ensuremath{\leftarrow}}
+\newunicodechar{↑}{\ensuremath{\uparrow}}
+\newunicodechar{↓}{\ensuremath{\downarrow}}
+\newunicodechar{↔}{\ensuremath{\leftrightarrow}}
+\newunicodechar{—}{\textemdash}
+\newunicodechar{–}{\textendash}
+\newunicodechar{−}{\ensuremath{-}}
+\newunicodechar{√}{\ensuremath{\surd}}
+\newunicodechar{∼}{\ensuremath{\sim}}
+\newunicodechar{≲}{\ensuremath{\lesssim}}
+\newunicodechar{≳}{\ensuremath{\gtrsim}}
+\newunicodechar{⟨}{\ensuremath{\langle}}
+\newunicodechar{⟩}{\ensuremath{\rangle}}
+\newunicodechar{₀}{\ensuremath{_0}}
+\newunicodechar{₄}{\ensuremath{_4}}
+\newunicodechar{₅}{\ensuremath{_5}}
+\newunicodechar{₆}{\ensuremath{_6}}
+\newunicodechar{₇}{\ensuremath{_7}}
+\newunicodechar{₈}{\ensuremath{_8}}
+\newunicodechar{₉}{\ensuremath{_9}}
+\newunicodechar{⁴}{\ensuremath{^4}}
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{β}{\ensuremath{\beta}}
+\newunicodechar{γ}{\ensuremath{\gamma}}
+\newunicodechar{δ}{\ensuremath{\delta}}
+\newunicodechar{ε}{\ensuremath{\epsilon}}
+\newunicodechar{θ}{\ensuremath{\theta}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{μ}{\ensuremath{\mu}}
+\newunicodechar{ν}{\ensuremath{\nu}}
+\newunicodechar{ξ}{\ensuremath{\xi}}
+\newunicodechar{π}{\ensuremath{\pi}}
+\newunicodechar{ρ}{\ensuremath{\rho}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{τ}{\ensuremath{\tau}}
+\newunicodechar{φ}{\ensuremath{\phi}}
+\newunicodechar{ϕ}{\ensuremath{\phi}}
+\newunicodechar{χ}{\ensuremath{\chi}}
+\newunicodechar{ψ}{\ensuremath{\psi}}
+\newunicodechar{ω}{\ensuremath{\omega}}
+\newunicodechar{Δ}{\ensuremath{\Delta}}
+\newunicodechar{Λ}{\ensuremath{\Lambda}}
+\newunicodechar{Σ}{\ensuremath{\Sigma}}
+\newunicodechar{Φ}{\ensuremath{\Phi}}
+\newunicodechar{Ω}{\ensuremath{\Omega}}
+\newunicodechar{“}{``}
+\newunicodechar{”}{''}
+\newunicodechar{‘}{`}
+\newunicodechar{’}{'}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{black!4},
+  frame=none,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  xleftmargin=1em,
+  xrightmargin=1em,
+  aboveskip=0.6em,
+  belowskip=0.6em,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\itshape\color{black!60},
+  stringstyle=\color{green!50!black},
+}
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+
+Predicting the thermodynamic and quantum-mechanical properties of molecules is a central challenge in computational chemistry. For extensive properties such as the internal energy at 0 K ($U_0$), classical group-contribution methods have long provided a robust baseline. These models operate on the principle of additivity, effectively capturing the extensive scaling of molecular energy by summing the independent contributions of constituent atoms, bonds, and functional groups. However, while additive models excel at capturing size-dependent scaling, they inherently fail to account for non-additive electronic effects. Phenomena such as extended $\pi$-conjugation, aromaticity, and complex heteroatom interactions depend on the global topological structure of the molecule rather than mere constituent counts. Consequently, classical methods leave a residual variance that represents the underlying non-linear quantum-mechanical physics.
+
+To isolate and quantify these non-linear contributions, we propose a graph-latent residual decomposition framework, applied to the QM9 dataset \citep{fu2025benchmarkquantumchemistryrelaxations}. Our approach rigorously separates extensive scaling from non-additive electronic physics without requiring the generation of 3D atomic coordinates. We first decouple the extensive energetic scaling by training a Ridge regression baseline on heavy atom and functional group counts. The residuals of this additive model represent the purely non-additive energetic deviations. Subsequently, we employ a Graph Neural Network (GNN) to predict these standardized residuals \citep{schütt2016quantumchemicalinsightsdeeptensor,xiang2025edbenchlargescaleelectrondensity}. By operating directly on the molecular graph via message passing, the GNN is uniquely positioned to capture the long-range topological features and structural nuances that linear models and standard descriptor-based algorithms miss \citep{schütt2016quantumchemicalinsightsdeeptensor,esders2024analyzingatomicinteractionsmolecules,xiang2025edbenchlargescaleelectrondensity}.
+
+Beyond achieving high predictive accuracy, a primary objective of this work is to interpret the learned non-additive representations and connect them to established chemical theory \citep{wang2023graphneuralnetworksmolecules,liu2026latentflowvisualanalyticslatent,han2026multimodalmolecularrepresentationlearning}. To this end, we extract the 128-dimensional latent space from the GNN to investigate whether the network intrinsically learns fundamental intensive properties---such as the HOMO-LUMO gap, HOMO energy, and dipole moment ($\mu$)---despite receiving no direct supervision on these targets \citep{choi2022scalabletraininggraphconvolutional,liu2026enhancingmolecularpropertypredictions,chakraborty2026duallevelatomiccoordinationgeometry}. Furthermore, we apply Integrated Gradients to the trained network to map the predicted energetic deviations back to specific molecular subgraphs, enabling a quantitative assessment of which structural motifs exert the greatest influence on energetic stability.
+
+In this paper, we demonstrate that the GNN successfully captures the topological variance missed by classical models, substantially outperforming a descriptor-based Random Forest baseline. \citep{shui2020heterogeneousmoleculargraphneural,liu2021fastquantumpropertyprediction,rittig2022graphneuralnetworksprediction} Analysis of the latent space reveals strong, unsupervised correlations with fundamental electronic descriptors. \citep{lu2019molecularpropertypredictionmultilevel,liu2021fastquantumpropertyprediction,arjonamedina2024analysisatomlevelpretrainingquantum} Finally, through structural motif attribution and statistical validation, we confirm that specific features---namely aromatic rings and the integration of nitrogen and fluorine---significantly drive these non-additive deviations. \citep{shui2020heterogeneousmoleculargraphneural,wang2022motifbasedgraphrepresentationlearning,yu2025magemodellevelgraphneural} These motifs correspond directly to physically observable phenomena, such as compressed HOMO-LUMO gaps and shifted dipole moments, validating that our residual decomposition framework effectively maps specific structural motifs to their quantum-mechanical deviations from classical additivity. \citep{lu2019molecularpropertypredictionmultilevel,shui2020heterogeneousmoleculargraphneural,liu2021fastquantumpropertyprediction}
+
+\end{document}
+                
