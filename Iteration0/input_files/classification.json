@@ -1,0 +1,8 @@
+{
+  "primary_category": "physics.chem-ph",
+  "secondary_categories": [
+    "cs.LG",
+    "physics.comp-ph"
+  ],
+  "justification": "The paper focuses on computational and theoretical modeling of molecular internal energy and electronic properties using machine learning (GNNs), which falls squarely under chemical physics. The use of graph neural networks and machine learning techniques for physical property prediction also justifies cross-listing with computational physics and machine learning."
+}

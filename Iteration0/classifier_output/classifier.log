@@ -1,0 +1,108 @@
+
+###### PROMPT BEGINS ########
+Human: You are a scientific paper classifier. Your task is to determine the most appropriate top-level arXiv archive for the following paper.
+
+**Paper Title:** Decoupling Non-Additive Energetics via Graph-Latent Residual Decomposition
+
+**Abstract:** Classical group-contribution methods effectively capture the extensive scaling of molecular internal energy but inherently fail to account for non-additive electronic effects arising from complex topological features. To isolate and quantify these non-linear contributions, we propose a residual decomposition approach applied to the QM9 dataset. We first train a Ridge regression baseline on heavy atom and functional group counts to decouple the extensive energetic scaling. Subsequently, we employ a Graph Neural Network (GNN) to predict the standardized residuals of this additive baseline, utilizing Integrated Gradients and latent space dimensionality reduction to interpret the learned representations. The GNN successfully captures the topological variance missed by classical models, achieving a test $R^2$ of 0.9985 on the residuals and substantially outperforming a descriptor-based Random Forest baseline. Analysis of the GNN's 128-dimensional latent space reveals intrinsic correlations with fundamental intensive properties, such as the HOMO-LUMO gap and HOMO energy, despite the absence of direct supervision on these targets. Furthermore, structural motif attribution and statistical validation confirm that features such as aromaticity, nitrogen integration, and fluorine incorporation significantly drive these non-additive deviations, corresponding directly to compressed HOMO-LUMO gaps and shifted dipole moments. This framework rigorously separates extensive scaling from underlying non-linear electronic physics, demonstrating that graph-based message passing can effectively map specific structural motifs to their quantum-mechanical deviations from classical additivity.
+
+**Archives:**
+- astro-ph: Astrophysics — cosmology, galaxies, stellar physics, planetary science, high-energy astrophysics, instrumentation
+- cond-mat: Condensed Matter — materials science, superconductivity, quantum gases, soft matter, statistical mechanics
+- cs: Computer Science — AI, machine learning, NLP, computer vision, algorithms, networking, security, software
+- econ: Economics — econometrics, general economics, theoretical economics
+- eess: Electrical Engineering and Systems Science — signal processing, image/video processing, audio/speech, control
+- gr-qc: General Relativity and Quantum Cosmology — gravitational physics, gravitational waves, black holes
+- hep-ex: High Energy Physics - Experiment — particle physics experiments, collider results
+- hep-lat: High Energy Physics - Lattice — lattice field theory, lattice QCD
+- hep-ph: High Energy Physics - Phenomenology — theoretical particle physics connected to experiment
+- hep-th: High Energy Physics - Theory — string theory, quantum field theory, supersymmetry
+- math: Mathematics — algebra, geometry, topology, analysis, probability, number theory, optimization
+- math-ph: Mathematical Physics — mathematical methods for physics problems
+- nlin: Nonlinear Sciences — chaos, pattern formation, solitons, integrable systems, self-organization
+- nucl-ex: Nuclear Experiment — experimental nuclear physics
+- nucl-th: Nuclear Theory — nuclear structure theory, hadron models, neutron stars
+- physics: Physics (General) — classical, computational, fluid dynamics, optics, plasma, applied, biological, chemical physics
+- q-bio: Quantitative Biology — biomolecules, genomics, neuroscience, populations, quantitative methods
+- q-fin: Quantitative Finance — computational finance, portfolio management, risk, pricing, trading
+- quant-ph: Quantum Physics — quantum information, computation, entanglement, foundations, optics
+- stat: Statistics — methodology, applications, machine learning (with statistical grounding), computation
+
+Select the single most appropriate archive for this paper. If the paper spans multiple fields, choose the one where the paper makes its primary contribution.
+
+###### PROMPT ENDS ########
+
+###### RESPONSE [model: gemini-3.1-flash-lite-preview] ########
+archive='physics' justification='The paper focuses on chemical physics and molecular energetics, utilizing machine learning techniques to analyze quantum-mechanical properties of molecules.'
+###### PROMPT BEGINS ########
+Human: You are a scientific paper classifier. You have already determined that this paper belongs to the **physics** archive on arXiv. Now select the specific subcategory.
+
+**Paper Title:** Decoupling Non-Additive Energetics via Graph-Latent Residual Decomposition
+
+**Abstract:** Classical group-contribution methods effectively capture the extensive scaling of molecular internal energy but inherently fail to account for non-additive electronic effects arising from complex topological features. To isolate and quantify these non-linear contributions, we propose a residual decomposition approach applied to the QM9 dataset. We first train a Ridge regression baseline on heavy atom and functional group counts to decouple the extensive energetic scaling. Subsequently, we employ a Graph Neural Network (GNN) to predict the standardized residuals of this additive baseline, utilizing Integrated Gradients and latent space dimensionality reduction to interpret the learned representations. The GNN successfully captures the topological variance missed by classical models, achieving a test $R^2$ of 0.9985 on the residuals and substantially outperforming a descriptor-based Random Forest baseline. Analysis of the GNN's 128-dimensional latent space reveals intrinsic correlations with fundamental intensive properties, such as the HOMO-LUMO gap and HOMO energy, despite the absence of direct supervision on these targets. Furthermore, structural motif attribution and statistical validation confirm that features such as aromaticity, nitrogen integration, and fluorine incorporation significantly drive these non-additive deviations, corresponding directly to compressed HOMO-LUMO gaps and shifted dipole moments. This framework rigorously separates extensive scaling from underlying non-linear electronic physics, demonstrating that graph-based message passing can effectively map specific structural motifs to their quantum-mechanical deviations from classical additivity.
+
+**Methods (if available):** \subsection{Data preprocessing and quality control}
+The QM9 dataset was utilized to investigate the non-additive electronic contributions to molecular internal energy at 0 K ($U_0$). Molecular structures were parsed from SMILES strings using the RDKit library. During initial quality control, 83 duplicated SMILES representations were identified; to ensure consistent labeling and prevent training instability, the target property values for these duplicates were averaged. 
+
+To rigorously evaluate model generalization and prevent data leakage, the dataset was partitioned into training (80\%), validation (10\%), and test (10\%) sets using a molecule-aware splitting strategy. This ensured that all instances of identical SMILES strings, if any remained after deduplication, resided within the same partition. For each molecule, explicit size-normalization features, including heavy atom counts and hydrogen counts, were calculated alongside counts of specific bond types and functional groups to serve as inputs for the classical additive baseline.
+
+\subsection{Baseline additive model construction}
+To decouple the extensive scaling inherent to the dataset from the underlying non-linear electronic physics, a Group Contribution Method (GCM) baseline was constructed using Ridge regression. The baseline model was trained exclusively on the training set to predict $U_0$ using the number of heavy atoms and the counts of various bond types and functional groups as independent variables. 
+
+By modeling the purely additive components of the internal energy, the Ridge regression isolates the non-additive energetic deviations as residuals. For each molecule $i$, the residual $r_i$ was calculated as the difference between the actual internal energy and the baseline prediction:
+\begin{equation}
+    r_i = U_{0,i} - \hat{U}_{0,i}^{\text{Ridge}}
+\end{equation}
+To ensure stable gradient dynamics during the subsequent neural network training, these residuals were standardized using z-score normalization based on the training set mean ($\mu_r$) and standard deviation ($\sigma_r$):
+\begin{equation}
+    z_i = \frac{r_i - \mu_r}{\sigma_r}
+\end{equation}
+These standardized residuals ($z_i$) served as the target variable for the non-linear models.
+
+\subsection{Graph neural network architecture and training}
+To capture the topological nuances and long-range electronic effects missed by the additive baseline, a Graph Neural Network (GNN) was designed to predict the standardized residuals. The molecular graphs were constructed with node features encoding atomic number, hybridization state, and atomic degree, while edge features encoded bond type and aromaticity. 
+
+The network architecture employed message-passing layers to propagate local structural information across the molecular graph. To effectively aggregate global electronic effects, such as extended $\pi$-conjugation pathways, a Global Attention Pooling layer was incorporated. The pooled graph-level representation was then passed through a multi-layer perceptron terminating in a linear output layer (without an activation function) to accommodate the unbounded continuous range of the standardized residuals.
+
+The GNN was trained to minimize the Mean Squared Error (MSE) loss between the predicted and actual standardized residuals. Training was regulated using an early stopping criterion monitored on the validation loss to prevent overfitting. To benchmark the efficacy of the graph-based message passing, a Random Forest regressor was also trained on the same RDKit-derived descriptors used for the Ridge baseline. Comparing the GNN against this non-linear descriptor-based baseline isolates the performance gain attributable specifically to the explicit modeling of molecular topology.
+
+\subsection{Latent space extraction and analysis}
+To interpret the learned representations of non-additivity, the 128-dimensional latent vectors were extracted from the penultimate layer of the trained GNN for all molecules in the test set. This latent space was analyzed to determine whether the network intrinsically learned fundamental intensive properties without direct supervision. 
+
+Dimensionality reduction was performed using t-Distributed Stochastic Neighbor Embedding (t-SNE) to visualize the embedding landscape and identify structural clustering. Both the raw 128-dimensional latent features and the reduced t-SNE components were statistically correlated (using Pearson $r$ and Spearman $\rho$ coefficients) with known intensive electronic properties provided in the QM9 dataset, specifically the HOMO-LUMO gap, HOMO energy, LUMO energy, and dipole moment ($\mu$).
+
+\subsection{Structural motif attribution and statistical validation}
+To map the predicted non-additive energetics back to specific chemical features, the Integrated Gradients (IG) attribution method was applied to the trained GNN. The baseline input for the IG algorithm was defined as a "null" graph, where all node and edge features were zeroed out. To ensure that the attribution scores were comparable across molecules of varying sizes, the raw IG scores were normalized by the total number of atoms in the molecule.
+
+Molecules were subsequently partitioned into groups based on the presence of high-influence topological features identified by the network, such as aromatic rings and the integration of specific heteroatoms (nitrogen, oxygen, and fluorine). To validate the physical relevance of these GNN-identified motifs, statistical tests were conducted to compare the distributions of intensive properties (HOMO-LUMO gap and dipole moment) between molecules containing these motifs and those without. Depending on the distribution of the data, Analysis of Variance (ANOVA) or non-parametric Kruskal-Wallis tests were employed to determine statistical significance, while Cohen's $d$ was calculated to quantify the effect size of each structural motif on the electronic properties.
+
+**Available subcategories in physics:**
+- physics.acc-ph: Accelerator Physics — Accelerator theory and simulation. Accelerator technology. Accelerator experiments. Beam physics, beam dynamics.
+- physics.ao-ph: Atmospheric and Oceanic Physics — Atmospheric and oceanic physics and physical chemistry, biogeophysics, and climate science.
+- physics.app-ph: Applied Physics — Applications of physics to new technology, including electronic devices, optics, photonics, energy harvesting.
+- physics.atm-clus: Atomic and Molecular Clusters — Atomic and molecular clusters, nanoparticles: geometric, electronic, optical, chemical properties.
+- physics.atom-ph: Atomic Physics — Atomic and molecular structure, spectra, collisions, and data. Atoms and molecules in external fields, precision measurements.
+- physics.bio-ph: Biological Physics — Molecular biophysics, cellular biophysics, neurological biophysics, membrane biophysics, single-molecule physics.
+- physics.chem-ph: Chemical Physics — Experimental, computational, and theoretical physics of atoms, molecules, and clusters involving chemical processes.
+- physics.class-ph: Classical Physics — Newtonian and relativistic dynamics; many particle systems; planetary motions; pendulums; acoustics; thermodynamics.
+- physics.comp-ph: Computational Physics — All aspects of computational science applied to physics, numerical methods, simulation, high-performance computing.
+- physics.data-an: Data Analysis, Statistics and Probability — Methods, software and hardware for physics data analysis: data processing and storage, statistical methods.
+- physics.ed-ph: Physics Education — Report of results of a research study, laboratory experience, assessment or classroom practice in physics education.
+- physics.flu-dyn: Fluid Dynamics — Turbulence, instabilities, incompressible/compressible flows, reacting flows, multiphase flows.
+- physics.gen-ph: General Physics — General physics topics not fitting other physics categories.
+- physics.geo-ph: Geophysics — Atmospheric physics. Biogeosciences. Computational geophysics. Seismology, tectonics, volcanology.
+- physics.hist-ph: History and Philosophy of Physics — History and philosophy of all branches of physics, astrophysics, and cosmology.
+- physics.ins-det: Instrumentation and Detectors — Instrumentation and detectors for research in natural science, including optical, molecular, nuclear, and particle physics.
+- physics.med-ph: Medical Physics — Radiation therapy. Radiation dosimetry. Biomedical imaging modelling. Reconstruction, image processing.
+- physics.optics: Optics — Adaptive, astronomical, fiber, quantum, and laser optics. Nonlinear optics, optical materials.
+- physics.plasm-ph: Plasma Physics — Fundamental plasma physics. Magnetically confined plasmas. High energy density plasmas. Plasma diagnostics.
+- physics.pop-ph: Popular Physics — Popular physics topics and science communication.
+- physics.soc-ph: Physics and Society — Structure, dynamics and collective behavior of societies and groups. Quantitative analysis of social networks.
+- physics.space-ph: Space Physics — Space plasma physics. Heliophysics. Space weather. Planetary magnetospheres, ionospheres, radiation belts.
+
+Select one primary subcategory and up to 3 secondary subcategories (from any archive) that also apply. The primary must be from the list above. Secondary categories may come from any arXiv category if the paper is interdisciplinary.
+
+###### PROMPT ENDS ########
+
+###### RESPONSE [model: gemini-3.1-flash-lite-preview] ########
+primary_category='physics.chem-ph' secondary_categories=['cs.LG', 'physics.comp-ph'] justification='The paper focuses on computational and theoretical modeling of molecular internal energy and electronic properties using machine learning (GNNs), which falls squarely under chemical physics. The use of graph neural networks and machine learning techniques for physical property prediction also justifies cross-listing with computational physics and machine learning.'
