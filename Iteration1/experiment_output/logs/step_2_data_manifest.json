@@ -1,0 +1,22 @@
+{
+  "step_number": 2,
+  "sub_task": "Feature-Matched Baseline Comparison (XGBoost)",
+  "attempt": 2,
+  "files": [
+    {
+      "path": "data/xgb_feature_importances.csv",
+      "bytes": 886,
+      "modified": "2026-09-20T13:30:08.674387Z"
+    },
+    {
+      "path": "data/xgb_metrics.json",
+      "bytes": 330,
+      "modified": "2026-09-20T13:30:08.674004Z"
+    },
+    {
+      "path": "data/xgb_predictions.csv",
+      "bytes": 8302711,
+      "modified": "2026-09-20T13:30:08.672797Z"
+    }
+  ]
+}

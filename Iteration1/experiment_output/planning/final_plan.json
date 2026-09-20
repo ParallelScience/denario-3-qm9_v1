@@ -1,0 +1,98 @@
+{
+  "sub_tasks": [
+    {
+      "sub_task": "Data Preparation and Additive Baseline Construction",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Explicitly set OMP_NUM_THREADS=8 in the environment and limit any Python multiprocessing pools to 8–16 workers to prevent thread oversubscription.",
+        "Read /home/node/work/data/qm9/qm9.csv.",
+        "Use RDKit to parse SMILES and compute heavy atom counts, implicit hydrogen counts, and basic bond-type counts (single, double, triple, aromatic) for each molecule.",
+        "Perform robust regression of u0 against these basic counts to create an additive baseline. To avoid O(N^2) scaling issues on 133,885 rows, either subsample 10,000 rows for Theil-Sen regression or use HuberRegressor on the full dataset.",
+        "Calculate residuals (u0_res = u0_actual - u0_predicted).",
+        "Perform a t-test on the slope of u0_res vs N_heavy. If statistically significant, apply a linear correction to ensure u0_res is perfectly intensive.",
+        "Generate scaffold split assignments using RDKit's Murcko scaffolds.",
+        "Save the processed dataframe containing u0_res, the basic features, and scaffold split assignments into data/u0_res_baseline.csv."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "Feature-Matched Baseline Comparison (XGBoost)",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Load the dataframe data/u0_res_baseline.csv from Step 1.",
+        "Compute an expanded set of exactly 30–50 topological RDKit descriptors for each SMILES, specifically including the BertzCT index, Chi series (0-4), ring counts, topological path lengths, and aromaticity indices.",
+        "Implement explicit NaN handling (e.g., median imputation) for any RDKit descriptors that fail to compute.",
+        "Using the scaffold split computed in Step 1, train an XGBoost model on these expanded descriptors to predict u0_res.",
+        "Evaluate model performance (RMSE, MAE, R²) on train, validation, and test sets.",
+        "Save the XGBoost predictions (data/xgb_predictions.csv), evaluation metrics (data/xgb_metrics.json), and feature importances (data/xgb_feature_importances.csv) into the data/ directory."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "GNN Architecture Implementation and Training",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Load data/u0_res_baseline.csv and verify torch_geometric availability (if unavailable, implement a fallback MLP on Morgan fingerprints, but prioritize PyG).",
+        "Convert SMILES into molecular graphs with node features (atomic number, degree, hybridization, aromaticity, formal charge) and edge features (bond type, conjugation status).",
+        "Set device to 'cuda', first checking torch.cuda.mem_get_info() to ensure sufficient VRAM within the ~60 GB shared limit. Limit the PyTorch DataLoader num_workers to 8.",
+        "Implement a Message Passing Neural Network (MPNN) bounded to 3–4 layers, 128–256 hidden dimensions, and use a batch size of 256–512 to ensure completion within the timeout.",
+        "Train the GNN to predict u0_res using the identical scaffold split from Step 2. Mandate early stopping with a reasonable patience parameter.",
+        "Evaluate the GNN on the test set and save the model weights (data/gnn_model.pt), predictions (data/gnn_predictions.csv), and metrics (data/gnn_metrics.json)."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "Subgraph Perturbation and Integrated Gradients (IG)",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Load the trained GNN (data/gnn_model.pt) and the test set graphs.",
+        "Part 1 (IG Attribution): Implement Integrated Gradients (e.g., using Captum or a simpler gradient-based saliency method if PyG structures complicate Captum integration). Keep the graph topology fixed and interpolate node/edge features from a chemically neutral baseline (zeros/isolated atoms).",
+        "Save intermediate IG results to data/ig_attributions.pt to prevent re-computation in case of failure.",
+        "Part 2 (In-Silico Mutation): Select a subset of highly conjugated molecules. Perform in-silico mutations by altering edge features (e.g., changing conjugated double bonds to single bonds). Recalculate GNN predictions.",
+        "Compare these GNN prediction shifts against XGBoost baseline shifts for the same mutated descriptors.",
+        "Save the mutation shift analysis results into data/mutation_shifts.csv."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "Isomer Validation and Correlation with Intensive Properties",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Load the QM9 dataset and the predictions from previous steps.",
+        "Identify \"conjugation isomers\" by grouping molecules by chemical formula and filtering for pairs/groups that have differences in aromatic ring counts or double bond counts.",
+        "Calculate the actual Δu0_res and the GNN-predicted Δu0_res for these isomer pairs to test the model's capture of resonance stabilization.",
+        "Decompose residual variance by comparing GNN predictions against known RDKit physical descriptors (like ring strain approximations).",
+        "Calculate partial correlations (Spearman's ρ) between GNN-predicted u0_res and intensive electronic properties (gap, mu, homo, lumo), carefully controlling for ring and heteroatom counts.",
+        "Save isomer analysis results (data/isomer_results.csv), variance decomposition metrics (data/variance_decomp.json), and correlation tables (data/correlations.csv)."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "Plotting and Result Visualization",
+      "sub_task_agent": "engineer",
+      "bullet_points": [
+        "Read expected input files from the data/ directory: xgb_predictions.csv, gnn_predictions.csv, ig_attributions.pt, mutation_shifts.csv, isomer_results.csv, and correlations.csv.",
+        "Generate parity plots comparing XGBoost vs GNN performance on u0_res.",
+        "Create visualizations for the Integrated Gradients output (e.g., bar plots summarizing highest-impact motifs).",
+        "Plot correlation heatmaps for u0_res vs intensive properties.",
+        "Plot the true vs predicted Δu0_res for the conjugation isomers.",
+        "Explicitly format all outputs as 150 dpi PNGs and save them directly into the data/ directory (e.g., data/parity_plot.png, data/ig_viz.png, data/correlations.png, data/isomers.png)."
+      ],
+      "code_execution_timeout": 1800
+    },
+    {
+      "sub_task": "Final Results Report",
+      "sub_task_agent": "researcher",
+      "bullet_points": [
+        "Review all tabular data, JSON metrics, and PNG plots saved in the data/ directory by the engineer.",
+        "Write a comprehensive Results section synthesizing the findings, focusing heavily on references to the generated plots and quantitative metrics.",
+        "Discuss baseline performances, determining if the GNN successfully captured non-additive electronic features beyond the XGBoost topological baseline.",
+        "Interpret the Integrated Gradients results: specify what motifs (e.g., aromatic rings, conjugated chains) drive non-additive stability.",
+        "Discuss the isomer validation results and the partial correlations, assessing if conjugation-induced gap narrowing correlates with u0_res.",
+        "Differentiate clearly between \"Chemical Non-Additivity\" (resonance, strain) discovered by the model and remaining \"Model Residuals.\"",
+        "Explicitly flag any inconsistent quantitative results (e.g., if XGBoost outperforms the GNN, or if isomer predictions are weak) and provide methodological explanations rather than exclusively synthesizing favorable findings."
+      ],
+      "code_execution_timeout": null
+    }
+  ]
+}

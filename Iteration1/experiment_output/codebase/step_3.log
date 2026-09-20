@@ -1,0 +1,13 @@
+# returncode=0 timed_out=False elapsed=184.5652s
+--- stdout ---
+torch_geometric not found. Attempting to install locally...
+Successfully installed torch_geometric.
+
+--- stderr ---
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration1/experiment_output/.pip_overrides/numpy already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration1/experiment_output/.pip_overrides/numpy.libs already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration1/experiment_output/.pip_overrides/numpy-2.5.3.dist-info already exists. Specify --upgrade to force replacement.
+WARNING: Target directory /home/node/work/projects/qm9_v1/Iteration1/experiment_output/.pip_overrides/bin already exists. Specify --upgrade to force replacement.
+/opt/denario-venv/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+

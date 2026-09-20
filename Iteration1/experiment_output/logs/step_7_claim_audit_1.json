@@ -1,0 +1,131 @@
+{
+  "claims": [
+    {
+      "statement": "The XGBoost model yielded a test set $R^2$ of 0.9810, while the GNN achieved a test set $R^2$ of 0.9777.",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 6 log: 'Test Set R2 (XGBoost): 0.9810', 'Test Set R2 (GNN): 0.9777'."
+    },
+    {
+      "statement": "A linear regression trained to map basic scalar descriptors ... to the GNN's predicted residuals explained only 9.64% of the variance ($R^2 = 0.0964$).",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 5 log: 'Variance explained by basic RDKit descriptors (R\u00b2): 0.0964'."
+    },
+    {
+      "statement": "The remaining 90.36% of the predicted variance constitutes non-linear physics and topological interactions captured internally by the GNN's message-passing architecture",
+      "kind": "derived",
+      "verdict": "supported",
+      "evidence": "Arithmetic: 1 - 0.0964 = 0.9036 (90.36%)."
+    },
+    {
+      "statement": "The mean absolute attribution sum per molecule was 61.8885 for nodes and 7.0920 for edges.",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 4 log: 'Mean absolute node attribution sum per molecule: 61.8885', 'Mean absolute edge attribution sum per molecule: 7.0920'."
+    },
+    {
+      "statement": "The mean absolute attribution for Atomic Number was 3.7750",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 6 log: 'Atomic Num: 3.7750'."
+    },
+    {
+      "statement": "Hybridization followed closely at 2.5298.",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 6 log: 'Hybridization: 2.5298'."
+    },
+    {
+      "statement": "Interestingly, simple valency proxies were far less impactful (Degree: 0.5997).",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 6 log: 'Degree: 0.5997'."
+    },
+    {
+      "statement": "Formal charge (0.0002) and binary aromaticity flags (0.1226) provided minimal direct attribution",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 6 log: 'FormalCharge: 0.0002', 'IsAromatic: 0.1226'."
+    },
+    {
+      "statement": "Bond Type dominated edge attributions (0.3187), while the explicit `IsConjugated` flag contributed less (0.0519).",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 6 log: 'BondType: 0.3187', 'IsConjugated: 0.0519'."
+    },
+    {
+      "statement": "A subset of 4,146 test-set molecules containing non-aromatic conjugated double bonds was identified.",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 4 log: 'Found 4146 molecules with non-aromatic conjugated double bonds for mutation.'"
+    },
+    {
+      "statement": "The disruption of resonance stabilization yielded a significant energetic penalty in the GNN predictions, manifesting as a mean energy shift of $0.5663 \\pm 2.7581$ Hartree (Mutated - Original).",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 4 log: 'Mean GNN Shift (Mutated - Original): 0.566295 +/- 2.758098 Hartree'."
+    },
+    {
+      "statement": "By contrast, the XGBoost model predicted a near-zero mean shift of $0.0246 \\pm 3.1799$ Hartree.",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 4 log: 'Mean XGB Shift (Mutated - Original): 0.024569 +/- 3.179860 Hartree'."
+    },
+    {
+      "statement": "Although the predicted shifts between the two models were highly correlated (Pearson $r = 0.9543$, $p < 0.001$)",
+      "kind": "test_outcome",
+      "verdict": "supported",
+      "evidence": "Step 4 log: 'Pearson correlation (GNN vs XGB shifts): 0.9543 (p-value: 0.00e+00)'."
+    },
+    {
+      "statement": "A comprehensive pair-wise matching across the dataset identified 190,679 conjugation isomer pairs.",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "Step 5 log: 'Identified 190679 conjugation isomer pairs (Total).'"
+    },
+    {
+      "statement": "Over the entire distribution, the Pearson correlation between the actual $u_0$ residual difference and the GNN-predicted difference was positive and statistically significant ($r = 0.2279$, $p < 0.001$).",
+      "kind": "test_outcome",
+      "verdict": "supported",
+      "evidence": "Step 5 log: 'Pearson correlation (All pairs): 0.2279 (p-value: 0.00e+00)'."
+    },
+    {
+      "statement": "However, performance on the rigidly controlled test-set isomer pairs ($N = 1,802$ pairs, both molecules in the unseen test split) was exceptionally strong, yielding a Pearson correlation of $r = 0.9875$ ($p < 0.001$).",
+      "kind": "test_outcome",
+      "verdict": "supported",
+      "evidence": "Step 5 log: 'Identified 1802 conjugation isomer pairs (Both in Test Set).', 'Pearson correlation (Test pairs): 0.9875 (p-value: 0.00e+00)'."
+    },
+    {
+      "statement": "LUMO Energy: $\\rho = 0.213965$ ($p = 3.27 \\times 10^{-146}$)",
+      "kind": "test_outcome",
+      "verdict": "supported",
+      "evidence": "Step 5 log: 'lumo 0.213965 3.274247e-146'."
+    },
+    {
+      "statement": "HOMO Energy: $\\rho = 0.190063$ ($p = 3.20 \\times 10^{-115}$)",
+      "kind": "test_outcome",
+      "verdict": "supported",
+      "evidence": "Step 5 log: 'homo 0.190063 3.196602e-115'."
+    },
+    {
+      "statement": "HOMO-LUMO Gap: $\\rho = 0.134176$ ($p = 7.59 \\times 10^{-58}$)",
+      "kind": "test_outcome",
+      "verdict": "supported",
+      "evidence": "Step 5 log: 'gap 0.134176 7.585908e-58'."
+    },
+    {
+      "statement": "Dipole Moment ($\\mu$): $\\rho = 0.039407$ ($p = 2.74 \\times 10^{-6}$)",
+      "kind": "test_outcome",
+      "verdict": "supported",
+      "evidence": "Step 5 log: 'mu 0.039407 2.742219e-06'."
+    },
+    {
+      "statement": "both the XGBoost and GNN architectures exhibited minor unstructured residuals (accounting for approximately 2% of the test set variance).",
+      "kind": "quantitative",
+      "verdict": "supported",
+      "evidence": "The GNN test set R2 is 0.9777 (from Step 6 log), implying 1 - 0.9777 = 0.0223 (approx 2%) residual variance."
+    }
+  ],
+  "summary": "The report's claims are fully supported by the provided logs and data artifacts."
+}

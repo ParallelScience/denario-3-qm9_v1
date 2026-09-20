@@ -1,0 +1,886 @@
+# returncode=0 timed_out=False elapsed=13.5422s
+--- stdout ---
+Loading data...
+Using device: cuda
+Loading GNN model...
+
+--- Part 1: Integrated Gradients ---
+Selecting 1000 random test molecules for Integrated Gradients...
+Computing Integrated Gradients...
+Saved data/ig_attributions.pt
+Mean absolute node attribution sum per molecule: 61.8885
+Mean absolute edge attribution sum per molecule: 7.0920
+
+--- Part 2: In-Silico Mutations ---
+Found 4146 molecules with non-aromatic conjugated double bonds for mutation.
+Processing mutated graphs for GNN...
+Computing descriptors for XGBoost training...
+Retraining XGBoost model (not saved in Step 2)...
+Computing descriptors for mutated molecules...
+
+--- Mutation Shift Analysis Results ---
+Sample size: 4146
+Mean GNN Shift (Mutated - Original): 0.566295 +/- 2.758098 Hartree
+Mean XGB Shift (Mutated - Original): 0.024569 +/- 3.179860 Hartree
+Pearson correlation (GNN vs XGB shifts): 0.9543 (p-value: 0.00e+00)
+Paired t-test (GNN vs XGB shifts): t = 35.2384, p-value = 0.00e+00
+
+Saved data/mutation_shifts.csv columns: ['mol_id', 'original_smiles', 'mutated_smiles', 'original_u0_res', 'gnn_orig_pred', 'gnn_mut_pred', 'gnn_shift', 'xgb_orig_pred', 'xgb_mut_pred', 'xgb_shift']
+Saved data/mutation_shifts_scatter.png
+
+--- stderr ---
+/opt/denario-venv/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 2 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 2 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 2 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 2 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 5 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 5 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 3 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 2 3 5 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 5 6 7
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 5 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 5 6 7 8
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:53] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 5 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 5 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 6 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 6 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 5 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 5 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 5 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 5 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 5 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 5 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 2 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 2 5
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 3 4
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 3 5 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 3
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 5 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 5 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 5 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 5 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 6 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 7 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 5 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 3 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 8
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 4 5 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 2 3 4 6 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 4 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 0 1 2 3 6
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 5 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+[13:39:54] Can't kekulize mol.  Unkekulized atoms: 1 2 4 7
+

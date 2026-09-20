@@ -1,0 +1,32 @@
+{
+  "step_number": 5,
+  "sub_task": "Isomer Validation and Correlation with Intensive Properties",
+  "attempt": 1,
+  "files": [
+    {
+      "path": "data/correlations.csv",
+      "bytes": 226,
+      "modified": "2026-09-20T13:42:21.108086Z"
+    },
+    {
+      "path": "data/isomer_diff_scatter.png",
+      "bytes": 527056,
+      "modified": "2026-09-20T13:42:21.938091Z"
+    },
+    {
+      "path": "data/isomer_results.csv",
+      "bytes": 13865207,
+      "modified": "2026-09-20T13:42:21.049085Z"
+    },
+    {
+      "path": "data/partial_correlations.png",
+      "bytes": 104903,
+      "modified": "2026-09-20T13:42:22.221093Z"
+    },
+    {
+      "path": "data/variance_decomp.json",
+      "bytes": 152,
+      "modified": "2026-09-20T13:42:21.083925Z"
+    }
+  ]
+}

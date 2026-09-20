@@ -1,0 +1,44 @@
+# returncode=0 timed_out=False elapsed=13.5287s
+--- stdout ---
+Loading data/u0_res_baseline.csv...
+Loaded 133885 molecules.
+Computing RDKit descriptors...
+Imputing NaNs in descriptors with median values...
+Split sizes - Train: 111143, Val: 8591, Test: 14151
+Training XGBoost model...
+
+Evaluating model...
+--- Train Set ---
+  RMSE: 0.286118 Hartree
+  MAE:  0.166519 Hartree
+  R2:   0.998186
+--- Val Set ---
+  RMSE: 0.676946 Hartree
+  MAE:  0.233216 Hartree
+  R2:   0.989380
+--- Test Set ---
+  RMSE: 0.885226 Hartree
+  MAE:  0.334558 Hartree
+  R2:   0.981039
+
+Top 10 Feature Importances:
+                Feature  Importance
+ NumAromaticCarbocycles    0.178919
+              RingCount    0.106653
+NumAromaticHeterocycles    0.082295
+      NumRotatableBonds    0.067019
+        NumHeterocycles    0.058250
+         HeavyAtomCount    0.057174
+       NumAromaticRings    0.050052
+                BertzCT    0.045418
+               BalabanJ    0.045329
+                   Chi1    0.037142
+
+Saved data/xgb_predictions.csv columns: ['mol_id', 'smiles', 'split', 'u0_res', 'xgb_pred_u0_res']
+Saved data/xgb_metrics.json
+Saved data/xgb_feature_importances.csv columns: ['Feature', 'Importance']
+
+--- stderr ---
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+torch 2.14.0 requires nvidia-nccl-cu13==2.30.7; platform_system == "Linux", but you have nvidia-nccl-cu13 2.31.2 which is incompatible.
+

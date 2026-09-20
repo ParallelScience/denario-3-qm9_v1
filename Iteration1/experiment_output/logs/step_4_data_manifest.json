@@ -1,0 +1,22 @@
+{
+  "step_number": 4,
+  "sub_task": "Subgraph Perturbation and Integrated Gradients (IG)",
+  "attempt": 1,
+  "files": [
+    {
+      "path": "data/ig_attributions.pt",
+      "bytes": 647453,
+      "modified": "2026-09-20T13:39:53.830170Z"
+    },
+    {
+      "path": "data/mutation_shifts.csv",
+      "bytes": 514508,
+      "modified": "2026-09-20T13:40:01.533217Z"
+    },
+    {
+      "path": "data/mutation_shifts_scatter.png",
+      "bytes": 216206,
+      "modified": "2026-09-20T13:40:01.686218Z"
+    }
+  ]
+}

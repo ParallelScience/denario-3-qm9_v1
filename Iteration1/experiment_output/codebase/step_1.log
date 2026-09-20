@@ -1,0 +1,35 @@
+# returncode=0 timed_out=False elapsed=4.4318s
+--- stdout ---
+Loading QM9 dataset...
+Loaded 133885 molecules.
+Processing SMILES with RDKit...
+Fitting HuberRegressor for additive baseline...
+
+--- Additive Baseline Fit Results ---
+Sample size: 133885
+R2 Score: 0.971919
+RMSE: 6.712963 Hartree
+Fitted Coefficients:
+  heavy_atom_count: -111.837728 Hartree
+  h_count: 17.759757 Hartree
+  single_bonds: 36.971078 Hartree
+  double_bonds: 73.988185 Hartree
+  triple_bonds: 111.511424 Hartree
+  aromatic_bonds: 52.095866 Hartree
+  Intercept: 0.369631 Hartree
+
+--- Residual Analysis ---
+Initial u0_res vs N_heavy:
+  Slope: -4.753535e-02 +/- 3.588623e-02 Hartree/atom
+  R-squared: 0.000013
+  p-value: 1.85e-01
+Slope is not statistically significant. No correction applied.
+
+--- Generating Scaffold Split ---
+Split sizes (molecules): Train=111143, Val=8591, Test=14151
+
+Saved data/u0_res_baseline.csv columns: ['mol_id', 'smiles', 'A', 'B', 'C', 'mu', 'alpha', 'homo', 'lumo', 'gap', 'r2', 'zpve', 'u0', 'u298', 'h298', 'g298', 'cv', 'u0_atom', 'u298_atom', 'h298_atom', 'g298_atom', 'heavy_atom_count', 'h_count', 'single_bonds', 'double_bonds', 'triple_bonds', 'aromatic_bonds', 'scaffold', 'u0_res', 'split']
+Saved data/u0_res_vs_nheavy.png
+
+--- stderr ---
+

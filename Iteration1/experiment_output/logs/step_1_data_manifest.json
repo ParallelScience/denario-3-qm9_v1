@@ -1,0 +1,17 @@
+{
+  "step_number": 1,
+  "sub_task": "Data Preparation and Additive Baseline Construction",
+  "attempt": 1,
+  "files": [
+    {
+      "path": "data/u0_res_baseline.csv",
+      "bytes": 36356153,
+      "modified": "2026-09-20T13:27:09.514917Z"
+    },
+    {
+      "path": "data/u0_res_vs_nheavy.png",
+      "bytes": 133889,
+      "modified": "2026-09-20T13:27:09.740918Z"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "step_number": 6,
+  "sub_task": "Visualization of Model Predictions, Feature Attributions, and In-Silico Mutations",
+  "attempt": 2,
+  "files": [
+    {
+      "path": "data/ig_summary_plot.png",
+      "bytes": 135294,
+      "modified": "2026-09-20T13:44:41.254971Z"
+    },
+    {
+      "path": "data/mutation_shifts_dist.png",
+      "bytes": 99909,
+      "modified": "2026-09-20T13:44:41.418972Z"
+    },
+    {
+      "path": "data/parity_plot.png",
+      "bytes": 440673,
+      "modified": "2026-09-20T13:44:40.963969Z"
+    }
+  ]
+}

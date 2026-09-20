@@ -1,0 +1,30 @@
+# returncode=0 timed_out=False elapsed=2.7471s
+--- stdout ---
+Loading predictions...
+saved data/parity_plot.png
+Loading IG attributions...
+saved data/ig_summary_plot.png
+Loading mutation shifts...
+saved data/mutation_shifts_dist.png
+
+--- Summary Statistics ---
+Test Set R2 (XGBoost): 0.9810
+Test Set R2 (GNN): 0.9777
+
+Mean Absolute Node Attributions:
+  Atomic Num: 3.7750
+  Degree: 0.5997
+  Hybridization: 2.5298
+  IsAromatic: 0.1226
+  FormalCharge: 0.0002
+
+Mean Absolute Edge Attributions:
+  BondType: 0.3187
+  IsConjugated: 0.0519
+
+Mutation Shifts Summary:
+  XGBoost Shift Mean: 0.0246 ± 3.1799
+  GNN Shift Mean: 0.5663 ± 2.7581
+
+--- stderr ---
+

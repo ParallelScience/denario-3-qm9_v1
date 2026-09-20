@@ -1,0 +1,34 @@
+# returncode=0 timed_out=False elapsed=13.4284s
+--- stdout ---
+Loading datasets...
+Merging datasets...
+Merged dataset size: 133885
+Computing molecular descriptors for all molecules...
+Identifying conjugation isomers...
+saved data/isomer_results.csv columns: ['mol_id_1', 'mol_id_2', 'formula', 'actual_diff', 'pred_diff', 'split_1', 'split_2']
+
+--- Isomer Validation ---
+Identified 190679 conjugation isomer pairs (Total).
+Pearson correlation (All pairs): 0.2279 (p-value: 0.00e+00)
+Identified 1802 conjugation isomer pairs (Both in Test Set).
+Pearson correlation (Test pairs): 0.9875 (p-value: 0.00e+00)
+
+--- Variance Decomposition (Test Set) ---
+saved data/variance_decomp.json keys: ['R2_explained_by_basic_descriptors', 'Variance_attributed_to_nonlinear_physics', 'sample_size']
+Sample size: 14151
+Variance explained by basic RDKit descriptors (R²): 0.0964
+Variance attributed to non-linear physics: 0.9036
+
+--- Partial Correlations with Intensive Properties (Test Set) ---
+saved data/correlations.csv columns: ['property', 'partial_spearman_rho', 'p_value']
+Controlling for: Ring Count, Heteroatom Count
+property  partial_spearman_rho       p_value
+     gap              0.134176  7.585908e-58
+      mu              0.039407  2.742219e-06
+    homo              0.190063 3.196602e-115
+    lumo              0.213965 3.274247e-146
+saved data/isomer_diff_scatter.png
+saved data/partial_correlations.png
+
+--- stderr ---
+
